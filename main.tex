@@ -1,0 +1,75 @@
+%======================================================================
+%  Mathematics for Quantum Computing
+%  Héctor Zalama Alonso
+%
+%  Compile with:  latexmk -pdf main.tex      (needs biber)
+%
+%  This file holds structure only. Content lives in:
+%      preamble/    packages, layout, theorem environments, macros
+%      frontmatter/ title page, dedication, preface
+%      chapters/    one file per chapter
+%      appendix/    appendices
+%======================================================================
+\documentclass[12pt, a4paper, hidelinks, openright]{book}
+
+\input{preamble/packages}
+\input{preamble/layout}
+\input{preamble/theorems}
+\input{preamble/notation}
+
+% ---------- Metadata (keep in sync with frontmatter/titlepage.tex) ----------
+\title{Mathematics for Quantum Computing}
+\author{Héctor Zalama Alonso}
+\date{\today}
+
+\begin{document}
+
+%---------------------------- FRONT MATTER ----------------------------
+\frontmatter
+\input{frontmatter/titlepage}
+\input{frontmatter/dedication}
+\clearpage
+\pagestyle{empty}
+\input{frontmatter/preface}
+
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+% Comment these out if the book has few figures/tables
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
+\thispagestyle{empty}
+\newpage
+\listoftables
+\addcontentsline{toc}{chapter}{List of Tables}
+\thispagestyle{empty}
+\newpage
+
+\clearpage
+\pagestyle{fancy}
+\include{chapters/00-introduction}
+
+%---------------------------- MAIN MATTER -----------------------------
+\mainmatter
+\pagestyle{fancy}
+
+\part{Mathematics for Quantum Computing I} \label{part:part1}
+\thispagestyle{empty}
+\include{chapters/01-chapter-one}
+\include{chapters/02-chapter-two}
+
+\part{Mathematics for Quantum Computing II} \label{part:part2}
+\thispagestyle{empty}
+\include{chapters/03-chapter-three}
+\include{chapters/04-conclusions}
+
+%---------------------------- BACK MATTER -----------------------------
+\appendix
+\include{appendix/A-appendix}
+
+% Only works actually cited appear in the bibliography.
+\printbibliography[heading=bibintoc]
+
+\end{document}

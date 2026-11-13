@@ -1,0 +1,115 @@
+%======================================================================
+%  packages.tex — all package loads, in dependency order.
+%  Extracted verbatim from the original monolithic preamble.
+%======================================================================
+
+% ---------- Language ----------
+\usepackage[english]{babel}
+\selectlanguage{english}
+%spanish, es-tabla
+
+\makeatletter
+% ---------- Formatting ----------
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{array}
+\usepackage{longtable}   % the notation table must be able to break across pages
+\usepackage[svgnames]{xcolor}   % o [x11names]
+
+
+\usepackage{tabularx}  % For flexible column wrapping to fit \linewidth
+\usepackage{caption}   % Ensures proper caption formatting inside minipages
+\usepackage{float}     % Required only if you use the [H] placement specifier
+\usepackage{booktabs}  % Optional, recommended for clean rules (\toprule, etc.)
+
+% soul provides \hl (yellow marker). Guarded so the document still builds on a
+% minimal TeX installation; on a full TeX Live the guard is a no-op.
+\newif\ifthesis@hassoul
+\IfFileExists{soul.sty}{\thesis@hassoultrue}{\thesis@hassoulfalse}
+\ifthesis@hassoul
+  \usepackage{soul}             % cargar después de xcolor
+  \sethlcolor{Gold}             % o Yellow, Gold, Khaki, etc.
+\else
+  \newcommand{\hl}[1]{\colorbox{Gold}{#1}}
+\fi
+
+\usepackage{empheq}
+\usepackage[
+  top=2cm,
+  left=2cm,
+  right=2cm,
+  bottom=2.6cm,      % Gives the footer room to breathe away from the paper edge
+  footskip=1.3cm      % Pushes the footer baseline (and rule) safely away from the text
+]{geometry}
+\usepackage{fancyhdr}
+% dsfont provides \mathds{1} for the indicator. Guarded for portability.
+\newif\ifthesis@hasdsfont
+\IfFileExists{dsfont.sty}{\thesis@hasdsfonttrue}{\thesis@hasdsfontfalse}
+\ifthesis@hasdsfont
+  \usepackage{dsfont}
+\else
+  \newcommand{\mathds}[1]{\mathbf{#1}}
+\fi
+
+\IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}
+\usepackage[T1]{fontenc}
+
+\usepackage{emptypage}          % no number on empty odd pages (right-opening)
+\usepackage{etoolbox}
+
+% ---------- Mathematics ----------
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath, amsthm}
+
+
+
+\usepackage{booktabs}
+\usepackage{caption} % Required for \captionof
+
+
+
+
+% ---------- Bibliography ----------
+% csquotes must be loaded BEFORE biblatex: with babel active, biblatex warns
+% ("'babel/polyglossia' detected but 'csquotes' missing") and falls back to
+% language-insensitive quotation marks in the bibliography without it.
+% Guarded in the same way as the other optional packages.
+\IfFileExists{csquotes.sty}{\usepackage{csquotes}}{}
+\newif\ifthesis@hasbiblatex
+\IfFileExists{biblatex.sty}{\thesis@hasbiblatextrue}{\thesis@hasbiblatexfalse}
+\ifthesis@hasbiblatex
+  \usepackage[style=numeric,backend=biber]{biblatex}
+  \addbibresource{Referencias/Bib.bib}
+  % Line breaking *inside the bibliography only*.  The global
+  % \hyphenpenalty=100000 set further down (next to hyperref) forbids word
+  % breaks throughout the document; that is what we want for the body text,
+  % but it left the reference list with a couple of dozen overfull lines,
+  % because entries are full of long unbreakable words (journal and series
+  % names, publishers, URLs) set in a hanging-indent block.  \bibsetup is
+  % biblatex's hook, executed inside the bibliography's own group, so
+  % everything set here is undone the moment the bibliography ends: no other
+  % paragraph of the thesis is affected.
+  \appto\bibsetup{%
+    \hyphenpenalty=50        % allow word breaks again, here only
+    \exhyphenpenalty=50      % ... including at existing hyphens (Free-Boundary)
+    \tolerance=9999          % accept a loose line rather than an overfull one
+    \emergencystretch=3em    % last-resort stretch for the worst entries
+    \hbadness=10000          % do not report the looseness this buys
+  }
+\else
+  \newcommand{\addbibresource}[1]{}
+  \newcommand{\printbibliography}[1][]{\chapter*{Bibliography}}
+  \newcommand{\DefineBibliographyStrings}[2]{}
+\fi
+\DefineBibliographyStrings{english}{%
+  andothers = {\textit{et\addabbrvspace al\adddot}}
+}
+
+% ---------- Hyperlinks (load late) ----------
+\usepackage[pdfusetitle,colorlinks=false]{hyperref}
+\hyphenpenalty=100000
+% \usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+% \hyphenpenalty=1000000000
+\makeatother

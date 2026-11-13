@@ -1,0 +1,28 @@
+# ---------- LaTeX build products ----------
+*.aux
+*.bcf
+*.bcf-SAVE-ERROR
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.bbl-SAVE-ERROR
+*.bbl
+*.pdf
+!Images/*.pdf
+
+# ---------- editor / OS ----------
+.vs/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ---------- Python ----------
+__pycache__/
+*.pyc
