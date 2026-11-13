@@ -1,0 +1,90 @@
+%======================================================================
+\section{Application: superdense coding}\label{sec:superdense}
+%======================================================================
+
+\begin{objectives}
+  You will see all four postulates working together in a short protocol: two classical bits are transmitted
+  by sending a single qubit, using an entangled pair shared in advance.
+\end{objectives}
+
+A qubit lives in a two-dimensional space, yet a single measurement of it yields only one classical bit. It is therefore surprising that one qubit can
+\emph{carry} two bits. The catch is that Alice and Bob must share an entangled pair beforehand. The protocol, due to Bennett and Wiesner~\cite{bennett1992}, is the simplest illustration of entanglement as a resource, and it uses every postulate.
+
+\paragraph{The protocol.}
+Alice and Bob each hold one qubit of the state $\bell00=\frac1{\sqrt2}(\ket{00}+\ket{11})$, Alice the first and Bob the second (Postulates~1 and~4), prepared at some time in the past; afterwards they separate.
+To send the two bits $xy\in\{00,01,10,11\}$ Alice applies to her qubit the gate $X^yZ^x$ (Postulate~2) and sends it to Bob. Bob now holds both qubits. He applies $\CNOT$ and then a Hadamard gate to the first qubit, and measures both qubits in the computational basis (Postulate~3). The outcome is $xy$.
+
+\begin{center}
+\small
+\begin{tabular}{@{}ccc@{}}
+  \toprule
+  bits $xy$ & Alice applies & state of the pair\\
+  \midrule
+  $00$ & $\Id$ & $\bell00$\\
+  $01$ & $X$ & $\bell01$ (up to a phase)\\
+  $10$ & $Z$ & $\bell10$\\
+  $11$ & $XZ$ & $\bell11$ (up to a phase)\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[>=stealth,
+      box/.style={draw=navy,thick,fill=navy!8,minimum height=0.8cm,font=\small},
+      cl/.style={draw=figacc,thick,fill=figacc!10,minimum height=0.8cm,font=\small}]
+    \node[draw=ink,thick,fill=ink!8,minimum width=2.3cm,minimum height=0.8cm,font=\small] (src) at (0,0) {$\bell00$};
+    \node[font=\footnotesize,ink] at (0,0.75) {shared entangled pair};
+    \node[box,minimum width=1.6cm] (enc) at (4,1.3) {$X^yZ^x$};
+    \node[font=\footnotesize,ink] at (4,1.95) {Alice};
+    \node[box,minimum width=2.6cm] (dec) at (8,0) {$\CNOT$, then $H\tp\Id$};
+    \node[font=\footnotesize,ink] at (8,-0.75) {Bob};
+    \node[cl,minimum width=1.6cm] (m) at (11.2,0) {measure};
+    \draw[->,thick] (1.15,0.25) -- (2.3,0.25) -- (2.3,1.3) -- (enc.west);
+    \draw[->,thick] (enc.east) -- (5.9,1.3) -- (5.9,0.25) -- (6.7,0.25);
+    \node[font=\footnotesize] at (6.55,1.55) {one qubit sent};
+    \draw[->,thick] (1.15,-0.25) -- node[below,font=\footnotesize] {Bob's qubit, kept} (6.7,-0.25);
+    \draw[->] (dec) -- (m);
+    \draw[->,figacc] (m.north) -- ++(0,0.5) node[above,font=\small] {$x,y$};
+  \end{tikzpicture}
+  \caption{Superdense coding. Alice encodes two classical bits $x,y$ with a gate on her half of a shared entangled pair, and sends this single qubit to Bob, who decodes both bits.}
+  \label{fig:superdense}
+\end{figure}
+
+\begin{proposition}\label{prop:superdense}
+  Alice's operation maps $\bell00$ to $\bell xy$ up to a global phase, and Bob's circuit sends $\bell xy$ to $\ket x\ket y$, so Bob recovers $xy$ with certainty.
+\end{proposition}
+\begin{proof}
+  Acting on the first qubit, $Z^x\tp\Id$ gives $\frac1{\sqrt2}(\ket{00}+(-1)^x\ket{11})$, and then $X^y\tp\Id$ gives $\frac1{\sqrt2}(\ket{y0}+(-1)^x\ket{\bar y1})$.
+  For $y=0$ this is $\bell x0$. For $y=1$ it is $\frac1{\sqrt2}(\ket{10}+(-1)^x\ket{01})=(-1)^x\bell x1$, equal to $\bell x1$ up to a global phase.
+  Bob applies $\CNOT$, which flips the second qubit when the first is $\ket1$: $\bell xy=\frac{1}{\sqrt2}(\ket{0y}+(-1)^x\ket{1\bar y})\mapsto\frac1{\sqrt2}(\ket0+(-1)^x\ket1)\ket y$, which is $\ket+\ket y$ for $x=0$ and $\ket-\ket y$ for $x=1$.
+  Finally the Hadamard gate on the first qubit maps $\ket\pm\mapsto\ket{0},\ket{1}$, leaving $\ket x\ket y$. Measuring in the computational basis then returns $(x,y)$ with probability $1$.
+\end{proof}
+
+The bits $x,y$ are therefore the two values Bob reads from the final measurement. Equivalently, Bob has performed a measurement in the Bell basis, which can only be told apart, perfectly, because the four Bell states are orthogonal (Proposition~\ref{prop:distinguish-orthogonal}).
+
+\begin{example}\label{ex:superdense-run}
+  Alice wants to send $xy=10$. Follow the protocol.
+\end{example}
+\begin{solution}
+  Alice applies $Z$ to her qubit: $\frac1{\sqrt2}(\ket{00}+\ket{11})\mapsto\frac1{\sqrt2}(\ket{00}-\ket{11})=\bell10$. Bob applies $\CNOT$: $\ket{00}\mapsto\ket{00}$ and $\ket{11}\mapsto\ket{10}$, giving $\frac1{\sqrt2}(\ket0-\ket1)\ket0=\ket-\ket0$.
+  The Hadamard on the first qubit sends $\ket-\mapsto\ket1$, so the state is $\ket{10}$: Bob reads $x=1$, $y=0$.
+\end{solution}
+
+\begin{remark}
+  Could an eavesdropper, Eve, learn something by intercepting the qubit on its way to Bob? Not without Bob's half: by itself, Alice's qubit is in the maximally mixed state $\Id/2$ for all four messages,
+  so it carries no information at all about $xy$ (Example~\ref{ex:reduced-bell} below). The information is stored in the \emph{correlations} between the two qubits, not in either one.
+  Nor does the protocol beat Nature's accounting: it transmits two bits using one qubit \emph{sent}, but one entangled pair \emph{already shared}.
+\end{remark}
+
+\begin{exerciseset}
+  \exercise{1} Verify the table of operations: compute $\bigl(X^yZ^x\tp\Id\bigr)\bell00$ for each $xy$ and compare with $\bell xy$.
+
+  \exercise{1} Run the protocol for $xy=01$ and $xy=11$, writing the state after each of Bob's gates.
+
+  \exercise{2} Suppose Alice applies the Hadamard gate $H$ instead of one of the four gates. What does Bob measure? Which state does the pair end up in?
+
+  \exercise{2} Let $E$ be any positive operator on Alice's qubit. Show that $\bra\psi(E\tp\Id)\ket\psi$ takes the same value for all four Bell states $\ket\psi$. (Hint: $\bra{\beta_{xy}}E\tp\Id\ket{\beta_{xy}}=\tfrac12\Tr E$.) What does this tell you about Eve?
+
+  \exercise{3} Suppose Bob measures only the second qubit in the computational basis, before receiving Alice's. What can he learn about $xy$? Compare with what he learns after the full decoding.
+\end{exerciseset}

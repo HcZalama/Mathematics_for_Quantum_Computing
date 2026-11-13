@@ -1,0 +1,130 @@
+\makeatletter
+%======================================================================
+%  boxes.tex -- the visual language of the book.
+%
+%  Deliberately quiet: one accent colour (navy), greys, and a single
+%  muted red reserved for pitfalls. What is what:
+%
+%    Definition .......... navy bar, pale blue fill     numbered
+%    Theorem, Lemma,
+%    Proposition,
+%    Corollary ........... navy bar, darker fill        numbered
+%    Proof ............... plain text, "Proof." and a filled square
+%    Example ............. grey bar, grey fill          numbered
+%    Solution ............ same grey bar, no fill (it continues the example)
+%    Remark .............. plain text, "Remark."
+%    Pitfall ............. muted red box                 (a classic mistake)
+%    Cross-reference,
+%    Where this sits ..... thin navy rule, small text
+%    Learning objectives . navy rules above and below
+%    Exercises ........... gold stars, listed at the end of each section
+%======================================================================
+
+% ---------- Colour palette ----------
+\definecolor{navy}{RGB}{0,45,100}
+\definecolor{ink}{RGB}{70,70,70}         % greys
+\definecolor{warncol}{RGB}{150,45,45}    % pitfalls only
+\definecolor{starcol}{RGB}{190,140,0}    % exercise stars
+\definecolor{figacc}{RGB}{185,75,40}     % accent used inside figures
+
+% ---------- Shared look for the framed environments ----------
+\tcbset{
+  bookbox/.style={
+    enhanced, breakable, parbox=false, frame hidden, boxrule=0pt, sharp corners,
+    left=10pt, right=8pt, top=5pt, bottom=5pt,
+    before skip=0.8em, after skip=0.8em,
+  },
+}
+
+% Inline label: "Definition 1.3 (Optional name)."
+\newcommand{\boxlabel}[3]{\textbf{\sffamily\color{#1}#2~\thechapter.\arabic{result}}%
+  \ifstrempty{#3}{}{\ {\sffamily(#3)}}\textbf{\sffamily .}\ }
+
+% ---------- Numbered statement boxes ----------
+\newcommand{\newstatementbox}[4]{% env, Label, bar colour, fill
+  \newtcolorbox[use counter=result]{#1}[1][]{%
+    bookbox, colback=#4, borderline west={2.5pt}{0pt}{#3},
+    before upper={\xdef\@currentlabel{\thechapter.\arabic{result}}%
+                  \boxlabel{#3}{#2}{##1}},
+  }%
+}
+\newstatementbox{definition}{Definition}{navy}{navy!5}
+\newstatementbox{theorem}{Theorem}{navy}{navy!10}
+\newstatementbox{lemma}{Lemma}{navy}{navy!10}
+\newstatementbox{proposition}{Proposition}{navy}{navy!10}
+\newstatementbox{corollary}{Corollary}{navy}{navy!10}
+
+% ---------- Postulates: their own counter, a heavier navy block ----------
+\newcounter{postulate}
+\newtcolorbox{postulate}[1][]{%
+  bookbox, colback=navy!14, borderline west={4pt}{0pt}{navy},
+  before upper={\refstepcounter{postulate}%
+                \textbf{\sffamily\color{navy}Postulate~\arabic{postulate}%
+                \ifstrempty{#1}{}{\ {\normalfont\sffamily(#1)}}.}\ },
+}
+
+% ---------- Example (statement) and Solution: one continuous grey bar ----------
+\newtcolorbox[use counter=result]{example}[1][]{%
+  bookbox, colback=ink!7, borderline west={2.5pt}{0pt}{ink},
+  after skip=0pt, bottom=2pt,
+  before upper={\xdef\@currentlabel{\thechapter.\arabic{result}}%
+                \boxlabel{ink}{Example}{#1}},
+}
+\newtcolorbox{solution}{%
+  bookbox, colback=white, borderline west={2.5pt}{0pt}{ink},
+  before skip=0pt, top=2pt,
+  before upper={\textit{Solution.}\ },
+  after upper={\qedmark{\square}},
+}
+
+% ---------- Pitfall: the only warm colour ----------
+\newtcolorbox{pitfall}{%
+  bookbox, frame hidden, colback=warncol!6, borderline west={2.5pt}{0pt}{warncol},
+  before upper={\textbf{\sffamily\color{warncol}Pitfall.}\ },
+}
+
+% ---------- Quiet notes: cross-reference and place in the course ----------
+\newcommand{\newnote}[2]{%
+  \newtcolorbox{#1}{%
+    bookbox, colback=white, borderline west={1pt}{0pt}{navy!60},
+    fontupper=\small, top=2pt, bottom=2pt,
+    before upper={\textbf{\sffamily\color{navy}#2.}\ },
+  }%
+}
+\newnote{xref}{Cross-reference}
+\newnote{whereitsits}{Where this sits}
+
+% ---------- Learning objectives: just two rules ----------
+\newtcolorbox{objectives}[1][In this section]{%
+  enhanced, breakable, parbox=false, colback=white, colframe=navy, boxrule=0pt,
+  toprule=0.8pt, bottomrule=0.8pt, leftrule=0pt, rightrule=0pt, sharp corners,
+  left=2pt, right=2pt, top=4pt, bottom=4pt, before skip=1em, after skip=1em,
+  before upper={\textbf{\sffamily\color{navy}#1.}\ },
+}
+
+% ---------- Remark and proof: plain text ----------
+\newcommand{\qedmark}[1]{\leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill\quad$#1$}
+
+\renewenvironment{proof}[1][Proof]{\par\addvspace{0.4em}\noindent\textit{#1.}\ }%
+  {\qedmark{\blacksquare}\par\addvspace{0.6em}}
+\newenvironment{remark}{\par\addvspace{0.3em}\noindent\textit{Remark.}\ }%
+  {\par\addvspace{0.3em}}
+
+% ---------- Exercises (no solutions), graded by stars ----------
+\newcommand{\stars}[1]{\textcolor{starcol}{%
+  \ifcase#1\or$\star$\or$\star\star$\or$\star\star\star$\fi}}
+
+% \begin{exerciseset} ... \exercise{2} Statement ... \end{exerciseset}
+\newenvironment{exerciseset}{%
+  \par\vspace{1.2em}\noindent
+  {\sffamily\bfseries\large Exercises}\hfill
+  {\footnotesize\sffamily\color{ink} $\star$ routine \quad $\star\star$ needs an idea \quad
+   $\star\star\star$ challenging}\par\nobreak
+  \vspace{0.1em}{\color{ink}\hrule height 0.6pt}\vspace{0.3em}
+}{\par\vspace{0.3em}{\color{ink}\hrule height 0.3pt}\vspace{0.8em}}
+
+\newcommand{\exercise}[1]{%
+  \refstepcounter{exercise}\par\medskip\noindent
+  \textbf{\sffamily Exercise~\theexercise}\hspace{0.4em}\stars{#1}\hspace{0.6em}}
+
+\makeatother

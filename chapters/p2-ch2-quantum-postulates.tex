@@ -1,0 +1,54 @@
+\chapter{The Postulates of Quantum Mechanics}\label{ch:postulates}
+
+Chapter~\ref{ch:tools} was about mathematics; this one is about physics, or
+rather about the small set of rules that connect the mathematics to what a
+laboratory records. There are four such rules, called \emph{postulates}: a
+postulate is not proved, it is the starting point from which everything else is
+derived. They answer four questions.
+
+\begin{center}
+\small
+\begin{tabular}{@{}llp{0.35\textwidth}@{}}
+  \toprule
+  Postulate & Question it answers & Mathematical object\\
+  \midrule
+  1. State space & What is a state? & a unit vector in a Hilbert space $\Hil$\\
+  2. Evolution & How does a closed system change? & a unitary $U$, or Schr\"odinger's equation\\
+  3. Measurement & What can we learn, and at what cost? & measurement operators $\{M_m\}$\\
+  4. Composition & How do systems combine? & the tensor product $\Hil_1\tp\Hil_2$\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+We state each postulate, work out what it means for the simplest quantum
+system, the qubit, and then draw its consequences: the Bloch sphere,
+quantum gates, the impossibility of telling non-orthogonal states apart, the
+uncertainty principle, and entanglement. The chapter ends where the subject
+becomes an experimental science. We use entanglement to send two bits in one
+qubit, extend the formalism to mixed states with density operators, and finish
+with the argument of Einstein, Podolsky and Rosen and Bell's answer to it,
+which shows that no classical story can reproduce what quantum mechanics predicts.
+
+\begin{objectives}[In this chapter]
+  You will state the four postulates and apply them to qubits; use the Bloch sphere and the
+  standard gates; compute measurement probabilities and post-measurement states for
+  projective, general and POVM measurements; recognise entangled states and work with
+  tensor products; describe mixed states and subsystems with density operators;
+  and derive the CHSH form of Bell's inequality and see why quantum mechanics violates it.
+\end{objectives}
+
+\begin{whereitsits}
+  Every postulate uses a tool from Chapter~\ref{ch:tools}: states are unit vectors
+  (Section~\ref{sec:hilbert}), evolution is unitary and measurement is projective or
+  positive (Section~\ref{sec:operators}). What you learn here is the language of the
+  rest of the programme: circuits, algorithms, error correction.
+\end{whereitsits}
+
+\input{chapters/ch2/sec1-state-evolution}
+\input{chapters/ch2/sec2-measurement}
+\input{chapters/ch2/sec3-composite}
+\input{chapters/ch2/sec4-superdense}
+\input{chapters/ch2/sec5-density}
+\input{chapters/ch2/sec6-schmidt}
+\input{chapters/ch2/sec7-epr-bell}
+\input{chapters/ch2/further-reading}

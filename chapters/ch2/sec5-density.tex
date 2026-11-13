@@ -1,0 +1,168 @@
+%======================================================================
+\section{The density operator}\label{sec:density}
+%======================================================================
+
+\begin{objectives}
+  You will describe ensembles of states and subsystems of entangled systems with density operators; recognise
+  pure and mixed states and place qubit states in the Bloch ball; and compute reduced density operators with the partial trace.
+\end{objectives}
+
+So far a system has been described by a state vector, and that is enough if we know exactly how it was prepared. Two situations break this assumption.
+In the first, the preparation is itself random: a source emits $\ket{\psi_i}$ with probability $p_i$ and we do not know which. In the second, the system is one \emph{part} of an entangled pair: we shall see that it
+does not have a state vector of its own. In both cases the right tool is the density operator.
+
+\subsection{Ensembles of states}
+
+\begin{definition}[Ensemble and density operator]\label{def:density}
+  An \term{ensemble} $\{p_i,\ket{\psi_i}\}$ is a collection of states $\ket{\psi_i}$ with probabilities $p_i\ge0$, $\sum_ip_i=1$. Its \term{density operator} is
+  \[
+    \rho=\sum_ip_i\ket{\psi_i}\!\bra{\psi_i}.
+  \]
+  If a single $p_i=1$ the state is \term{pure}, $\rho=\ket\psi\!\bra\psi$; otherwise it is \term{mixed}.
+\end{definition}
+
+Why is this the right object? Suppose the system is in $\ket{\psi_i}$ with probability $p_i$ and we measure $\{M_m\}$. By total probability,
+\[
+  p(m)=\sum_ip_i\,p(m\mid i)=\sum_ip_i\bra{\psi_i}M_m^\dagger M_m\ket{\psi_i}=\Tr\bigl(M_m^\dagger M_m\,\rho\bigr),
+\]
+using $\bra\psi A\ket\psi=\Tr(A\ket\psi\!\bra\psi)$. Likewise, if the state was $\ket{\psi_i}$ then after the measurement it is $M_m\ket{\psi_i}$ (normalised), so the post-measurement ensemble has density operator
+$M_m\rho M_m^\dagger/p(m)$. And under a unitary, each $\ket{\psi_i}\mapsto U\ket{\psi_i}$, so $\rho\mapsto U\rho U^\dagger$. We have shown the following translation of the postulates.
+
+\begin{proposition}[Postulates for density operators]\label{prop:postulates-rho}
+  In terms of $\rho$: (2) a unitary evolution takes $\rho\mapsto U\rho U^\dagger$; (3) a measurement $\{M_m\}$ has outcome probabilities $p(m)=\Tr(M_m^\dagger M_m\rho)$ and post-measurement states $\rho_m=M_m\rho M_m^\dagger/p(m)$;
+  and the expected value of an observable $M$ is $\Tr(M\rho)$.
+\end{proposition}
+
+The crucial point is that \emph{the density operator contains everything that can be observed}. Different ensembles can have the same $\rho$, and then they are physically indistinguishable.
+
+\begin{example}\label{ex:mixed-vs-superposition}
+  Compare the ensemble $\bigl\{\tfrac12,\ket0;\ \tfrac12,\ket1\bigr\}$, the ensemble $\bigl\{\tfrac12,\ket+;\ \tfrac12,\ket-\bigr\}$, and the pure state $\ket+$.
+\end{example}
+\begin{solution}
+  The first has $\rho=\tfrac12\ket0\!\bra0+\tfrac12\ket1\!\bra1=\tfrac12\Id$. The second has $\rho=\tfrac12\ket+\!\bra++\tfrac12\ket-\!\bra-=\tfrac12\Id$ as well, by the completeness relation. So the two ensembles are physically identical:
+  no measurement distinguishes them, in spite of the fact that their members look very different. The pure state $\ket+$ has $\rho=\ket+\!\bra+=\tfrac12\begin{pmatrix}1&1\\1&1\end{pmatrix}\neq\tfrac12\Id$. It can be told apart from the mixtures:
+  measuring $X$ gives $+1$ with certainty on $\ket+$, but with probability $\tfrac12$ on $\tfrac12\Id$. The \emph{superposition} $\ket+$ is not the same as a \emph{coin toss} between $\ket0$ and $\ket1$.
+\end{solution}
+
+\subsection{Characterising density operators}
+
+We can now forget ensembles and characterise density operators intrinsically.
+
+\begin{theorem}[Characterisation]\label{thm:density-char}
+  An operator $\rho$ is the density operator of some ensemble if and only if (a) $\Tr\rho=1$, and (b) $\rho$ is positive ($\bra\psi\rho\ket\psi\ge0$ for all $\ket\psi$).
+\end{theorem}
+\begin{proof}
+  If $\rho=\sum_ip_i\ket{\psi_i}\!\bra{\psi_i}$, then $\Tr\rho=\sum_ip_i=1$ and $\bra\varphi\rho\ket\varphi=\sum_ip_i\abs{\braket\varphi{\psi_i}}^2\ge0$.
+  Conversely, suppose (a) and (b). A positive operator is Hermitian (Exercise~\ref{ex:positive-hermitian-sec}), so $\rho=\sum_j\lambda_j\ket{j}\!\bra{j}$ with an orthonormal basis $\ket j$ and real eigenvalues $\lambda_j=\bra j\rho\ket j\ge0$; and $\sum_j\lambda_j=\Tr\rho=1$.
+  Then $\{\lambda_j,\ket j\}$ is an ensemble with density operator $\rho$.
+\end{proof}
+
+When is a state pure? Since $\Tr\rho^2=\sum_j\lambda_j^2\le\bigl(\sum_j\lambda_j\bigr)^2=1$, with equality iff there is a single non-zero eigenvalue, we get the \emph{purity test}:
+\[
+  \Tr\rho^2\le1,\quad\text{with equality if and only if }\rho\text{ is pure.}
+\]
+
+\paragraph{The Bloch ball.}
+Any $2\times2$ Hermitian matrix of trace $1$ is $\rho=\tfrac12(\Id+\vec r\cdot\vec\sigma)$ with $\vec r\in\R^3$ (Theorem~\ref{thm:paulibasis}), and its eigenvalues are $\tfrac12(1\pm\abs{\vec r})$. Positivity therefore means $\abs{\vec r}\le1$:
+\emph{qubit density operators are exactly the points of the unit ball}, with pure states on the boundary sphere (Proposition~\ref{prop:bloch}) and the maximally mixed state $\tfrac12\Id$ at the centre (Figure~\ref{fig:blochball}).
+Mixing states averages their Bloch vectors, and $\Tr\rho^2=\tfrac12(1+\abs{\vec r}^2)$.
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[>=stealth,scale=1.3]
+    \draw[ink,thick,fill=navy!5] (0,0) circle (2);
+    \draw[ink!50,dashed] (-2,0) arc (180:0:2 and 0.6);
+    \draw[ink!60] (-2,0) arc (180:360:2 and 0.6);
+    \draw[->,ink!70] (0,0) -- (0,2.5) node[above] {$z$};
+    \fill[navy] (0,2) circle (2pt) node[above left,font=\small] {$\ket0$};
+    \fill[navy] (0,-2) circle (2pt) node[below left,font=\small] {$\ket1$};
+    \fill[ink] (0,0) circle (2pt) node[below left,font=\small] {$\tfrac12\Id$};
+    \draw[very thick,figacc,->] (0,0) -- (0.9,0.9);
+    \fill[figacc] (0.9,0.9) circle (2pt) node[right,font=\small] {mixed: $\abs{\vec r}<1$};
+    \fill[navy] (1.28,1.5) circle (2pt) node[above right,font=\small] {pure: $\abs{\vec r}=1$};
+  \end{tikzpicture}
+  \caption{The Bloch ball. Pure states are on the surface; mixed states are inside, with the maximally mixed state $\Id/2$ at the centre.}
+  \label{fig:blochball}
+\end{figure}
+
+\begin{example}\label{ex:mixture-bloch}
+  Find the density matrix and Bloch vector of the ensemble $\bigl\{\tfrac12,\ket0;\ \tfrac12,\ket+\bigr\}$. Is it pure?
+\end{example}
+\begin{solution}
+  $\rho=\tfrac12\ket0\!\bra0+\tfrac12\ket+\!\bra+=\tfrac12\begin{pmatrix}1&0\\0&0\end{pmatrix}+\tfrac14\begin{pmatrix}1&1\\1&1\end{pmatrix}=\tfrac14\begin{pmatrix}3&1\\1&1\end{pmatrix}$.
+  Averaging the Bloch vectors $(0,0,1)$ and $(1,0,0)$ gives $\vec r=(\tfrac12,0,\tfrac12)$, with $\abs{\vec r}=\tfrac1{\sqrt2}<1$: the state is mixed, with eigenvalues $\tfrac12(1\pm\tfrac1{\sqrt2})\approx0.85,\ 0.15$.
+  Check: $\Tr\rho^2=\tfrac1{16}(9+1+1+1)=\tfrac34=\tfrac12(1+\tfrac12)$.
+\end{solution}
+
+\begin{remark}
+  A given $\rho$ arises from many different ensembles, as Example~\ref{ex:mixed-vs-superposition} showed. It can be shown that two ensembles $\{p_i,\ket{\psi_i}\}$ and $\{q_j,\ket{\varphi_j}\}$ give the same $\rho$ exactly when
+  $\sqrt{p_i}\ket{\psi_i}=\sum_ju_{ij}\sqrt{q_j}\ket{\varphi_j}$ for a unitary matrix $(u_{ij})$ (padding the shorter ensemble with zero vectors). This is the \emph{unitary freedom} of ensembles.
+\end{remark}
+
+\subsection{The reduced density operator}
+
+The deepest use of $\rho$ is describing a \emph{part} of a composite system. Let $\rho^{AB}$ be a density operator on $\Hil_A\tp\Hil_B$.
+
+\begin{definition}[Partial trace and reduced density operator]\label{def:ptrace}
+  The \term{partial trace} over $B$ is the linear map determined by
+  \[
+    \Tr_B\bigl(\ket{a_1}\!\bra{a_2}\tp\ket{b_1}\!\bra{b_2}\bigr)=\ket{a_1}\!\bra{a_2}\;\braket{b_2}{b_1}.
+  \]
+  The \term{reduced density operator} of $A$ is $\rho^A=\Tr_B\rho^{AB}$.
+\end{definition}
+
+It is the right description of $A$ alone because it reproduces every statistic of measurements on $A$.
+
+\begin{proposition}\label{prop:reduced}
+  For every observable $M$ on $A$, $\ \Tr\bigl((M\tp\Id)\rho^{AB}\bigr)=\Tr\bigl(M\rho^A\bigr)$.
+\end{proposition}
+\begin{proof}
+  Both sides are linear in $\rho^{AB}$, so it is enough to check on $\rho^{AB}=\ket{a_1}\!\bra{a_2}\tp\ket{b_1}\!\bra{b_2}$. The left side is $\Tr\bigl(M\ket{a_1}\!\bra{a_2}\bigr)\Tr\bigl(\ket{b_1}\!\bra{b_2}\bigr)=\bra{a_2}M\ket{a_1}\braket{b_2}{b_1}$, and the right side is $\Tr\bigl(M\ket{a_1}\!\bra{a_2}\bigr)\braket{b_2}{b_1}$, the same.
+\end{proof}
+
+For a pure state $\ket\psi=\sum_{ij}c_{ij}\ket{ij}$ with coefficient matrix $C=(c_{ij})$, a direct computation gives the handy formula $\rho^A=CC^\dagger$ (and $\rho^B=(C^\dagger C)^t$).
+
+\begin{example}\label{ex:reduced-bell}
+  Find the reduced density operators of each qubit of every Bell state, and of $\ket a\ket b$.
+\end{example}
+\begin{solution}
+  For $\ket{\Phi^+}=\bell00$, $\rho^{AB}=\tfrac12\bigl(\ket{00}\!\bra{00}+\ket{00}\!\bra{11}+\ket{11}\!\bra{00}+\ket{11}\!\bra{11}\bigr)$. Taking $\Tr_B$, the cross terms contain $\braket10=0$ or $\braket01=0$ and vanish, while $\braket00=\braket11=1$:
+  \[
+    \rho^A=\tfrac12\bigl(\ket0\!\bra0+\ket1\!\bra1\bigr)=\tfrac12\Id .
+  \]
+  Likewise $\rho^B=\tfrac12\Id$. The same holds for the other three Bell states: their coefficient matrices $C=U/\sqrt2$ are $1/\sqrt2$ times a unitary $U$, so $CC^\dagger=\tfrac12\Id$.
+  For a product $\ket a\ket b$ we have $\rho^A=\ket a\!\bra a\,\braket bb=\ket a\!\bra a$: pure.
+\end{solution}
+
+This is a remarkable fact. The two qubits together are in a \emph{pure} state, with no uncertainty whatsoever, yet each qubit by itself is maximally mixed, as random as it can be. All the information is in the correlations between the parts. The whole is more definite than its parts, and
+\emph{the state of a subsystem of an entangled system is mixed}.
+
+\begin{example}\label{ex:reduced-3term}
+  Compute $\rho^A$ for $\ket\psi=\frac1{\sqrt3}(\ket{00}+\ket{01}+\ket{10})$ and its eigenvalues.
+\end{example}
+\begin{solution}
+  $C=\frac1{\sqrt3}\begin{pmatrix}1&1\\1&0\end{pmatrix}$, so $\rho^A=CC^\dagger=\tfrac13\begin{pmatrix}2&1\\1&1\end{pmatrix}$, with $\Tr\rho^A=1$. Its characteristic polynomial is $\lambda^2-\lambda+\tfrac19$, so
+  $\lambda=\tfrac12\bigl(1\pm\tfrac{\sqrt5}3\bigr)=\tfrac{3\pm\sqrt5}6\approx0.873,\ 0.127$. Both are positive and below $1$: $A$ is mixed, so $\ket\psi$ is entangled, which agrees with Example~\ref{ex:entangled-or-not}(c). (These eigenvalues are the squares of the Schmidt coefficients of Section~\ref{sec:schmidt}.)
+\end{solution}
+
+\begin{exerciseset}
+  \exercise{1} Compute the density matrices of the ensembles $\bigl\{\tfrac12,\ket0;\tfrac12,\ket1\bigr\}$, $\bigl\{\tfrac12,\ket+;\tfrac12,\ket-\bigr\}$ and $\bigl\{\tfrac12,\ket{+\ii};\tfrac12,\ket{-\ii}\bigr\}$. Is there a measurement that tells them apart?
+
+  \exercise{2} Show that the density operator of an ensemble transforms as $\rho\mapsto U\rho U^\dagger$ and, under a measurement, $\rho\mapsto M_m\rho M_m^\dagger/p(m)$ with $p(m)=\Tr(M_m^\dagger M_m\rho)$ (Proposition~\ref{prop:postulates-rho}).
+
+  \exercise{2} Show that a positive operator is Hermitian. (Hint: write $A=B+\ii C$ with $B,C$ Hermitian and use $\bra\psi A\ket\psi\in\R$.)\label{ex:positive-hermitian-sec}
+
+  \exercise{2} Prove the purity test: $\Tr\rho^2\le1$ with equality iff $\rho$ is pure. Show that for a qubit $\Tr\rho^2=\tfrac12(1+\abs{\vec r}^2)$.
+
+  \exercise{2} Find the density matrix, Bloch vector and purity of $\bigl\{\tfrac13,\ket0;\ \tfrac23,\ket1\bigr\}$ and of $\bigl\{\tfrac12,\ket0;\ \tfrac12,\ket+\bigr\}$ (compare Example~\ref{ex:mixture-bloch}).
+
+  \exercise{3} Show that a state $\rho=\tfrac12(\Id+\vec r\cdot\vec\sigma)$ evolves under $U=e^{-\ii\theta\vec n\cdot\vec\sigma/2}$ to the state whose Bloch vector is $\vec r$ rotated by $\theta$ about $\vec n$. (Hint: it suffices to check for $\vec n=\hat z$.)
+
+  \exercise{2} Let $\ket\psi=\ket a\ket b$ be a product state. Show $\rho^A=\ket a\!\bra a$. Compute the reduced density operators of each qubit for $\ket{+}\ket{0}$, the four Bell states, and $\frac1{\sqrt2}(\ket{00}+\ket{01})$.
+
+  \exercise{2} Prove $\rho^A=CC^\dagger$ for $\ket\psi=\sum c_{ij}\ket{ij}$, and show $\rho^B=(C^\dagger C)^t$. Deduce that $\rho^A$ is pure if and only if $\rank C=1$, that is, iff $\ket\psi$ is a product state.
+
+  \exercise{3} Show that if $\ket{\psi}$ is a pure state of $AB$ then $\rho^A$ and $\rho^B$ have the same non-zero eigenvalues. (We will see why in Section~\ref{sec:schmidt}.)
+
+  \exercise{3} Let Charlie prepare $\bell00$ and send one qubit to Alice and one to Bob. Alice applies any unitary $U$ to hers. Show that Bob's reduced density operator is unchanged, so that Alice cannot send Bob a message just by acting on her qubit.
+\end{exerciseset}

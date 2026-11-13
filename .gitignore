@@ -28,3 +28,6 @@ __pycache__/
 build/
 .vscode/*
 !.vscode/settings.json
+
+# course source material (personal, not for the repository)
+source_material/

@@ -1,0 +1,181 @@
+%======================================================================
+\section{Composite systems and entanglement}\label{sec:composite}
+%======================================================================
+
+\begin{objectives}
+  You will build the state space of several systems with the tensor product and compute with Kronecker products;
+  decide whether a two-qubit state is entangled; measure one part of an entangled system;
+  and see how general measurements arise from projective ones on a larger system.
+\end{objectives}
+
+A single qubit is not very interesting. To compute with qubits we need many of them, and to describe several quantum systems at once we need a rule for combining their state spaces.
+
+\subsection{The tensor product}
+
+\begin{postulate}[Composite systems]\label{post:composite}
+  The state space of a composite physical system is the \emph{tensor product} of the state spaces of its components. If systems $1,\dots,n$ are prepared in the states $\ket{\psi_i}$, the joint state of the total system is
+  $\ket{\psi_1}\tp\ket{\psi_2}\tp\cdots\tp\ket{\psi_n}$.
+\end{postulate}
+
+Recall the construction. If $\{\ket{e_i}\}$ and $\{\ket{f_j}\}$ are orthonormal bases of $\Hil_1$ and $\Hil_2$, then $\{\ket{e_i}\tp\ket{f_j}\}$ is an orthonormal basis of $\Hil_1\tp\Hil_2$, so
+\[
+  \dim(\Hil_1\tp\Hil_2)=\dim\Hil_1\cdot\dim\Hil_2,\qquad \braket{a\tp b}{c\tp d}=\braket ac\,\braket bd .
+\]
+One can simply accept the postulate as a basic law. A heuristic: the superposition principle says that if $\ket x,\ket y$ are states, so is $\alpha\ket x+\beta\ket y$. For composite systems, if $\ket A$ is a state of $A$ and $\ket B$ one of $B$,
+there should be a joint state $\ket A\ket B$; imposing superposition on such product states gives precisely $\Hil_A\tp\Hil_B$. (This is not a derivation, but it shows the flavour.)
+
+We write $\ket a\tp\ket b=\ket a\ket b=\ket{ab}$. For two qubits the computational basis is $\ket{00},\ket{01},\ket{10},\ket{11}$, and the general state is
+\[
+  \ket\psi=\sum_{i,j\in\{0,1\}}c_{ij}\ket{ij},\qquad\sum_{ij}\abs{c_{ij}}^2=1 .
+\]
+For operators, $(A\tp B)(\ket a\tp\ket b)=A\ket a\tp B\ket b$, and the matrix of $A\tp B$ is the \term{Kronecker product}, with $B$ varying fastest:
+\[
+  \begin{pmatrix}a&b\\c&d\end{pmatrix}\tp B=\begin{pmatrix}aB&bB\\cB&dB\end{pmatrix}.
+\]
+The rules one uses constantly are, for all operators of compatible size,
+\[
+  (A\tp B)(C\tp D)=AC\tp BD,\quad (A\tp B)^\dagger=A^\dagger\tp B^\dagger,\quad \Tr(A\tp B)=\Tr A\,\Tr B,
+\]
+and the tensor product of unitaries (resp.\ Hermitian operators, projectors) is unitary (resp.\ Hermitian, a projector). If $A\ket a=\lambda\ket a$ and $B\ket b=\mu\ket b$ then $(A\tp B)\ket{ab}=\lambda\mu\ket{ab}$:
+the spectrum of $A\tp B$ consists of the products of eigenvalues. In a system of several qubits we use subscripts for the qubit acted on: in three qubits $X_2=\Id\tp X\tp\Id$, and in two qubits $X_1Z_2=X\tp Z$.
+
+\begin{example}\label{ex:kron}
+  Write $X\tp Z$ as a $4\times4$ matrix; compute $(H\tp H)\ket{00}$ and $(H\tp H)\ket{11}$.
+\end{example}
+\begin{solution}
+  By the block rule, with $X=\begin{pmatrix}0&1\\1&0\end{pmatrix}$ and $B=Z$,
+  \[
+    X\tp Z=\begin{pmatrix}0\cdot Z&1\cdot Z\\1\cdot Z&0\cdot Z\end{pmatrix}=\begin{pmatrix}0&0&1&0\\0&0&0&-1\\1&0&0&0\\0&-1&0&0\end{pmatrix}.
+  \]
+  Next $(H\tp H)\ket{00}=H\ket0\tp H\ket0=\ket+\ket+=\tfrac12(\ket{00}+\ket{01}+\ket{10}+\ket{11})$, while
+  $(H\tp H)\ket{11}=\ket-\ket-=\tfrac12(\ket{00}-\ket{01}-\ket{10}+\ket{11})$. In general $H\tp H\ket{xy}=\tfrac12\sum_{u,v}(-1)^{xu+yv}\ket{uv}$,
+  and for $n$ qubits $H^{\tp n}\ket x=2^{-n/2}\sum_y(-1)^{x\cdot y}\ket y$: the Walsh--Hadamard transform, a first step of many algorithms.
+\end{solution}
+
+\paragraph{Exponential growth.}
+$n$ qubits live in $\C^{2^n}$: a general state needs $2^n$ amplitudes. We computed in Example~\ref{ex:nqubits} what this means in memory for $n=50$.
+
+\subsection{Entanglement}
+
+A product state $\ket a\tp\ket b$ has a definite state for each part. But the postulate also allows superpositions of products, and some of these cannot be written as a single product.
+
+\begin{definition}[Entanglement]\label{def:entangled}
+  A state of a composite system that cannot be written as a product $\ket a\tp\ket b$ of states of its components is called \term{entangled}.
+\end{definition}
+
+The prototype is the two-qubit state
+\[
+  \ket{\Phi^+}=\frac{\ket{00}+\ket{11}}{\sqrt2},
+\]
+which has no single-qubit states $\ket a,\ket b$ with $\ket{\Phi^+}=\ket a\ket b$ (Theorem~\ref{thm:entangled-criterion} below). It is one of four \term{Bell states},
+\[
+  \bell xy=\frac{\ket{0y}+(-1)^x\ket{1\bar y}}{\sqrt2},\qquad x,y\in\{0,1\},\ \bar y=1-y,
+\]
+that is, $\bell00=\ket{\Phi^+}$, $\bell10=\frac{\ket{00}-\ket{11}}{\sqrt2}$, $\bell01=\frac{\ket{01}+\ket{10}}{\sqrt2}$ and $\bell11=\frac{\ket{01}-\ket{10}}{\sqrt2}$ (the last is the \emph{singlet}). They form an orthonormal basis of the two-qubit space (Exercise~\ref{ex:bell-basis}).
+
+For two qubits there is a simple test. Arrange the amplitudes of $\ket\psi=\sum_{ij}c_{ij}\ket{ij}$ in a $2\times2$ matrix $C=(c_{ij})$.
+
+\begin{theorem}[Criterion for two qubits]\label{thm:entangled-criterion}
+  $\ket\psi$ is a product state if and only if $\rank C=1$, that is, if and only if $\det C=0$.
+\end{theorem}
+\begin{proof}
+  If $\ket\psi=\ket a\ket b$ with $\ket a=\sum a_i\ket i$ and $\ket b=\sum b_j\ket j$, then $c_{ij}=a_ib_j$, so $C=ab^t$ has rank $1$ (it has rank $\le1$ and is nonzero). Conversely, a $2\times2$ matrix of rank $1$ has the form $ab^t$ for column vectors $a,b\neq0$, and then $\ket\psi=\ket a\ket b$ up to normalisation. For a $2\times2$ matrix, rank $1$ means $\det C=0$ (and $C\neq0$).
+\end{proof}
+
+For $\ket{\Phi^+}$ we get $C=\tfrac1{\sqrt2}\Id$ with $\det C=\tfrac12\neq0$: it is entangled. (The number $2\abs{\det C}$ is called the \emph{concurrence}; it equals $1$ for a Bell state and $0$ for a product state.)
+
+\begin{example}\label{ex:entangled-or-not}
+  Decide which are entangled: (a) $\ket+\ket-$; (b) $\frac12(\ket{00}+\ket{01}+\ket{10}+\ket{11})$; (c) $\frac1{\sqrt3}(\ket{00}+\ket{01}+\ket{10})$; (d) $\bell11$.
+\end{example}
+\begin{solution}
+  (a) A product by construction, $\det C=0$. (b) $C=\tfrac12\begin{pmatrix}1&1\\1&1\end{pmatrix}$ has $\det C=0$: it is the product $\ket+\ket+$. (c) $C=\tfrac1{\sqrt3}\begin{pmatrix}1&1\\1&0\end{pmatrix}$ has $\det C=-\tfrac13\neq0$: entangled.
+  (d) $C=\tfrac1{\sqrt2}\begin{pmatrix}0&1\\-1&0\end{pmatrix}$ has $\det C=\tfrac12\neq0$: entangled.
+\end{solution}
+
+\subsection{Measuring one part}
+
+How does Postulate~3 act on a composite system? To measure only the first qubit with $\{M_m\}$, use the operators $M_m\tp\Id$. For a computational-basis measurement, $M_m=\ket m\!\bra m$.
+
+\begin{example}\label{ex:partial}
+  Measure the first qubit of $\ket{\Phi^+}$ in the computational basis. What happens to the second?
+\end{example}
+\begin{solution}
+  With $M_m=\ket m\!\bra m\tp\Id$: $p(m)=\bra{\Phi^+}M_m\ket{\Phi^+}=\tfrac12$ for $m=0,1$, and the post-measurement state is $M_m\ket{\Phi^+}/\sqrt{p(m)}=\ket{mm}$.
+  Each outcome by itself is a fair coin, but afterwards the second qubit is in the same state as the first: the outcomes are perfectly correlated. Moreover, because $\ket{\Phi^+}=\frac1{\sqrt2}(\ket{++}+\ket{--})$ (Exercise~\ref{ex:phiplus-pm}), measuring both qubits in the $\ket\pm$ basis also gives equal results.
+  The correlation is not about $\ket0,\ket1$ in particular. Compare with a product state such as $\ket+\ket+$: measuring the first qubit tells nothing about the second.
+\end{solution}
+
+\begin{example}\label{ex:partial2}
+  Measure the first qubit of $\ket\psi=\frac1{\sqrt3}(\ket{00}+\ket{01}+\ket{10})$ in the computational basis.
+\end{example}
+\begin{solution}
+  Outcome $0$: $M_0\ket\psi=\frac1{\sqrt3}(\ket{00}+\ket{01})$, so $p(0)=\tfrac23$ and the state afterwards is $\frac1{\sqrt2}(\ket{00}+\ket{01})=\ket0\ket+$.
+  Outcome $1$: $M_1\ket\psi=\frac1{\sqrt3}\ket{10}$, so $p(1)=\tfrac13$ and the state is $\ket{10}$. The outcome of the first qubit changes the state of the second, which is what entanglement (Example~\ref{ex:entangled-or-not}(c)) means operationally.
+\end{solution}
+
+\subsection{General measurements from projective ones}
+
+Using composite systems we can show that general measurements need nothing beyond unitaries and projective measurements.
+
+\begin{proposition}\label{prop:ancilla}
+  Every measurement $\{M_m\}$ on a system $Q$ can be realised by a unitary on $Q$ together with an ancilla, followed by a projective measurement of the ancilla.
+\end{proposition}
+\begin{proof}
+  Let $M$ be an auxiliary system with orthonormal basis $\{\ket m\}$, one vector per outcome, prepared in a fixed state $\ket0_M$. Define, on states of the form $\ket\psi\ket0_M$,
+  \[
+    U\bigl(\ket\psi\ket0_M\bigr)=\sum_mM_m\ket\psi\ket m .
+  \]
+  This preserves inner products: $\bra\varphi\bra0U^\dagger U\ket\psi\ket0=\sum_{m,m'}\bra\varphi M_m^\dagger M_{m'}\ket\psi\braket m{m'}=\sum_m\bra\varphi M_m^\dagger M_m\ket\psi=\braket\varphi\psi$ by completeness.
+  A map defined on a subspace that preserves inner products extends to a unitary on the whole space (complete orthonormal bases of the subspace and of its image, and match the orthogonal complements, which have the same dimension). Now measure the ancilla projectively with $P_m=\Id_Q\tp\ket m\!\bra m$. The probability of outcome $m$ is
+  $\norm{(\Id\tp\ket m\!\bra m)\sum_{m'}M_{m'}\ket\psi\ket{m'}}^2=\bra\psi M_m^\dagger M_m\ket\psi$, and the joint state afterwards is $M_m\ket\psi\ket m/\sqrt{p(m)}$: $Q$ ends in exactly the state prescribed by Postulate~3.
+\end{proof}
+
+So general measurements are projective measurements on a larger system: a nice use of Postulate~4. This is why quantum circuits may restrict themselves to unitaries, ancilla qubits and measurements in the computational basis.
+
+\subsection{The postulates in one glance}
+
+\begin{center}
+\small
+\begin{tabular}{@{}llll@{}}
+  \toprule
+  Postulate & Object & Key formula & Role\\
+  \midrule
+  1. State & unit vector $\ket\psi\in\Hil$ & $\braket\psi\psi=1$ & prepare\\
+  2. Evolution & unitary $U$; Hamiltonian $H$ & $\ket{\psi'}=U\ket\psi$; $\ii\hbar\tfrac{d}{dt}\ket\psi=H\ket\psi$ & rotate (reversible)\\
+  3. Measurement & $\{M_m\}$; observables; POVMs & $p(m)=\bra\psi M_m^\dagger M_m\ket\psi$ & read (irreversible)\\
+  4. Composition & $\Hil_1\tp\Hil_2$ & $\ket{\psi_1}\tp\ket{\psi_2}$, entanglement & combine systems\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+The strangeness of the framework in one paragraph: we can never observe the state vector directly. It is like a game of chess in which you may only learn the rank of each piece, never the piece. In classical physics, energy,
+position and velocity are directly accessible and observing does not change the system; in quantum mechanics the fundamental object is a hidden vector, and observation is invasive. Can quantum mechanics be reformulated in a more classical way,
+with hidden but definite properties? Section~\ref{sec:bell} shows that every such attempt is doomed. The good news is that this counter-intuitive behaviour is exactly what quantum computation exploits.
+
+\begin{exerciseset}
+  \exercise{1} Compute $\ket+\tp\ket-$ as a column vector, $(H\tp H)\ket{00}$ and $(H\tp H)\ket{11}$, and find the eigenvalues of $X\tp Z$.
+
+  \exercise{2} Prove the rules $(A\tp B)(C\tp D)=AC\tp BD$, $(A\tp B)^\dagger=A^\dagger\tp B^\dagger$ and $\Tr(A\tp B)=\Tr A\Tr B$. Deduce that the tensor product of unitaries is unitary and of Hermitian operators is Hermitian.
+
+  \exercise{2} Show that $H\tp H\ket{xy}=\frac12\sum_{u,v}(-1)^{xu+yv}\ket{uv}$, and generalise to $n$ qubits (the Walsh--Hadamard transform).
+
+  \exercise{1} Use the determinant criterion to classify: $\ket+\ket-$; $\frac12(\ket{00}+\ket{01}+\ket{10}+\ket{11})$; $\frac12(\ket{00}+\ket{01}+\ket{10}-\ket{11})$; the four Bell states. Prove directly that $\ket{\Phi^+}\neq\ket a\ket b$ for all single-qubit states $\ket a,\ket b$.
+
+  \exercise{1} Show that the four Bell states form an orthonormal basis of the two-qubit state space.\label{ex:bell-basis}
+
+  \exercise{1} Show $\ket{\Phi^+}=\frac1{\sqrt2}(\ket{++}+\ket{--})$ and write $\bell11$ in the basis $\ket{\pm}\ket{\pm}$.\label{ex:phiplus-pm}
+
+  \exercise{2} Show that the average value of $X_1Z_2$ in $\ket{\Phi^+}$ is zero. Compute $\langle X\tp X\rangle,\langle Y\tp Y\rangle,\langle Z\tp Z\rangle$ in $\ket{\Phi^+}$ and in $\bell11$. What do you observe?
+
+  \exercise{2} Let $\CNOT=\ket0\!\bra0\tp\Id+\ket1\!\bra1\tp X$. Write it as a $4\times4$ matrix and prove it is unitary and involutory. Compute $\CNOT(H\tp\Id)\ket{xy}$ for the four basis states. What do you find? (This is the standard circuit that prepares the Bell states.)
+
+  \exercise{2} Let $\ket\psi=\frac1{\sqrt3}(\ket{00}+\ket{01}+\ket{10})$. Measure the first qubit in the computational basis with operators $\ket m\!\bra m\tp\Id$ and compute the probabilities and post-measurement states. Repeat with $\ket+\ket-$ and with $\bell01$.
+
+  \exercise{2} Show that the amplitudes of an $n$-qubit product state are determined by $2n$ real numbers up to phases, whereas a general state of $n$ qubits needs $2^{n+1}-2$. What does the gap say about entanglement?
+
+  \exercise{3} For $\ket\psi=\sum_{ij}c_{ij}\ket{ij}$ and unitaries $U,V$, show that $(U\tp V)\ket\psi$ has coefficient matrix $UCV^t$, and deduce that the rank of $C$ does not change under local unitaries.
+
+  \exercise{3} Prove the claim in the proof of Proposition~\ref{prop:ancilla}: a linear map $U:W\to V$ ($W$ a subspace) with $\braket{Uw_1}{Uw_2}=\braket{w_1}{w_2}$ extends to a unitary $V\to V$. (Hint: complete orthonormal bases of $W$ and $U(W)$ with Gram--Schmidt.)
+
+  \exercise{2} Take the measurement of Exercise~\ref{ex:epsilon-meas} with $\epsilon=\frac12$ and write the unitary $U$ with $U\ket\psi\ket0=M_0\ket\psi\ket0+M_1\ket\psi\ket1$ explicitly on the vectors $\ket{\psi}\ket0$, and complete it to a $4\times4$ unitary.
+\end{exerciseset}

@@ -1,3 +1,52 @@
-\chapter{First Appendix}\label{app:a}
+\chapter{Notation and conventions}\label{app:notation}
 
-Supplementary material.
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.2\textwidth}p{0.72\textwidth}@{}}
+  \toprule
+  Symbol & Meaning\\
+  \midrule
+  $\N,\Z,\R,\C$ & natural, integer, real and complex numbers\\
+  $\ii$ & imaginary unit, $\ii^2=-1$\\
+  $\bar z$, $\abs z$, $\Re z$, $\Im z$ & conjugate, modulus, real part, imaginary part of $z$\\
+  $e^{\ii\theta}$ & a phase (a complex number of modulus $1$)\\
+  $\operatorname{Arg}z$ & principal argument of $z$, in $(-\pi,\pi]$\\
+  \midrule
+  $V$, $W$, $F$ & vector spaces, field of scalars ($\R$ or $\C$)\\
+  $L(V,W)$, $L(V)$ & linear maps from $V$ to $W$; operators on $V$\\
+  $\Ker T$, $\Ran T$ & kernel and range of $T$\\
+  $\Span$, $\dim$, $\rank$ & span, dimension, rank\\
+  $W_1\oplus W_2$, $W^\perp$ & direct sum; orthogonal complement\\
+  $M^t$, $M^\dagger$, $\Tr M$ & transpose, adjoint (conjugate transpose), trace\\
+  $\Id$ & identity operator or matrix\\
+  \midrule
+  $\Hil$ & Hilbert space\\
+  $\ket\psi$, $\bra\varphi$ & ket and bra\\
+  $\braket\varphi\psi=\langle\varphi,\psi\rangle$ & inner product, conjugate-linear in the first argument\\
+  $\ket\psi\!\bra\varphi$ & outer product, the operator $\ket\chi\mapsto\braket\varphi\chi\,\ket\psi$\\
+  $\norm\psi$ & norm, $\sqrt{\braket\psi\psi}$\\
+  $\spec(A)$ & spectrum (set of eigenvalues) of $A$\\
+  $f(A)$ & function of an operator, $\sum_if(\lambda_i)\ket{v_i}\!\bra{v_i}$\\
+  $[A,B],\ \{A,B\}$ & commutator $AB-BA$ and anticommutator $AB+BA$\\
+  \midrule
+  $\sx,\sy,\sz$ ($X,Y,Z$) & Pauli matrices\\
+  $\vec n\cdot\vec\sigma$ & $n_x\sx+n_y\sy+n_z\sz$\\
+  $H$ & Hadamard gate (Chapter~\ref{ch:postulates} also uses $H$ for the Hamiltonian; context decides)\\
+  $\ket0,\ket1$; $\ket\pm$; $\ket{\pm\ii}$ & computational basis; $\frac{\ket0\pm\ket1}{\sqrt2}$; $\frac{\ket0\pm\ii\ket1}{\sqrt2}$\\
+  $\Hil_1\tp\Hil_2$, $\ket a\tp\ket b$, $\ket{ab}$ & tensor product of spaces and of vectors\\
+  $\bell xy$ & Bell states\\
+  $\rho$, $\rho^A=\Tr_B\rho^{AB}$ & density operator; reduced density operator\\
+  $p(m)$ & probability of outcome $m$\\
+  $\langle M\rangle$, $\Delta M$ & expectation value and standard deviation of $M$\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Conventions.}
+\begin{itemize}
+  \item The inner product is conjugate-linear in its \emph{first} argument. (Many mathematics texts conjugate the second.)
+  \item Matrices of operators are taken in orthonormal bases unless stated otherwise; ``transpose and conjugate'' is the adjoint only there.
+  \item The columns of the matrix of a linear map are the images of the basis vectors.
+  \item For two qubits the basis is ordered $\ket{00},\ket{01},\ket{10},\ket{11}$, and the matrix of $A\tp B$ is the Kronecker product with $B$ varying fastest.
+  \item Unless a value is given, $\hbar$ may be set to $1$.
+\end{itemize}

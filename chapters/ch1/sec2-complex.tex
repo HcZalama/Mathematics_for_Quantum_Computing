@@ -1,0 +1,442 @@
+%======================================================================
+\section{Complex numbers}\label{sec:complex}
+%======================================================================
+
+\begin{objectives}
+  You will add, multiply, conjugate and invert complex numbers, in Cartesian and
+  in polar form; use the modulus and the triangle inequality; find the argument of a
+  complex number without picking the wrong angle; and recognise a \emph{phase}, the
+  idea that will separate observable from unobservable in quantum mechanics.
+\end{objectives}
+
+The state of a quantum system is a list of complex numbers called
+\emph{amplitudes}. Probabilities will be their squared moduli, and the
+difference between a ``global'' and a ``relative'' phase
+(Section~\ref{sec:measurement}) will be the difference between what we can and
+cannot observe. We review here the few facts about $\C$ that we will use all the time.
+
+\subsection{Definition and arithmetic}
+
+Some polynomials, such as $x^2+1$, have no root in $\R$. We add one by
+decree and see what we get.
+
+\begin{definition}[Complex numbers]\label{def:complex}
+  The \term{imaginary unit} $\ii$ is a symbol with $\ii^2=-1$. A
+  \term{complex number} is an expression $z=a+b\ii$ with $a,b\in\R$; we call
+  $a=\Re z$ its \term{real part} and $b=\Im z$ its \term{imaginary part}. The set of
+  all complex numbers is $\C$. Sums and products are
+  \begin{align*}
+    (a+b\ii)+(c+d\ii) &= (a+c)+(b+d)\ii,\\
+    (a+b\ii)(c+d\ii) &= (ac-bd)+(ad+bc)\ii .
+  \end{align*}
+\end{definition}
+
+The product is just ``expand the brackets and use $\ii^2=-1$''. We identify
+$a\in\R$ with $a+0\ii$, so that $\R\subset\C$. A complex number is also a point
+$(a,b)$ of the plane, which is how we draw it (Figure~\ref{fig:plane}).
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[>=stealth, scale=1.1]
+    \draw[->,ink] (-1.3,0) -- (4.3,0) node[right] {$\Re$};
+    \draw[->,ink] (0,-2.3) -- (0,2.6) node[above] {$\Im$};
+    \coordinate (z) at (3,2);
+    \coordinate (zb) at (3,-2);
+    \draw[very thick, navy, ->] (0,0) -- (z);
+    \draw[very thick, figacc, ->] (0,0) -- (zb);
+    \draw[dashed, ink!60] (zb) -- (3,2);
+    \fill[navy] (z) circle (1.8pt) node[above right] {$z=a+b\ii$};
+    \fill[figacc] (zb) circle (1.8pt) node[below right] {$\bar z=a-b\ii$};
+    \draw[ink!60] (3,0.08) -- (3,-0.08) node[below left, font=\small] {$a$};
+    \draw[ink!60] (0.08,2) -- (-0.08,2) node[left, font=\small] {$b$};
+    \draw[navy] (0.8,0) arc (0:33.7:0.8) node[midway, right, font=\small] {$\theta$};
+    \node[navy, font=\small, rotate=33.7] at (1.35,1.2) {$\abs{z}$};
+  \end{tikzpicture}
+  \caption{A complex number $z=a+b\ii$ as a point of the plane, its conjugate $\bar z$ (the
+  reflection in the real axis), its modulus $\abs{z}$ (the length of the arrow) and its argument $\theta$.}
+  \label{fig:plane}
+\end{figure}
+
+Two small computations show the flavour. To multiply, expand and replace
+$\ii^2$ by $-1$:
+\[
+  (2+\ii)(3-4\ii)=6-8\ii+3\ii-4\ii^2=10-5\ii .
+\]
+To raise to a power, it can be easier to square repeatedly: $(1+\ii)^2=2\ii$, so
+$(1+\ii)^4=(2\ii)^2=-4$. The powers of $\ii$ itself repeat with period four,
+$\ii^0=1,\ \ii^1=\ii,\ \ii^2=-1,\ \ii^3=-\ii,\ \ii^4=1,\dots$, which makes
+large powers easy.
+
+\begin{example}
+  Compute $\ii^{2026}$.
+\end{example}
+\begin{solution}
+  Only the remainder of the exponent modulo $4$ matters. Since $2026=4\cdot506+2$,
+  $\ii^{2026}=\ii^2=-1$.
+\end{solution}
+
+Complex numbers obey the same algebraic rules as the reals: addition and
+multiplication are associative and commutative, multiplication distributes over
+addition, $0$ and $1$ are neutral, every $z=a+b\ii$ has an additive inverse
+$-z=-a-b\ii$, and every $z\neq0$ has a multiplicative inverse. In the language
+of algebra, $\C$ is a \emph{field}. All of this is a routine check from
+Definition~\ref{def:complex}, except the inverse, which needs a formula; the
+next subsection gives it.
+
+\subsection{Conjugate and modulus}
+
+\begin{definition}[Conjugate and modulus]\label{def:conj}
+  For $z=a+b\ii$, its \term{conjugate} is $\bar z=a-b\ii$ and its
+  \term{modulus} is $\abs{z}=\sqrt{a^2+b^2}$.
+\end{definition}
+
+Geometrically, $\bar z$ is the reflection of $z$ in the real axis and $\abs{z}$
+is the distance from $z$ to the origin. The two are tied together by the following facts.
+
+\begin{theorem}[Basic properties]\label{thm:basic}
+  For all $z,w\in\C$:
+  \begin{enumerate}
+    \item[(a)] $\overline{z+w}=\bar z+\bar w$ and $\overline{zw}=\bar z\,\bar w$;
+    \item[(b)] $z\bar z=\abs{z}^2$;
+    \item[(c)] $\abs{zw}=\abs{z}\,\abs{w}$;
+    \item[(d)] $\abs{z}=0$ if and only if $z=0$;
+    \item[(e)] if $z\ne0$, then $z^{-1}=\bar z/\abs{z}^2$.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  (a) The statement about sums is immediate. For products let $z=a+b\ii$, $w=c+d\ii$. Then
+  $zw=(ac-bd)+(ad+bc)\ii$, so $\overline{zw}=(ac-bd)-(ad+bc)\ii$, while
+  \[
+    \bar z\,\bar w=(a-b\ii)(c-d\ii)=(ac-bd)-(ad+bc)\ii .
+  \]
+
+  (b) $z\bar z=(a+b\ii)(a-b\ii)=a^2-b^2\ii^2=a^2+b^2=\abs{z}^2$.
+
+  (c) By (b) and (a), $\abs{zw}^2=(zw)\,\overline{zw}=(z\bar z)(w\bar w)=\abs{z}^2\abs{w}^2$.
+  Both sides of the claim are non-negative, so we may take square roots.
+
+  (d) $\abs{z}=0$ means $a^2+b^2=0$, which forces $a=b=0$.
+
+  (e) Divide the identity in (b) by $\abs{z}^2\neq0$: $z\cdot(\bar z/\abs{z}^2)=1$.
+\end{proof}
+
+Part (e) is how inverses are computed in practice: \emph{multiply top and
+bottom by the conjugate.}
+
+\begin{example}\label{ex:inverse}
+  Let $z=2-3\ii$. Compute $\bar z$, $\abs{z}$, $z^{-1}$ and $z^2$, and
+  simplify $\dfrac{2+\ii}{1-3\ii}$.
+\end{example}
+\begin{solution}
+  Here $\bar z=2+3\ii$ and $\abs{z}^2=4+9=13$, so $\abs{z}=\sqrt{13}$. By
+  Theorem~\ref{thm:basic}(e),
+  \[
+    z^{-1}=\frac{2+3\ii}{13}.
+  \]
+  Next, $z^2=4-12\ii+9\ii^2=-5-12\ii$. \emph{Check:} by part (c),
+  $\abs{z^2}$ must be $\abs{z}^2=13$, and indeed $\sqrt{25+144}=13$.
+
+  For the quotient, multiply numerator and denominator by the conjugate of the
+  denominator:
+  \[
+    \frac{2+\ii}{1-3\ii}
+    =\frac{(2+\ii)(1+3\ii)}{(1-3\ii)(1+3\ii)}
+    =\frac{2+6\ii+\ii+3\ii^2}{1+9}
+    =\frac{-1+7\ii}{10}.
+  \]
+\end{solution}
+
+\begin{pitfall}
+  $\abs{z}^2$ and $z^2$ are different things. For $z=\ii$ we get $\abs{\ii}^2=1$
+  but $\ii^2=-1$. The correct statement is $\abs{z}^2=z\bar z$.
+\end{pitfall}
+
+The modulus also obeys the inequality that makes it a good notion of size.
+
+\begin{theorem}[Triangle inequality]\label{thm:triangle}
+  For all $z,w\in\C$, $\ \abs{z+w}\le\abs{z}+\abs{w}$.
+\end{theorem}
+\begin{proof}
+  Expanding with Theorem~\ref{thm:basic}(a) and (b),
+  \[
+    \abs{z+w}^2=(z+w)(\bar z+\bar w)=\abs{z}^2+\abs{w}^2+2\Re(z\bar w),
+  \]
+  because $z\bar w+\bar z w=z\bar w+\overline{z\bar w}=2\Re(z\bar w)$. Now
+  $\Re(u)\le\abs{u}$ for every $u$, and $\abs{z\bar w}=\abs{z}\abs{w}$ by
+  Theorem~\ref{thm:basic}(c), so
+  \[
+    \abs{z+w}^2\le\abs{z}^2+\abs{w}^2+2\abs{z}\abs{w}=(\abs{z}+\abs{w})^2 .
+  \]
+  Taking square roots gives the result.
+\end{proof}
+
+\begin{remark}
+  The proof used one trick worth remembering: to estimate a modulus, estimate
+  its \emph{square}, because $\abs{u}^2=u\bar u$ turns it into algebra. The same
+  idea will prove the Cauchy--Schwarz inequality for vectors in Section~\ref{sec:hilbert}.
+\end{remark}
+
+\subsection{The exponential and the polar form}
+
+Cartesian form is best for adding. For multiplying we want a better
+description, and it comes from the exponential function.
+
+\begin{definition}[Exponential]\label{def:exp}
+  For $z\in\C$, $\displaystyle e^z=\exp(z)=\sum_{n=0}^{\infty}\frac{z^n}{n!}$.
+\end{definition}
+
+The series converges for every $z$. We use without proof the property that
+makes the exponential useful: $e^{z+w}=e^ze^w$ for all $z,w\in\C$ (it follows by
+multiplying out the two series). The case of an imaginary exponent is the
+celebrated formula of Euler.
+
+\begin{theorem}[Euler's formula]\label{thm:euler}
+  For every $\theta\in\R$, $\ e^{\ii\theta}=\cos\theta+\ii\sin\theta$.
+\end{theorem}
+\begin{proof}
+  Put $z=\ii\theta$ in the series. The powers of $\ii$ are $\ii^{2k}=(-1)^k$ and
+  $\ii^{2k+1}=(-1)^k\ii$. The series converges absolutely, so we may split it
+  into even and odd terms:
+  \[
+    e^{\ii\theta}
+    =\sum_{k=0}^{\infty}\frac{(-1)^k\theta^{2k}}{(2k)!}
+    +\ii\sum_{k=0}^{\infty}\frac{(-1)^k\theta^{2k+1}}{(2k+1)!}
+    =\cos\theta+\ii\sin\theta,
+  \]
+  by the Taylor series of cosine and sine.
+\end{proof}
+
+In particular $\abs{e^{\ii\theta}}=\sqrt{\cos^2\theta+\sin^2\theta}=1$: the point
+$e^{\ii\theta}$ lies on the unit circle, at angle $\theta$ (in radians) from the
+positive real axis. Dividing a non-zero $z$ by its modulus puts it on the unit circle, which gives:
+
+\begin{definition}[Polar form]\label{def:polar}
+  Every $z\ne0$ can be written $z=r\,e^{\ii\theta}$ with $r=\abs{z}>0$ and
+  $\theta\in\R$. The angle $\theta$ is an \term{argument} of $z$. It is determined
+  only up to adding multiples of $2\pi$; the one in $(-\pi,\pi]$ is the
+  \term{principal argument}, written $\operatorname{Arg}z$.
+\end{definition}
+
+The exponential law turns multiplication into the addition of angles, and
+multiplying moduli (Figure~\ref{fig:polar}). So, multiplying by $e^{\ii\varphi}$ is a rotation
+by $\varphi$.
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[>=stealth]
+    \draw[->,ink] (-0.5,0) -- (5.2,0);
+    \draw[->,ink] (0,-0.5) -- (0,3.6);
+    \draw[ink!30] (0,0) circle (1);
+    \draw[very thick,navy,->] (0,0) -- (25:2.1) node[right] {$z=r\,e^{\ii\theta}$};
+    \draw[very thick,navy!60,->] (0,0) -- (55:1.5) node[above left] {$w=s\,e^{\ii\varphi}$};
+    \draw[very thick,figacc,->] (0,0) -- (80:3.15) node[above right] {$zw=rs\,e^{\ii(\theta+\varphi)}$};
+    \draw[navy] (0.9,0) arc (0:25:0.9) node[midway,right,font=\footnotesize] {$\theta$};
+    \draw[navy!60] (25:1.25) arc (25:55:1.25) node[midway,right=1pt,font=\footnotesize] {$\varphi$};
+  \end{tikzpicture}
+  \caption{Multiplication in polar form: the moduli multiply and the angles add.}
+  \label{fig:polar}
+\end{figure}
+
+\begin{proposition}[Polar arithmetic]\label{prop:polar}
+  If $z=r\,e^{\ii\theta}$ and $w=s\,e^{\ii\varphi}$, then
+  \[
+    zw=rs\,e^{\ii(\theta+\varphi)},\qquad
+    \bar z=r\,e^{-\ii\theta},\qquad
+    z^{-1}=r^{-1}e^{-\ii\theta},\qquad
+    z^n=r^n e^{\ii n\theta}\ (n\in\Z).
+  \]
+\end{proposition}
+\begin{proof}
+  The first formula is the exponential law. For the second, $\overline{e^{\ii\theta}}=\cos\theta-\ii\sin\theta=e^{-\ii\theta}$.
+  The third follows from the first with $w=r^{-1}e^{-\ii\theta}$, since then $zw=1$. The last is the first, repeated.
+\end{proof}
+
+This lets us compute things that would be painful in Cartesian form.
+
+\begin{example}\label{ex:trig}
+  Derive the addition formulas for $\sin(\alpha+\beta)$ and $\cos(\alpha+\beta)$
+  from the exponential law.
+\end{example}
+\begin{solution}
+  Expand $e^{\ii(\alpha+\beta)}=e^{\ii\alpha}e^{\ii\beta}$ in two ways. On the left,
+  Euler's formula gives $\cos(\alpha+\beta)+\ii\sin(\alpha+\beta)$. On the right,
+  \[
+    (\cos\alpha+\ii\sin\alpha)(\cos\beta+\ii\sin\beta)
+    =(\cos\alpha\cos\beta-\sin\alpha\sin\beta)+\ii(\sin\alpha\cos\beta+\cos\alpha\sin\beta).
+  \]
+  For real $\alpha,\beta$ both sides have real and imaginary parts that must match, so
+  \begin{align*}
+    \cos(\alpha+\beta)&=\cos\alpha\cos\beta-\sin\alpha\sin\beta,\\
+    \sin(\alpha+\beta)&=\sin\alpha\cos\beta+\cos\alpha\sin\beta.
+  \end{align*}
+\end{solution}
+
+\begin{example}\label{ex:power}
+  Compute $(1+\ii)^{20}$.
+\end{example}
+\begin{solution}
+  Expanding is hopeless, so use the polar form. We have $\abs{1+\ii}=\sqrt2$ and
+  the angle is $\pi/4$, so $1+\ii=\sqrt2\,e^{\ii\pi/4}$. By Proposition~\ref{prop:polar},
+  \[
+    (1+\ii)^{20}=(\sqrt2)^{20}e^{\ii\,5\pi}=2^{10}e^{\ii\pi}=-1024 .
+  \]
+  \emph{Check:} $(1+\ii)^4=-4$ and $(-4)^5=-1024$.
+\end{solution}
+
+\subsubsection*{Finding the argument}
+
+To go from $a+b\ii$ to polar form we need $\theta$. The formula $\theta=\tan^{-1}(b/a)$
+is tempting, but $\tan^{-1}$ only returns angles in $(-\pi/2,\pi/2)$, which are
+the points with $a>0$. In the other quadrants it is wrong.
+
+\begin{pitfall}
+  For $z=-1+\ii$ we have $b/a=-1$ and $\tan^{-1}(-1)=-\pi/4$. But $-1+\ii$ lies in
+  the second quadrant, so its angle is $3\pi/4$. The naive formula
+  gives the argument of $1-\ii$ instead. \emph{Always look at the signs of $a$ and $b$.}
+\end{pitfall}
+
+The correct rule, for $z=a+b\ii\ne0$, is
+\[
+  \operatorname{Arg}z=
+  \begin{cases}
+    \tan^{-1}(b/a) & a>0,\\
+    \tan^{-1}(b/a)+\pi & a<0,\ b\ge0,\\
+    \tan^{-1}(b/a)-\pi & a<0,\ b<0,\\
+    \pi/2 & a=0,\ b>0,\\
+    -\pi/2 & a=0,\ b<0.
+  \end{cases}
+\]
+This is the function \texttt{atan2(b, a)} found in every programming language.
+
+\begin{example}\label{ex:args}
+  Find the polar form of $1+\ii$, $-1+\ii$, $-1-\ii$ and $1-\ii$.
+\end{example}
+\begin{solution}
+  All four have modulus $\sqrt2$, and $\tan^{-1}(b/a)=\pm\pi/4$ in each case; we correct it by the rule above.
+  \begin{center}
+  \begin{tabular}{cccc}
+    \toprule
+    $z$ & signs of $(a,b)$ & $\operatorname{Arg}z$ & polar form\\
+    \midrule
+    $1+\ii$  & $(+,+)$ & $\ \ \pi/4$    & $\sqrt2\,e^{\ii\pi/4}$\\
+    $-1+\ii$ & $(-,+)$ & $-\pi/4+\pi=3\pi/4$   & $\sqrt2\,e^{3\ii\pi/4}$\\
+    $-1-\ii$ & $(-,-)$ & $\ \ \pi/4-\pi=-3\pi/4$ & $\sqrt2\,e^{-3\ii\pi/4}$\\
+    $1-\ii$  & $(+,-)$ & $-\pi/4$       & $\sqrt2\,e^{-\ii\pi/4}$\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  The four points are the corners of a square, which is a quick sanity check.
+\end{solution}
+
+A longer example, where Cartesian form is awkward and polar form is not:
+
+\begin{example}\label{ex:z10}
+  Let $z=1+(\sqrt2-1)\ii$. Write $z$ in polar form and compute $w=z^{10}$.
+  Which problem appears when recovering the argument of $w$?
+\end{example}
+\begin{solution}
+  We use the known value $\tan(\pi/8)=\sqrt2-1$. Then
+  \[
+    z=1+\tan\tfrac{\pi}{8}\,\ii
+    =\frac{1}{\cos\frac{\pi}{8}}\Bigl(\cos\tfrac{\pi}{8}+\ii\sin\tfrac{\pi}{8}\Bigr)
+    =\frac{1}{\cos\frac{\pi}{8}}\,e^{\ii\pi/8}.
+  \]
+  So $\abs{z}=1/\cos\frac{\pi}{8}$ and $\operatorname{Arg}z=\pi/8$.
+  (\emph{Check:} $\cos^2\frac\pi8=\frac{1+\cos(\pi/4)}{2}=\frac{2+\sqrt2}{4}$, hence
+  $\abs{z}^2=\frac{4}{2+\sqrt2}=4-2\sqrt2$, and directly
+  $\abs{z}^2=1+(\sqrt2-1)^2=4-2\sqrt2$.)
+
+  By Proposition~\ref{prop:polar},
+  \[
+    w=z^{10}=\abs{z}^{10}e^{\ii\,10\pi/8}=(4-2\sqrt2)^5\,e^{\ii\,5\pi/4}\approx 2.207\,e^{\ii\,5\pi/4}.
+  \]
+  The problem: $5\pi/4$ is not in $(-\pi,\pi]$. The principal argument is
+  $5\pi/4-2\pi=-3\pi/4$, since $w$ lies in the third quadrant. And
+  $\tan^{-1}(\Im w/\Re w)=\tan^{-1}(1)=\pi/4$ is wrong, exactly as in the pitfall above.
+  In Cartesian form, $w=-\tfrac{\sqrt2}{2}(4-2\sqrt2)^5(1+\ii)\approx-1.561(1+\ii)$.
+\end{solution}
+
+\subsection{Phases}
+
+The numbers of modulus one deserve a name.
+
+\begin{definition}[Phase]\label{def:phase}
+  A \term{phase} is a complex number of modulus $1$, that is, $e^{\ii\theta}$ for some $\theta\in\R$.
+\end{definition}
+
+By Proposition~\ref{prop:polar}, a product of phases is a phase, and so is the
+inverse of a phase. Multiplying by a phase \emph{rotates} a number without
+changing its modulus: $\abs{e^{\ii\theta}z}=\abs{z}$. The question
+that will matter in quantum mechanics is what happens when we rotate
+\emph{different} numbers by \emph{different} angles. This is exactly what the
+double slit does.
+
+\begin{example}\label{ex:relative-phase}
+  Let $z_1=z_2=1/\sqrt2$. Compute $\abs{e^{\ii\theta_1}z_1+e^{\ii\theta_2}z_2}^2$,
+  and show that it depends on $\theta_1,\theta_2$ only through $\theta_1-\theta_2$.
+\end{example}
+\begin{solution}
+  Put $u=e^{\ii\theta_1}z_1+e^{\ii\theta_2}z_2$. Then
+  $u\bar u=\tfrac12\bigl(e^{\ii\theta_1}+e^{\ii\theta_2}\bigr)\bigl(e^{-\ii\theta_1}+e^{-\ii\theta_2}\bigr)$, which expands to
+  \[
+    \abs{u}^2=\tfrac12\bigl(1+1+e^{\ii(\theta_1-\theta_2)}+e^{-\ii(\theta_1-\theta_2)}\bigr)
+    =1+\cos(\theta_1-\theta_2),
+  \]
+  using $e^{\ii x}+e^{-\ii x}=2\cos x$. This depends only on the difference $\theta_1-\theta_2$.
+  If both numbers are rotated by the same angle ($\theta_1=\theta_2$) it equals $2$ for every angle: that
+  common rotation is invisible. If $\theta_1-\theta_2=\pi$ it equals $0$: the two terms cancel.
+\end{solution}
+
+\begin{xref}
+  In Section~\ref{sec:measurement} the quantities $z_i$ will be amplitudes of a
+  qubit. A common phase on \emph{all} of them is the \emph{global phase},
+  which cannot be observed. A phase on \emph{some} of them is a \emph{relative
+  phase}, and it changes measurement outcomes, as Example~\ref{ex:relative-phase} shows.
+\end{xref}
+
+%----------------------------------------------------------------------
+\begin{exerciseset}
+  \exercise{1} Write in the form $a+b\ii$: $(1+\ii)^2$, $\ \ii(2-3\ii)^2$, $\ (1-\ii)^3$, $\ (3-2\ii)+(1+5\ii)$.
+
+  \exercise{1} Compute $\ii^{7}$, $\ii^{42}$, $\ii^{-3}$ and $\ii^{2026}$. Prove that
+  $\ii^n=\ii^{\,n \bmod 4}$ for every $n\in\Z$, including negative $n$.
+
+  \exercise{1} Solve in $\C$: $z^2=-9$, $\ z^2+2z+5=0$, $\ z^2-(1+\ii)z+\ii=0$. Which of these have no real roots?
+
+  \exercise{1} Compute $(3+4\ii)^{-1}$, $(1-\ii)^{-1}$ and $\dfrac{1}{\ii}-\dfrac{3-\ii}{2+\ii}$.
+
+  \exercise{2} Prove that $z\in\R\iff z=\bar z$, that $z\in\ii\R\iff z=-\bar z$, and that
+  $\Re z=\frac{z+\bar z}{2}$, $\ \Im z=\frac{z-\bar z}{2\ii}$.
+
+  \exercise{2} Prove that the multiplicative inverse of a non-zero $z\in\C$ is unique.
+  Deduce $\abs{z^{-1}}=\abs{z}^{-1}$ and $\abs{z^n}=\abs{z}^n$ for all $n\in\Z$.
+
+  \exercise{2} Prove the reverse triangle inequality $\bigl|\abs{z}-\abs{w}\bigr|\le\abs{z-w}$.
+  When does equality $\abs{z+w}=\abs{z}+\abs{w}$ hold in the triangle inequality?
+
+  \exercise{2} Describe and sketch $\{\abs{z-\ii}<2\}$, $\ \{\abs{z-1}=\abs{z+1}\}$ and $\{\Re(z^2)=0\}$.
+
+  \exercise{2} Interpret geometrically $z\mapsto\bar z$, $\ z\mapsto\ii z$, $\ z\mapsto z+w_0$ and $z\mapsto 2z$ as maps of the plane.
+  Which are linear over $\R$ (that is, linear maps $\R^2\to\R^2$)? Which satisfy $f(\lambda z)=\lambda f(z)$ for all complex $\lambda$?
+
+  \exercise{1} Compute in Cartesian form: $e^{\ii\pi/2}$, $\ e^{-\ii\pi/3}$, $\ e^{\ii 3\pi/2}$, $\ e^{\ln 2+\ii\pi/6}$.
+
+  \exercise{1} Find modulus and principal argument of $-\sqrt3+\ii$, $\ -2$, $\ -3\ii$ and $\tfrac12-\tfrac{\sqrt3}{2}\ii$.
+
+  \exercise{2} Compute $(\sqrt3+\ii)^9$ and $\left(\dfrac{1+\ii}{1-\ii}\right)^{2027}$.
+
+  \exercise{2} Solve $z^3=-8$, $\ z^2=\ii$ and $\ z^6=-1$. Sketch the solutions: what shape do they form?
+
+  \exercise{2} Use $e^{\ii3\theta}=(e^{\ii\theta})^3$ to express $\cos3\theta$ and $\sin3\theta$ in terms of $\cos\theta$ and $\sin\theta$.
+
+  \exercise{2} Let $U(1)=\{z\in\C:\abs{z}=1\}$. Show that $U(1)$ is closed under products and inverses.
+  Show that $\abs{e^{\ii\varphi}z}=\abs{z}$ for all $z$, and that $\abs{e^{\ii\varphi_1}z_1+e^{\ii\varphi_2}z_2}$
+  \emph{does} depend on $\varphi_1-\varphi_2$ for general $z_1,z_2$.
+
+  \exercise{3} Let $\alpha,\beta\in\C$ with $\abs{\alpha}^2+\abs{\beta}^2=1$. Show that
+  $\abs{\alpha},\abs{\beta}\le1$, that $\abs{\alpha+\beta}^2\le2$, and that $\abs{\alpha\beta}\le\tfrac12$.
+  When are the last two bounds attained?
+
+  \exercise{3} Show that $e^z=-1$ exactly when $z=\ii\pi(2k+1)$ with $k\in\Z$. Then find all values of
+  $\ii^{\ii}$, defined as $e^{\ii\log\ii}$ using every logarithm of $\ii$. Are they real?
+\end{exerciseset}

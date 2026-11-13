@@ -1,0 +1,170 @@
+%======================================================================
+\section{EPR and the Bell inequality}\label{sec:bell}
+%======================================================================
+
+\begin{objectives}
+  You will explain the argument of Einstein, Podolsky and Rosen, derive the CHSH form of Bell's inequality from the assumption that
+  physical properties exist before measurement and cannot be influenced at a distance, and show that quantum mechanics violates it.
+\end{objectives}
+
+% \begin{quote}
+%   \emph{Anybody who is not shocked by quantum theory has not understood it.} --- Niels Bohr
+% \end{quote}
+
+We have built a mathematical framework and used it to compute. This last section asks what it \emph{means}. It is the point at which quantum mechanics stops being a convenient calculus and becomes a statement about the world that cannot be reproduced classically.
+
+\subsection{The EPR argument}
+
+In everyday life we assume that objects have properties independent of observation: the position of a tennis ball is there whether or not light bounces off it, and a measurement merely \emph{reveals} it.
+Quantum mechanics seems to say otherwise. A qubit in the state $\ket0$ has no definite value of $X$: that value ``arises'' when $X$ is measured. Einstein found this unacceptable. In 1935, with Podolsky and Rosen~\cite{epr1935}, he argued that quantum mechanics must be \emph{incomplete}.
+
+Their criterion for reality was the following: if we can predict with certainty the value of a physical quantity without disturbing the system, there is an \emph{element of reality} corresponding to that quantity, and any complete theory must contain it. The argument then uses an entangled state.
+Take the singlet $\ket{\Psi^-}=\bell11=\frac1{\sqrt2}(\ket{01}-\ket{10})$, a state that is not a product (Example~\ref{ex:entangled-or-not}(d)).
+
+\begin{proposition}[Perfect anti-correlation]\label{prop:singlet-anticorr}
+  Let $\ket{\Psi^-}$ be the singlet and $\vec v$ any unit vector. If the observable $\vec v\cdot\vec\sigma$ is measured on both qubits, the two results are always opposite.
+\end{proposition}
+\begin{proof}
+  For any unitary $U$, the coefficient matrix of $(U\tp U)\ket{\Psi^-}$ is $UCU^t$, with $C=\frac1{\sqrt2}\begin{pmatrix}0&1\\-1&0\end{pmatrix}$. For $2\times2$ matrices, $U\begin{pmatrix}0&1\\-1&0\end{pmatrix}U^t=(\det U)\begin{pmatrix}0&1\\-1&0\end{pmatrix}$, so
+  \begin{equation}\label{eq:singlet-inv}
+    (U\tp U)\ket{\Psi^-}=(\det U)\ket{\Psi^-}.
+  \end{equation}
+  Let $\ket a,\ket b$ be the orthonormal eigenvectors of $\vec v\cdot\vec\sigma$ with eigenvalues $+1,-1$, and let $U$ be the unitary with $U\ket0=\ket a$, $U\ket1=\ket b$. Then $(U\tp U)\ket{\Psi^-}=\frac1{\sqrt2}(\ket{ab}-\ket{ba})$, which by \eqref{eq:singlet-inv} equals $(\det U)\ket{\Psi^-}$.
+  Hence, up to a global phase, $\ket{\Psi^-}=\frac1{\sqrt2}(\ket{ab}-\ket{ba})$: the outcomes $(+1,-1)$ and $(-1,+1)$ each have probability $\tfrac12$, and $(+1,+1),(-1,-1)$ have probability $0$.
+\end{proof}
+
+Now put Alice and Bob far apart, each with one qubit of the singlet. Alice measures along $\vec v$ and gets $+1$. She can then predict with certainty that Bob, if he measures along the same $\vec v$, will get $-1$, without having touched his qubit. By EPR's criterion, the value of $\vec v\cdot\vec\sigma$ for Bob's qubit is an element of reality, and this holds for \emph{every} direction $\vec v$.
+But quantum mechanics, as we have formulated it, contains no object representing the value of $\vec v\cdot\vec\sigma$ for all $\vec v$ at once: it only gives probabilities. Hence, EPR concluded, quantum mechanics is incomplete.
+
+Most physicists were not convinced: imposing on Nature by fiat the properties she must obey is a peculiar way of studying her laws. And for thirty years the question seemed one of philosophy.
+
+\subsection{Bell's inequality}
+
+In 1964 Bell~\cite{bell1964} showed that EPR's world view has \emph{testable} consequences. We forget quantum mechanics for a moment and analyse a thought experiment with ``common sense''.
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[>=stealth]
+    \node[draw=ink,thick,fill=ink!8,minimum width=1.6cm,minimum height=0.8cm,font=\small] (c) at (0,0) {Charlie};
+    \node[draw=navy,thick,fill=navy!8,minimum width=2.6cm,minimum height=1.1cm,font=\small,align=center] (a) at (-4.6,0) {Alice\\$Q$ or $R$, $=\pm1$};
+    \node[draw=navy,thick,fill=navy!8,minimum width=2.6cm,minimum height=1.1cm,font=\small,align=center] (b) at (4.6,0) {Bob\\$S$ or $T$, $=\pm1$};
+    \draw[->,thick] (c) -- node[above,font=\footnotesize] {particle} (a);
+    \draw[->,thick] (c) -- node[above,font=\footnotesize] {particle} (b);
+    \draw[<->,figacc,dashed] (a.south) .. controls +(0,-1.2) and +(0,-1.2) .. node[below,font=\footnotesize] {no signal can connect the two choices} (b.south);
+  \end{tikzpicture}
+  \caption{The Bell experiment. Charlie prepares two particles and sends one to each of Alice and Bob, who are far apart. Each independently chooses one of two measurements, and each measurement has outcome $+1$ or $-1$.}
+  \label{fig:bell-setup}
+\end{figure}
+
+Charlie prepares two particles, repeatably, and sends one to Alice and one to Bob (Figure~\ref{fig:bell-setup}). Alice randomly picks one of two measurements and Bob likewise: Alice measures a property $P_Q$ or $P_R$, Bob a property $P_S$ or $P_T$, each with outcome $\pm1$.
+They do so at the same time, or rather in a causally disconnected way, so that by relativity Alice's measurement cannot influence Bob's and vice versa. We now make two assumptions that sound innocent.
+
+\begin{itemize}
+  \item \emph{Realism}: the properties have definite values $Q,R,S,T\in\{\pm1\}$ before and independently of the measurement, which merely reveals the one chosen.
+  \item \emph{Locality}: Alice's choice and result do not influence Bob's result, and vice versa.
+\end{itemize}
+Together these two are called \term{local realism}. They are exactly the assumptions of the classical world view.
+
+\begin{theorem}[CHSH inequality]\label{thm:chsh}
+  Under local realism, for any preparation procedure,
+  \[
+    \mathbb E(QS)+\mathbb E(RS)+\mathbb E(RT)-\mathbb E(QT)\ \le\ 2 .
+  \]
+\end{theorem}
+\begin{proof}
+  Consider the quantity $QS+RS+RT-QT=(Q+R)S+(R-Q)T$. Since $Q,R=\pm1$, either $Q+R=0$ or $R-Q=0$, so exactly one of the two terms vanishes, and the other is $\pm2$ (as $S,T=\pm1$). Hence
+  $QS+RS+RT-QT=\pm2$ in every run. Let $p(q,r,s,t)$ be the probability that before the measurements $Q=q,R=r,S=s,T=t$; it may depend on Charlie's procedure and on noise. Then
+  \[
+    \mathbb E(QS+RS+RT-QT)=\sum_{qrst}p(q,r,s,t)(qs+rs+rt-qt)\le2\sum_{qrst}p(q,r,s,t)=2 .
+  \]
+  By linearity of expectation, the left side equals $\mathbb E(QS)+\mathbb E(RS)+\mathbb E(RT)-\mathbb E(QT)$. (Alice and Bob can estimate each of these four averages from their data by pairing runs where they chose the corresponding measurements.)
+\end{proof}
+
+Notice what the theorem is: a statement about \emph{any} theory satisfying local realism, and not about quantum mechanics.
+
+\subsection{Quantum mechanics violates the inequality}
+
+Now put quantum mechanics back. Charlie prepares the singlet $\ket{\Psi^-}$ and sends the first qubit to Alice and the second to Bob. They measure
+\[
+  Q=Z_1,\quad R=X_1,\quad S=\frac{-Z_2-X_2}{\sqrt2},\quad T=\frac{Z_2-X_2}{\sqrt2}.
+\]
+The relevant expectation values come from a neat lemma.
+
+\begin{lemma}\label{lem:singlet-corr}
+  For real vectors $\vec a,\vec b$ and the singlet, $\ \bra{\Psi^-}(\vec a\cdot\vec\sigma)\tp(\vec b\cdot\vec\sigma)\ket{\Psi^-}=-\,\vec a\cdot\vec b$.
+\end{lemma}
+\begin{proof}
+  Put $U=e^{-\ii t\sigma_j}$ in \eqref{eq:singlet-inv}: $\det U=1$ because $\Tr\sigma_j=0$, so $(U\tp U)\ket{\Psi^-}=\ket{\Psi^-}$ for all $t$. Differentiating at $t=0$ gives $(\sigma_j\tp\Id+\Id\tp\sigma_j)\ket{\Psi^-}=0$, that is, $(\Id\tp\sigma_k)\ket{\Psi^-}=-(\sigma_k\tp\Id)\ket{\Psi^-}$.
+  Therefore $\bra{\Psi^-}\sigma_j\tp\sigma_k\ket{\Psi^-}=-\bra{\Psi^-}\sigma_j\sigma_k\tp\Id\ket{\Psi^-}=-\Tr\bigl(\sigma_j\sigma_k\,\rho^A\bigr)=-\tfrac12\Tr(\sigma_j\sigma_k)=-\delta_{jk}$, using $\rho^A=\tfrac12\Id$ (Example~\ref{ex:reduced-bell}).
+  The lemma follows by linearity.
+\end{proof}
+
+In the singlet the correlation of two spin measurements is minus the cosine of the angle between the axes. With $\vec z,\vec x$ the unit vectors of the axes, Alice measures along $\vec a_Q=\vec z$, $\vec a_R=\vec x$ and Bob along
+$\vec b_S=-\frac{\vec z+\vec x}{\sqrt2}$, $\vec b_T=\frac{\vec z-\vec x}{\sqrt2}$ (Figure~\ref{fig:bell-axes}). By the lemma,
+\[
+  \langle QS\rangle=\tfrac1{\sqrt2},\quad \langle RS\rangle=\tfrac1{\sqrt2},\quad \langle RT\rangle=\tfrac1{\sqrt2},\quad \langle QT\rangle=-\tfrac1{\sqrt2},
+\]
+(for example $\langle QS\rangle=-\vec z\cdot\vec b_S=\frac1{\sqrt2}$ and $\langle QT\rangle=-\vec z\cdot\vec b_T=-\frac1{\sqrt2}$), and therefore
+\[
+  \langle QS\rangle+\langle RS\rangle+\langle RT\rangle-\langle QT\rangle=\tfrac4{\sqrt2}=2\sqrt2\approx2.83>2 .
+\]
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[>=stealth,scale=1.5]
+    \draw[->,ink!60] (-1.6,0) -- (1.6,0) node[right,font=\small] {$x$};
+    \draw[->,ink!60] (0,-1.6) -- (0,1.6) node[above,font=\small] {$z$};
+    \draw[very thick,navy,->] (0,0) -- (0,1.2) node[above right,font=\small] {Alice $Q$};
+    \draw[very thick,navy,->] (0,0) -- (1.2,0) node[above right,font=\small] {Alice $R$};
+    \draw[very thick,figacc,->] (0,0) -- (-0.85,-0.85) node[below left,font=\small] {Bob $S$};
+    \draw[very thick,figacc,->] (0,0) -- (-0.85,0.85) node[above left,font=\small] {Bob $T$};
+    \draw[ink!40] (0.5,0) arc (0:90:0.5);
+  \end{tikzpicture}
+  \caption{The four measurement axes in the $x$--$z$ plane. Bob's axes bisect the angles between Alice's, which maximises the violation of the CHSH inequality.}
+  \label{fig:bell-axes}
+\end{figure}
+
+This contradicts Theorem~\ref{thm:chsh}. (One can show that $2\sqrt2$ is the largest value quantum mechanics allows, a result called Tsirelson's bound; Exercise~\ref{ex:tsirelson}.) Moreover the prediction has been tested: experiments with photons, starting with Aspect and collaborators~\cite{aspect1982}, and later ones
+closing the experimental loopholes~\cite{hensen2015}, are overwhelmingly in favour of the quantum value. \emph{Nature does not obey the Bell inequality.}
+
+\begin{example}\label{ex:chsh-numeric}
+  Verify $\langle QS\rangle=\tfrac1{\sqrt2}$ directly, with the observables above and $\ket{\Psi^-}$.
+\end{example}
+\begin{solution}
+  $QS=Z_1\cdot\frac{-Z_2-X_2}{\sqrt2}=-\tfrac1{\sqrt2}(Z\tp Z+Z\tp X)$. For the singlet $\langle Z\tp Z\rangle=-1$ (opposite results) and $\langle Z\tp X\rangle=0$ (Lemma~\ref{lem:singlet-corr} with $\vec a\perp\vec b$). Hence $\langle QS\rangle=-\tfrac1{\sqrt2}(-1+0)=\tfrac1{\sqrt2}$.
+\end{solution}
+
+\subsection{What it means}
+
+Something in the derivation of Theorem~\ref{thm:chsh} must be wrong, and there were only two assumptions: realism and locality. Most physicists conclude that realism must go, but some prefer to give up locality; the vast literature
+analyses the exact assumptions needed. The consensus is that Nature is not locally realistic. Two cautions are in order.
+
+\begin{itemize}
+  \item Quantum mechanics does \emph{not} allow faster-than-light signalling. Alice's choice of measurement does not change Bob's reduced state, which is $\tfrac12\Id$ whatever she does (Exercise~\ref{ex:no-signalling}), so Bob sees only random outcomes; the correlations appear only when the two lists of results are \emph{compared}, which requires ordinary communication.
+  \item The violation is not an anomaly of one state. Every entangled pure state violates some Bell inequality, and for us the lesson is constructive: entanglement is a genuinely new resource, beyond anything classical.
+\end{itemize}
+
+For quantum computing the lesson has been, historically, vague but fruitful: there is something profoundly different about entangled states, and a lot of progress has come from asking ``what would a little entanglement buy me in this problem?''. We have already seen one answer, superdense coding (Section~\ref{sec:superdense}). Teleportation, quantum cryptography and the
+speed-up of quantum algorithms are others, and they are the subject of the courses that follow.
+
+\begin{exerciseset}
+  \exercise{1} Verify that the singlet $\ket{\Psi^-}$ is entangled, and that measuring $Z$ on both qubits always gives opposite results. Repeat with $X$ on both qubits.
+
+  \exercise{2} Prove \eqref{eq:singlet-inv}: for $U\in M_2(\C)$ one has $U\begin{pmatrix}0&1\\-1&0\end{pmatrix}U^t=\det U\begin{pmatrix}0&1\\-1&0\end{pmatrix}$.
+
+  \exercise{2} Verify Lemma~\ref{lem:singlet-corr} directly for $(\vec a,\vec b)=(\vec z,\vec z)$, $(\vec x,\vec x)$, $(\vec z,\vec x)$, by computing in the basis $\ket{ij}$.
+
+  \exercise{2} Check, using Lemma~\ref{lem:singlet-corr}, that $\langle RS\rangle=\langle RT\rangle=\tfrac1{\sqrt2}$ and $\langle QT\rangle=-\tfrac1{\sqrt2}$, and that the CHSH combination equals $2\sqrt2$.
+
+  \exercise{2} Assuming local realism, show that $\mathbb E(QS)+\mathbb E(RS)+\mathbb E(RT)-\mathbb E(QT)\ge-2$, and that each of the four ``sign choices'' $(\pm QS\pm\dots)$ gives an inequality with the same bound.
+
+  \exercise{3} (Tsirelson's bound.) Let $Q=\vec q\cdot\vec\sigma$, $R=\vec r\cdot\vec\sigma$, $S=\vec s\cdot\vec\sigma$, $T=\vec t\cdot\vec\sigma$ with real unit vectors. Show that $(Q\tp S+R\tp S+R\tp T-Q\tp T)^2=4\,\Id\tp\Id-\bigl[Q,R\bigr]\tp\bigl[S,T\bigr]$, and deduce $\langle QS+RS+RT-QT\rangle\le2\sqrt2$ in every state.\label{ex:tsirelson}
+
+  \exercise{2} For the state $\ket{\Phi^+}=\bell00$, find directions $\vec a_Q,\vec a_R,\vec b_S,\vec b_T$ that also violate the CHSH inequality, and compute the maximal violation you can obtain.
+
+  \exercise{2} Show that the state $\ket0\ket0$ does not violate the CHSH inequality for any choice of $\pm1$ observables of the above type, computing the largest value that $\langle QS+RS+RT-QT\rangle$ takes.
+
+  \exercise{3} Show that Alice's choice of measurement cannot change Bob's reduced state in the singlet: if Alice measures with any projective measurement and does not tell Bob the result, Bob's state is still $\tfrac12\Id$. Explain why this prevents faster-than-light signalling.\label{ex:no-signalling}
+
+  \exercise{3} A ``local hidden variable'' model assigns to each run a shared variable $\lambda$ with probability $\mu(\lambda)$ and outcomes $A(\vec a,\lambda),B(\vec b,\lambda)\in\{\pm1\}$. Show that Theorem~\ref{thm:chsh} applies to the correlations $E(\vec a,\vec b)=\int A(\vec a,\lambda)B(\vec b,\lambda)\mu(\lambda)\dd\lambda$, and that therefore no such model reproduces $E(\vec a,\vec b)=-\vec a\cdot\vec b$.
+\end{exerciseset}

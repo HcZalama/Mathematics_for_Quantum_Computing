@@ -1,0 +1,285 @@
+%======================================================================
+\section{State space and evolution}\label{sec:state-evolution}
+%======================================================================
+
+\begin{objectives}
+  You will state Postulates~1 and~2; describe a qubit state and place it on the Bloch sphere;
+  recognise the basic single-qubit gates; and pass between the unitary and the Schr\"odinger forms of
+  the dynamics.
+\end{objectives}
+
+Quantum mechanics is a \emph{framework}, not a theory. It does not tell us which
+Hilbert space describes a given physical system, or which Hamiltonian governs it;
+specific theories, such as quantum electrodynamics, answer those questions inside
+the framework. What the postulates fix is the \emph{form} of every such theory.
+Do not expect them to be motivated: they emerged from decades of trial and error. Expect to learn how and when to apply them.
+
+\subsection{State space}
+
+\begin{postulate}[State space]\label{post:state}
+  To every isolated physical system we associate a Hilbert space $\Hil$, its
+  \term{state space}. The system is completely described by its \term{state vector}:
+  a unit vector $\ket\psi\in\Hil$, that is, $\norm{\psi}=\sqrt{\braket\psi\psi}=1$.
+\end{postulate}
+
+Note what the postulate does \emph{not} say: it does not tell us which $\Hil$ describes
+a given system, nor which $\ket\psi$ the system is in. We simply posit a finite-dimensional
+state space $\C^d$ and work from there. Our fundamental system is the simplest nontrivial one, with $\Hil=\C^2$.
+
+\begin{definition}[Qubit]\label{def:qubit}
+  Fix an orthonormal basis $\{\ket0,\ket1\}$ of $\C^2$, the \term{computational basis}. A \term{qubit state} is
+  \[
+    \ket\psi=a\ket0+b\ket1,\qquad a,b\in\C,\qquad \braket\psi\psi=\abs a^2+\abs b^2=1 .
+  \]
+  The numbers $a,b$ are the \term{amplitudes} of $\ket0$ and $\ket1$, and $\ket\psi$ is a \term{superposition} of them.
+\end{definition}
+
+The vectors $\ket0,\ket1$ play the role of the two values of a classical bit. The difference is that
+superpositions $a\ket0+b\ket1$ also exist, and then it is meaningless to say that the qubit is ``really''
+in $\ket0$ or in $\ket1$. The unit-norm condition is what will make probabilities add up to $1$
+(Section~\ref{sec:measurement}). For instance $\ket-=\frac1{\sqrt2}(\ket0-\ket1)$ has amplitude $1/\sqrt2$ for $\ket0$ and $-1/\sqrt2$ for $\ket1$.
+
+\begin{example}\label{ex:normalise}
+  For which $c>0$ is $\ket\psi=c\bigl(\ket0+(1-\ii)\ket1\bigr)$ a qubit state?
+\end{example}
+\begin{solution}
+  We need $c^2\bigl(1+\abs{1-\ii}^2\bigr)=c^2(1+2)=1$, so $c=1/\sqrt3$. (Any $c\,e^{\ii\gamma}$ with $\gamma\in\R$ also works; these multiples describe the same physical state, as we will see in Section~\ref{sec:measurement}.)
+\end{solution}
+
+Count the parameters. The two amplitudes are four real numbers; normalisation removes one; and we will see that a global phase removes another. Only
+\emph{two} real parameters remain. Where do they live?
+
+\subsection{The Bloch sphere}
+
+Every qubit state, up to a global phase, can be written as
+\begin{equation}\label{eq:bloch-param}
+  \ket\psi=\cos\tfrac\theta2\,\ket0+e^{\ii\phi}\sin\tfrac\theta2\,\ket1,\qquad \theta\in[0,\pi],\ \phi\in[0,2\pi),
+\end{equation}
+(multiply by a phase to make the $\ket0$-amplitude real and non-negative; the moduli then force $\cos\frac\theta2,\sin\frac\theta2$ with $\theta/2\in[0,\pi/2]$).
+The two angles $\theta,\phi$ are the polar and azimuthal angles of a point of the unit sphere, so we associate with $\ket\psi$ its \term{Bloch vector}
+\[
+  \vec n=(\sin\theta\cos\phi,\ \sin\theta\sin\phi,\ \cos\theta)\in\R^3,\qquad \abs{\vec n}=1 .
+\]
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[>=stealth,scale=1.25]
+    % sphere outline and equator
+    \draw[ink,thick] (0,0) circle (2);
+    \draw[ink!60] (-2,0) arc (180:360:2 and 0.7);
+    \draw[ink!40,dashed] (-2,0) arc (180:0:2 and 0.7);
+    % axes
+    \draw[->,ink!70] (0,0) -- (0,2.6) node[above] {$z$};
+    \draw[->,ink!70] (0,0) -- (2.6,0) node[right] {$y$};
+    \draw[->,ink!70] (0,0) -- (-1.1,-0.77) node[below left] {$x$};
+    % named states
+    \fill[navy] (0,2) circle (2pt) node[above left,font=\small] {$\ket0$};
+    \fill[navy] (0,-2) circle (2pt) node[below right,font=\small] {$\ket1$};
+    \fill[navy] (-0.9,-0.63) circle (2pt) node[below left,font=\small] {$\ket+$};
+    \fill[navy] (0.9,0.63) circle (2pt) node[above right,font=\small] {$\ket-$};
+    \fill[navy] (2,0) circle (2pt) node[above right,font=\small] {$\ket{+\ii}$};
+    \fill[navy] (-2,0) circle (2pt) node[above left,font=\small] {$\ket{-\ii}$};
+    % a generic state
+    \draw[very thick,figacc,->] (0,0) -- (0.52,1.45);
+    \fill[figacc] (0.52,1.45) circle (2pt) node[right,font=\small] {$\ket\psi$};
+    \draw[figacc] (0,0.55) arc (90:70:0.55) node[midway,above,font=\scriptsize] {$\theta$};
+  \end{tikzpicture}
+  \caption{The Bloch sphere. The six states $\ket0,\ket1$ (poles), $\ket\pm$ (along the $x$-axis) and $\ket{\pm\ii}$ (along the $y$-axis) are marked.
+  A general state $\ket\psi$ is a point of the sphere; orthogonal states sit at antipodal points.}
+  \label{fig:bloch}
+\end{figure}
+
+The poles are $\ket0$ and $\ket1$; $\ket\pm$ lie on the $\pm x$ axis and $\ket{\pm\ii}$ on the $\pm y$ axis (Figure~\ref{fig:bloch}).
+The Bloch vector can be read off from the matrix $\ket\psi\!\bra\psi$:
+
+\begin{proposition}\label{prop:bloch}
+  For $\ket\psi$ as in \eqref{eq:bloch-param} with Bloch vector $\vec n$,
+  \[
+    \ket\psi\!\bra\psi=\tfrac12\bigl(\Id+\vec n\cdot\vec\sigma\bigr),\qquad n_j=\bra\psi\sigma_j\ket\psi .
+  \]
+  Moreover, if $\ket\varphi$ has Bloch vector $\vec m$, then $\abs{\braket\varphi\psi}^2=\tfrac12(1+\vec m\cdot\vec n)$.
+\end{proposition}
+\begin{proof}
+  Write $c=\cos\frac\theta2$, $s=\sin\frac\theta2$. Then
+  \[
+    \ket\psi\!\bra\psi=\begin{pmatrix}c^2&cs\,e^{-\ii\phi}\\cs\,e^{\ii\phi}&s^2\end{pmatrix}
+    =\frac12\begin{pmatrix}1+\cos\theta&\sin\theta\,e^{-\ii\phi}\\\sin\theta\,e^{\ii\phi}&1-\cos\theta\end{pmatrix},
+  \]
+  using $c^2=\tfrac12(1+\cos\theta)$, $s^2=\tfrac12(1-\cos\theta)$, $cs=\tfrac12\sin\theta$. On the other hand,
+  $\tfrac12(\Id+\vec n\cdot\vec\sigma)$ has the same entries, because $\vec n\cdot\vec\sigma=\begin{pmatrix}n_z&n_x-\ii n_y\\n_x+\ii n_y&-n_z\end{pmatrix}$.
+  The components follow from $\Tr(\sigma_j\sigma_k)=2\delta_{jk}$ and $\Tr\sigma_j=0$: $\bra\psi\sigma_j\ket\psi=\Tr(\sigma_j\ket\psi\!\bra\psi)=n_j$.
+  For the last claim, $\abs{\braket\varphi\psi}^2=\Tr\bigl(\ket\varphi\!\bra\varphi\ket\psi\!\bra\psi\bigr)=\tfrac14\Tr\bigl((\Id+\vec m\cdot\vec\sigma)(\Id+\vec n\cdot\vec\sigma)\bigr)=\tfrac14(2+2\vec m\cdot\vec n)$.
+\end{proof}
+
+In particular, $\vec m=-\vec n$ gives overlap $0$: \emph{orthogonal states are antipodal points of the sphere.} So a qubit is a point on a sphere; gates will turn out to be rotations of it.
+
+\begin{example}\label{ex:bloch-vectors}
+  Find the Bloch vectors of $\ket0,\ket1,\ket\pm,\ket{\pm\ii}$, and of $\ket\psi=\frac1{\sqrt3}\ket0+\sqrt{\tfrac23}\,e^{\ii\pi/3}\ket1$.
+\end{example}
+\begin{solution}
+  Using $n_j=\bra\psi\sigma_j\ket\psi$: $\ket0$ gives $(0,0,1)$ and $\ket1$ gives $(0,0,-1)$. For $\ket\pm$ we have $\sx\ket\pm=\pm\ket\pm$, $\bra\pm\sz\ket\pm=0$ and $\bra\pm\sy\ket\pm=0$, so $(\pm1,0,0)$;
+  likewise $\ket{\pm\ii}\mapsto(0,\pm1,0)$.
+  For $\ket\psi$, compare with \eqref{eq:bloch-param}: $\cos\frac\theta2=\frac1{\sqrt3}$ gives $\cos\theta=2\cos^2\frac\theta2-1=-\tfrac13$, $\sin\theta=\tfrac{2\sqrt2}{3}$, and $\phi=\pi/3$. Hence
+  \[
+    \vec n=\Bigl(\tfrac{2\sqrt2}{3}\cdot\tfrac12,\ \tfrac{2\sqrt2}{3}\cdot\tfrac{\sqrt3}{2},\ -\tfrac13\Bigr)=\Bigl(\tfrac{\sqrt2}{3},\ \tfrac{\sqrt6}{3},\ -\tfrac13\Bigr).
+  \]
+  \emph{Check:} $\tfrac29+\tfrac69+\tfrac19=1$.
+\end{solution}
+
+\subsection{Unitary evolution}
+
+\begin{postulate}[Evolution]\label{post:evolution}
+  The evolution of a \emph{closed} quantum system is described by a unitary transformation. The state $\ket\psi$ at time $t_1$ and the state $\ket{\psi'}$ at time $t_2$ are related by
+  a unitary operator $U$ that depends only on $t_1$ and $t_2$:
+  \[
+    \ket{\psi'}=U\ket\psi .
+  \]
+\end{postulate}
+
+\emph{Closed} means not interacting with any other system. Strictly speaking, only the whole Universe is closed, but many systems are closed to excellent approximation, and in principle every open system is part of a larger closed one.
+Again the postulate only guarantees that the evolution can be written this way: it does not say which $U$ describes a real system. Unitarity is exactly what is needed to keep Postulate~1 consistent:
+$\braket{\psi'}{\psi'}=\bra\psi U^\dagger U\ket\psi=1$, so states are sent to states. For a single qubit, any unitary can be realised in realistic systems, and the standard ones have names.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lcll@{}}
+  \toprule
+  Gate & Matrix & Action & Name\\
+  \midrule
+  $X=\sx$ & $\begin{pmatrix}0&1\\1&0\end{pmatrix}$ & $\ket0\leftrightarrow\ket1$ & bit flip, quantum NOT\\[6pt]
+  $Z=\sz$ & $\begin{pmatrix}1&0\\0&-1\end{pmatrix}$ & $\ket0\mapsto\ket0,\ \ket1\mapsto-\ket1$ & phase flip\\[6pt]
+  $H$ & $\frac1{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix}$ & $\ket0\mapsto\ket+,\ \ket1\mapsto\ket-$ & Hadamard\\[6pt]
+  $S$ & $\begin{pmatrix}1&0\\0&\ii\end{pmatrix}$ & $\ket0\mapsto\ket0,\ \ket1\mapsto\ii\ket1$ & phase gate\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+$X$ and $Z$ are Hermitian and unitary (they are Pauli matrices, Proposition~\ref{prop:pauli}). The Hadamard gate turns ``definite'' states into equal superpositions, which is the first step of most quantum algorithms.
+$S$ is unitary but not Hermitian.
+
+\begin{pitfall}
+  The symbol $H$ stands for two different things: the Hadamard gate above, and the Hamiltonian of the next subsection. Context decides which.
+\end{pitfall}
+
+\begin{example}\label{ex:hadamard-eig}
+  Verify that the Hadamard gate $H$ is unitary with $H^2=\Id$, and find its eigenvalues and eigenvectors.
+\end{example}
+\begin{solution}
+  By Example~\ref{ex:hadamard}, $H=(\sx+\sz)/\sqrt2$ is Hermitian with $H^2=\Id$, so $H^\dagger H=H^2=\Id$: it is unitary. Write $H=\vec n\cdot\vec\sigma$ with the unit vector $\vec n=\frac1{\sqrt2}(1,0,1)$.
+  By Exercise~\ref{ex:vn-sigma-eig} (or directly: $(\vec n\cdot\vec\sigma)^2=\Id$ by the product formula of Proposition~\ref{prop:pauli}) the eigenvalues are $\pm1$.
+  The eigenvector for $+1$ solves $(H-\Id)v=0$, i.e.\ $v_1(1-\sqrt2)+v_2=0$, so $v\propto(1,\sqrt2-1)=(1,\tan\frac\pi8)\propto\bigl(\cos\tfrac\pi8,\sin\tfrac\pi8\bigr)$.
+  The eigenvector for $-1$ is orthogonal to it: $\bigl(-\sin\tfrac\pi8,\cos\tfrac\pi8\bigr)$. These are the Bloch vectors $\pm\vec n$, at angle $\pi/4$ from $\ket0$: the Hadamard gate is a half-turn about the axis $\vec n$.
+\end{solution}
+
+\subsection{The Schr\"odinger equation}
+
+In continuous time, the dynamics is governed by an operator that stores the energy.
+
+\begin{proposition}[Evolution, Schr\"odinger form]\label{prop:schrodinger}
+  Postulate~\ref{post:evolution} is equivalent to the following statement. The state of a closed system obeys
+  \begin{equation}\label{eq:schrodinger-abstract}
+    \ii\hbar\,\frac{d}{dt}\ket{\psi(t)}=H\ket{\psi(t)},
+  \end{equation}
+  where $\hbar$ is Planck's constant (fixed experimentally) and $H=H^\dagger$ is a fixed Hermitian operator, the \term{Hamiltonian} of the system. The solution is $\ket{\psi(t_2)}=U(t_1,t_2)\ket{\psi(t_1)}$ with
+  \[
+    U(t_1,t_2)=\exp\!\Bigl(-\frac{\ii H(t_2-t_1)}{\hbar}\Bigr).
+  \]
+\end{proposition}
+\begin{proof}
+  If $H$ is Hermitian, so is $K=-H(t_2-t_1)/\hbar$, and $U(t_1,t_2)=e^{\ii K}$ is unitary by Proposition~\ref{prop:expunitary}; and $\frac{d}{dt_2}U=-\frac{\ii H}{\hbar}U$, so $U\ket{\psi(t_1)}$ solves \eqref{eq:schrodinger-abstract}.
+  Conversely, let $U$ be unitary. By Theorem~\ref{thm:spectrum}(b) and the spectral theorem, $U=\sum_je^{\ii\theta_j}\ket{v_j}\!\bra{v_j}$ with $\theta_j\in\R$. Put $K=\sum_j\theta_j\ket{v_j}\!\bra{v_j}$, Hermitian, so that $U=e^{\ii K}$; then $U=e^{-\ii H\Delta t/\hbar}$ for the Hermitian operator $H=-\hbar K/\Delta t$.
+\end{proof}
+
+The correspondence between unitaries and Hamiltonians is one-to-one up to the choice of branch of the logarithm ($\theta_j$ is determined only modulo $2\pi$). Knowing $H$ and $\hbar$ we know the dynamics completely, in principle; finding the right $H$ for a physical system is hard and needs experiments.
+In quantum computing we usually just posit a matrix $H$, and often set $\hbar=1$.
+
+Since $H$ is Hermitian, it has a spectral decomposition $H=\sum_EE\ket E\!\bra E$. The eigenvectors $\ket E$ are the \term{energy eigenstates} or stationary states, $E$ is the energy, the smallest $E$ is the
+\emph{ground state energy} and its eigenspace the ground state. By the functional calculus,
+\[
+  e^{-\ii Ht/\hbar}\ket E=e^{-\ii Et/\hbar}\ket E :
+\]
+a stationary state only picks up a global phase, so nothing observable changes. A \emph{superposition} of energy levels, on the other hand, develops \emph{relative} phases between the levels, and those are observable.
+
+\begin{example}\label{ex:H-eq-X}
+  A qubit has Hamiltonian $H=\hbar\omega X$ and starts in $\ket{\psi(0)}=\ket0$. Find the energy levels, the state at time $t$, and the probability of finding $\ket1$.
+\end{example}
+\begin{solution}
+  $X\ket\pm=\pm\ket\pm$, so the energy eigenstates are $\ket\pm$ with energies $\pm\hbar\omega$; the ground state is $\ket-$. Using $X^2=\Id$ and Example~\ref{ex:funcs}(b),
+  \[
+    U(t)=e^{-\ii\omega tX}=\cos(\omega t)\,\Id-\ii\sin(\omega t)\,X,
+    \qquad
+    \ket{\psi(t)}=\cos(\omega t)\ket0-\ii\sin(\omega t)\ket1 .
+  \]
+  The \emph{amplitude} of $\ket1$ is $-\ii\sin\omega t$; its modulus squared, which will be a probability by Postulate~3, is $\sin^2(\omega t)$. The initial state $\ket0=\frac1{\sqrt2}(\ket++\ket-)$ is a superposition of the two energy levels,
+  and the relative phase $e^{-2\ii\omega t}$ between them is what makes the weight on $\ket1$ oscillate, with period $\pi/\omega$. Had we started in $\ket+$, nothing would have happened.
+\end{solution}
+
+\begin{remark}
+  A puzzle: in circuits we ``apply the gate $X$ to a qubit''. But applying means that an external agent interacts with the qubit, so it is not closed, which seems to contradict Postulate~2. The resolution is that
+  the atom plus the laser form a closed system, and, looking at the atom alone, its state evolves almost exactly as if governed by a Hamiltonian $H(t)$ that depends on parameters the experimentalist controls
+  (the laser's intensity and duration, for example). We will keep describing the evolution of quantum systems, even those that are not closed, by unitaries. The main exception is measurement, to which we turn next.
+\end{remark}
+
+\subsection{Exponentials of non-commuting operators}
+
+Gates are exponentials of Hamiltonians, so we must know when exponentials combine.
+
+\begin{proposition}\label{prop:commuting-exp}
+  If $A,B$ are commuting Hermitian operators, then $e^{\ii A}e^{\ii B}=e^{\ii(A+B)}$.
+\end{proposition}
+\begin{proof}
+  Commuting Hermitian operators can be diagonalised simultaneously: there is one orthonormal basis $\{\ket{v_i}\}$ with $A\ket{v_i}=a_i\ket{v_i}$ and $B\ket{v_i}=b_i\ket{v_i}$ (Exercise~\ref{ex:commuting-basis}).
+  Both sides then act on $\ket{v_i}$ as multiplication by $e^{\ii(a_i+b_i)}$.
+\end{proof}
+
+If $A,B$ do not commute, the law fails: for $A=s\sx$, $B=s\sz$ and a small $s\neq0$, $e^{\ii A}e^{\ii B}\neq e^{\ii(A+B)}$ (compare second-order terms; Exercise~\ref{ex:trotter-exercise}). The general statement is the Baker--Campbell--Hausdorff formula,
+$e^Ae^B=\exp\bigl(A+B+\tfrac12[A,B]+\cdots\bigr)$, where the dots are nested commutators. The failure is small when the operators are small, which gives the useful \emph{Trotter formula}
+\[
+  e^{\ii(A+B)}=\lim_{n\to\infty}\bigl(e^{\ii A/n}e^{\ii B/n}\bigr)^n .
+\]
+A Hamiltonian $H=H_1+H_2$ can therefore be simulated by alternating the evolutions under $H_1$ and under $H_2$, each of which may be easy: this is the idea behind quantum simulation on a quantum computer.
+
+\begin{example}\label{ex:trotter}
+  Let $A=\frac\pi4\sx$ and $B=\frac\pi4\sz$. Compare $e^{-\ii(A+B)}$ with $\bigl(e^{-\ii A/n}e^{-\ii B/n}\bigr)^n$.
+\end{example}
+\begin{solution}
+  Here $A+B=\frac{\pi}{4}(\sx+\sz)=\frac{\pi\sqrt2}{4}\,H$, where $H=\vec n\cdot\vec\sigma$ with $\vec n$ a unit vector and $H^2=\Id$. Hence, by the same computation as in Example~\ref{ex:funcs}(b),
+  $e^{-\ii(A+B)}=\cos\tfrac{\pi}{2\sqrt2}\,\Id-\ii\sin\tfrac{\pi}{2\sqrt2}\,H$ (Exercise~\ref{ex:rotation-formula}).
+  Computing the products numerically, the operator-norm error of the Trotter product is about $0.54$ for $n=1$, $0.25$ for $n=2$, $0.050$ for $n=10$ and $0.0050$ for $n=100$: it decreases like $1/n$, so ten times more steps buy ten times more accuracy.
+\end{solution}
+
+\begin{exerciseset}
+  \exercise{1} Find $c>0$ such that $c\bigl((1+\ii)\ket0+2\ket1\bigr)$ is a qubit state. Which of these pairs of states differ only by a global phase: $\ket\psi$ and $-\ket\psi$; $\frac1{\sqrt2}(\ket0+\ket1)$ and $\frac1{\sqrt2}(\ket0+\ii\ket1)$; $\frac1{\sqrt2}(\ket0+\ii\ket1)$ and $\frac1{\sqrt2}(\ii\ket0-\ket1)$?
+
+  \exercise{1} Compute the Bloch vectors of $\ket0,\ket1,\ket\pm,\ket{\pm\ii}$, and find $\theta,\phi$ and $\vec n$ for $\ket\psi=\frac1{\sqrt3}\ket0+\sqrt{\tfrac23}\,e^{\ii\pi/3}\ket1$.
+
+  \exercise{2} Show that $\ket\psi\!\bra\psi=\frac12(\Id+\vec n\cdot\vec\sigma)$ and $\abs{\braket\varphi\psi}^2=\frac12(1+\vec m\cdot\vec n)$ (Proposition~\ref{prop:bloch}), and deduce that orthogonal states have antipodal Bloch vectors.
+
+  \exercise{2} For $\ket\psi=a\ket0+b\ket1$ with $a\neq0$, find $\gamma$ such that $e^{-\ii\gamma}\ket\psi$ has a real, positive $\ket0$-amplitude, and read off $\theta/2$ and $\phi$. Show that two qubit states $\ket\psi,\ket\varphi$ describe the same Bloch vector if and only if $\abs{\braket\psi\varphi}=1$.
+
+  \exercise{1} Verify that the Hadamard gate is unitary, that $H^2=\Id$, and find its eigenvalues and eigenvectors. (Hint: $H=\vec n\cdot\vec\sigma$ with $\vec n=\frac1{\sqrt2}(1,0,1)$.)\label{ex:vn-sigma-eig}
+
+  \exercise{1} Show that $HXH=Z$, $HZH=X$ and $HYH=-Y$, and interpret: $H$ exchanges the computational basis with the $\ket\pm$ basis. Is $S$ Hermitian? Is it involutory? Compute $S^2$ and $S^4$.
+
+  \exercise{2} Compute the action of $Z$ and $S$ on $\ket+$. Which gate maps $\ket+$ to $\ket-$? Which maps $\ket+$ to $\ket{+\ii}$? What are the Bloch vectors involved?
+
+  \exercise{2} Show that $e^{-\ii\theta\,\vec n\cdot\vec\sigma/2}=\cos\frac\theta2\Id-\ii\sin\frac\theta2\,\vec n\cdot\vec\sigma$. Compute $R_x(\theta)\ket0$ for $R_x(\theta)=e^{-\ii\theta X/2}$ and the Bloch vector you obtain. Express $H,X,Z$ as such exponentials, up to a global phase (for instance $X=\ii\,e^{-\ii\pi X/2}$).\label{ex:rotation-formula}
+
+  \exercise{2} Let $U(t_1,t_2)=\exp(-\ii H(t_2-t_1)/\hbar)$ with $H=H^\dagger$. Prove that $U$ is unitary, that $U(t_2,t_3)U(t_1,t_2)=U(t_1,t_3)$, and that $U(t_2,t_1)=U(t_1,t_2)^{-1}$.
+
+  \exercise{2} Prove that $K=-\ii\log U$ is Hermitian for every unitary $U$ and $U=e^{\ii K}$. Is $K$ unique? Find two different Hermitian $K$ with $e^{\ii K}=\Id$.
+
+  \exercise{2} A precessing qubit: let $H=\hbar\omega Z$ and $\ket{\psi(0)}=\ket+$. Compute $\ket{\psi(t)}$ and the expectation values $\langle X\rangle_t,\langle Y\rangle_t,\langle Z\rangle_t$, and interpret the result as the motion of the Bloch vector. Which state is the ground state? Which states are stationary?
+
+  \exercise{3} Ehrenfest: for time-independent $A$, prove $\frac{d}{dt}\langle A\rangle_t=\frac{\ii}{\hbar}\langle[H,A]\rangle_t$. Deduce that $\langle H\rangle_t$ is constant and that every $A$ commuting with $H$ is a conserved quantity.
+
+  \exercise{2} Let $H=\sum_EE\ket E\!\bra E$ and $\ket{\psi(0)}=\sum_Ec_E\ket E$. Show $\ket{\psi(t)}=\sum_Ec_Ee^{-\ii Et/\hbar}\ket E$ and that the probabilities $\abs{c_E}^2$ of the energy do not depend on time. For another observable $A$, show $\langle A\rangle_t=\sum_{E,E'}\bar c_Ec_{E'}A_{EE'}e^{\ii(E-E')t/\hbar}$, which oscillates at the Bohr frequencies $(E-E')/\hbar$.
+
+  \exercise{2} Prove that commuting Hermitian operators have a common orthonormal eigenbasis (Proposition~\ref{prop:commuting-exp}). (Hint: the eigenspaces of $A$ are invariant under $B$.)\label{ex:commuting-basis}
+
+  \exercise{2} Let $H(t)=\Omega(t)X$. Show $[H(t),H(t')]=0$ and $U=\exp\bigl(-\ii X\int_0^t\Omega(s)\dd s\bigr)$. Starting from $\ket0$, compute the probability of $\ket1$. If $\int_0^T\Omega=\pi/2$, which gate have you implemented?
+
+  \exercise{2} Show that $e^{\ii s\sx}e^{\ii s\sz}\neq e^{\ii s(\sx+\sz)}$ for small $s\neq0$ by comparing the terms of order $s^2$. Then repeat Example~\ref{ex:trotter} numerically for $n=1,2,10$ and describe the error as $n$ grows.\label{ex:trotter-exercise}
+
+  \exercise{3} How many real parameters describe a normalised state of $n$ qubits up to a global phase? Compare with the $2n$ parameters of a product of $n$ single-qubit states, and discuss what the gap suggests (see Section~\ref{sec:composite}).
+\end{exerciseset}

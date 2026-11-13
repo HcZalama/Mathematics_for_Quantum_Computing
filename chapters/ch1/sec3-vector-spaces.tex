@@ -1,0 +1,564 @@
+%======================================================================
+\section{Vector spaces and linear maps}\label{sec:vector-spaces}
+%======================================================================
+
+\begin{objectives}
+  You will decide whether a set is a vector space, find bases and dimensions,
+  recognise linear maps and compute their kernel and range, write a linear map
+  as a matrix and change its basis, and use the Pauli matrices, the first quantum
+  operators we meet.
+\end{objectives}
+
+In Section~\ref{sec:motivation} we saw that solutions of Schr\"odinger's equation
+can be added and scaled. The natural setting for that is a vector space, and the
+maps that respect addition and scaling are the linear maps. A great deal of
+quantum mechanics is just the study of these two notions, so we spend some time
+on them.
+
+\subsection{Vector spaces}
+
+Throughout, the scalars $F$ will be either $\R$ or $\C$; in quantum mechanics it
+is nearly always $\C$.
+
+\begin{definition}[Vector space]\label{def:vs}
+  A \term{vector space} over $F$ is a set $V$ with an addition $V\times V\to V$
+  and a scalar multiplication $F\times V\to V$ such that $(V,+)$ is a commutative
+  group, with neutral element $0_V$, and for all $\lambda,\mu\in F$ and $v,w\in V$:
+  \[
+    \lambda(\mu v)=(\lambda\mu)v,\quad (\lambda+\mu)v=\lambda v+\mu v,\quad
+    \lambda(v+w)=\lambda v+\lambda w,\quad 1\,v=v .
+  \]
+\end{definition}
+
+Elements of $V$ are called \term{vectors}. In words: you may add vectors, scale
+them, and the usual rules of arithmetic hold. From these axioms one deduces that
+$0\,v=0_V$ for every $v$.
+
+The most important example is $F^n$, the columns of $n$ scalars. But the
+definition covers much more. The $m\times n$ matrices form a vector space, and
+so do the polynomials of degree at most $n$, written $P_n$. In infinite
+dimension we have the continuous functions on $[0,1]$, and, as we saw, the
+solutions of the Schr\"odinger equation. Sequences $(z_1,z_2,\dots)$ of
+complex numbers with termwise operations form a vector space as well.
+
+To see how the definition is used, and how it fails, consider two subsets of $\R^2$.
+
+\begin{example}\label{ex:vs-nonexample}
+  Are $A=\{(x,y)\in\R^2: x+y=0\}$ and $B=\{(x,y)\in\R^2:x+y=1\}$ vector spaces
+  with the usual operations?
+\end{example}
+\begin{solution}
+  $A$ is a line through the origin. If $x+y=0$ and $x'+y'=0$ then
+  $(x+x')+(y+y')=0$, and $\lambda x+\lambda y=0$, so $A$ is closed under sums and
+  scalar multiples, and the axioms are inherited from $\R^2$: $A$ is a vector space.
+
+  $B$ is not. Its elements would need a zero vector, but $(0,0)\notin B$. It also
+  fails closure: $(1,0)$ and $(0,1)$ are in $B$, and their sum $(1,1)$ is not.
+\end{solution}
+
+The test used for $A$ is the one to remember: to check that a subset of a known
+vector space is itself a vector space, it is enough to check that it contains $0$
+and is closed under sums and scalar multiples. Such a subset is called a
+\term{subspace}.
+
+\begin{pitfall}
+  The set of qubit states is \emph{not} a vector space. A qubit state is a
+  \emph{unit} vector of $\C^2$, and the sum of two unit vectors is generally not
+  a unit vector, nor is twice a unit vector. The states live \emph{inside} a vector space ($\C^2$),
+  but they do not form one. This is why normalisation will keep reappearing.
+\end{pitfall}
+
+\subsection{Span, independence, bases and dimension}
+
+Fix a vector space $V$. A \term{linear combination} of vectors $v_1,\dots,v_k$
+is a sum $\sum_i\lambda_iv_i$ with scalars $\lambda_i$, and the set of all of them
+is the \term{span} of $v_1,\dots,v_k$. Two properties are of interest.
+
+\begin{definition}[Independence, generators, basis]\label{def:basis}
+  Vectors $v_1,\dots,v_k$ are \term{linearly independent} if
+  $\sum_i\lambda_iv_i=0$ holds only when all $\lambda_i=0$. They are a
+  \term{system of generators} of $V$ if their span is all of $V$. They are a
+  \term{basis} if they are both. A space with a finite system of generators is
+  \term{finite-dimensional}.
+\end{definition}
+
+Independence says that no vector is redundant; generating says that nothing is
+missing. A basis is the perfect balance, and it is what lets us use coordinates.
+
+\begin{theorem}[Coordinates]\label{thm:coords}
+  If $v_1,\dots,v_n$ is a basis of $V$, every $v\in V$ can be written as
+  $v=\sum_i\lambda_iv_i$ in exactly one way. The numbers $\lambda_i$ are the
+  \term{coordinates} of $v$ in this basis.
+\end{theorem}
+\begin{proof}
+  Existence is the statement that the $v_i$ generate. For uniqueness, suppose
+  $\sum_i\lambda_iv_i=\sum_i\mu_iv_i$. Then $\sum_i(\lambda_i-\mu_i)v_i=0$, and independence forces $\lambda_i=\mu_i$ for every $i$.
+\end{proof}
+
+A fundamental fact, which we use without proof, is that in a finite-dimensional
+space every basis has the same number of elements. That number is the
+\term{dimension} $\dim V$. Moreover, any $\dim V$ independent vectors, or any $\dim V$
+generating vectors, already form a basis, and a subspace $U\subseteq V$ with
+$\dim U=\dim V$ equals $V$. For instance $\dim F^n=n$, $\dim P_n=n+1$ (a basis is
+$1,x,\dots,x^n$) and the $m\times n$ matrices have dimension $mn$.
+
+From now on, in $\C^2$ we write
+\[
+  \ket0=\begin{pmatrix}1\\0\end{pmatrix},\quad
+  \ket1=\begin{pmatrix}0\\1\end{pmatrix},\quad
+  \ket{\pm}=\frac{\ket0\pm\ket1}{\sqrt2},\quad
+  \ket{\pm\ii}=\frac{\ket0\pm\ii\ket1}{\sqrt2}.
+\]
+The symbol $\ket{\,\cdot\,}$ is just a way of writing a vector; its meaning will
+be explained in Section~\ref{sec:hilbert}. The first basis is the
+\emph{computational basis}.
+
+\begin{example}\label{ex:qubit-bases}
+  Show that $\{\ket+,\ket-\}$ is a basis of $\C^2$, write $\ket0$ in it, and write
+  $\ket{+\ii}$ in it.
+\end{example}
+\begin{solution}
+  Independence: if $\alpha\ket++\beta\ket-=0$, then in components
+  $(\alpha+\beta)/\sqrt2=0$ and $(\alpha-\beta)/\sqrt2=0$, so $\alpha=\beta=0$. Two
+  independent vectors in a space of dimension $2$ form a basis.
+
+  Adding the definitions, $\ket++\ket-=\sqrt2\,\ket0$, and subtracting,
+  $\ket+-\ket-=\sqrt2\,\ket1$, so
+  \[
+    \ket0=\tfrac{1}{\sqrt2}(\ket++\ket-),\qquad
+    \ket1=\tfrac{1}{\sqrt2}(\ket+-\ket-).
+  \]
+  Therefore
+  \[
+    \ket{+\ii}=\tfrac1{\sqrt2}\bigl(\ket0+\ii\ket1\bigr)
+    =\tfrac12\bigl((1+\ii)\ket++(1-\ii)\ket-\bigr).
+  \]
+  \emph{Check:} $\tfrac14\bigl(\abs{1+\ii}^2+\abs{1-\ii}^2\bigr)=1$, as it should
+  be for a unit vector (we will see why in Section~\ref{sec:hilbert}).
+\end{solution}
+
+\begin{example}[Why quantum computers are hard to simulate]\label{ex:nqubits}
+  The state space of $n$ qubits is $(\C^2)^{\otimes n}=\C^{2^n}$, of dimension $2^n$.
+  How much memory does a general state of $50$ qubits need, at 16 bytes per complex number?
+\end{example}
+\begin{solution}
+  A general state is a list of $2^{50}\approx1.1\times10^{15}$ complex numbers, so it needs
+  $2^{50}\cdot 16=2^{54}\approx1.8\times10^{16}$ bytes, about 18 petabytes. For $300$ qubits
+  the number $2^{300}\approx2\times10^{90}$ exceeds the number of atoms in the observable
+  universe. The dimension grows exponentially with the number of qubits, and this is the
+  source both of the power of quantum computing and of the difficulty of simulating it.
+\end{solution}
+
+\subsection{Sums of subspaces}
+
+Two subspaces $W_1,W_2$ of $V$ can be combined: their \term{sum}
+$W_1+W_2=\{w_1+w_2\}$ is the smallest subspace containing both. The sum is
+\term{direct}, written $W_1\oplus W_2$, if every vector of the sum can be
+written \emph{uniquely} as $w_1+w_2$. This happens exactly when
+$W_1\cap W_2=\{0\}$. If $V=W_1\oplus W_2$, then $\dim V=\dim W_1+\dim W_2$.
+
+A familiar example: every function $f:\R\to\R$ splits as an even part
+$\tfrac12(f(x)+f(-x))$ plus an odd part $\tfrac12(f(x)-f(-x))$, and the only
+function that is both even and odd is $0$, so $\{\text{functions}\}=\{\text{even}\}\oplus\{\text{odd}\}$.
+We will meet this structure again with projectors, which split a space in the same way.
+
+\subsection{Linear maps}
+
+The maps between vector spaces that matter are those that respect the structure.
+
+\begin{definition}[Linear map]\label{def:linmap}
+  Let $V,W$ be vector spaces over $F$. A map $T:V\to W$ is \term{linear} if
+  $T(\lambda v)=\lambda T(v)$ and $T(v+w)=T(v)+T(w)$ for all $\lambda\in F$ and $v,w\in V$.
+  The set of linear maps from $V$ to $W$ is written $L(V,W)$, and $L(V)=L(V,V)$.
+\end{definition}
+
+A linear map sends $0$ to $0$, so any map with $T(0)\neq0$ is not linear.
+The map $T(x,y)=2x+y$ is linear, while $T(x,y)=2x+y-1$ is not, because $T(0,0)=-1$.
+Differentiation $f\mapsto f'$ and integration $f\mapsto\int_0^1f$ are linear;
+squaring $f\mapsto f^2$ is not. A linear map is determined by what it does to a
+basis: if $v=\sum_i\lambda_iv_i$ then $T(v)=\sum_i\lambda_iT(v_i)$.
+
+Linear maps can themselves be added and scaled, so $L(V,W)$ is a vector space,
+of dimension $\dim V\cdot\dim W$ in finite dimension. Maps can also be composed,
+and composition of linear maps is linear. It is not commutative in general, and
+this non-commutativity will be at the heart of quantum mechanics.
+
+Two subspaces measure what a linear map $T:V\to W$ does.
+
+\begin{definition}[Kernel and range]\label{def:kerran}
+  The \term{kernel} (or null space) of $T$ is $\Ker T=\{v\in V:T(v)=0\}$, a
+  subspace of $V$. The \term{range} of $T$ is $\Ran T=\{T(v):v\in V\}$, a subspace
+  of $W$. We say $T$ is \term{injective} if $T(v_1)=T(v_2)$ implies $v_1=v_2$, and
+  \term{surjective} if $\Ran T=W$.
+\end{definition}
+
+The kernel is the information that $T$ destroys; the range is what it can reach.
+The two ideas are linked, as the next two results show.
+
+\begin{theorem}\label{thm:inj-ker}
+  A linear map $T$ is injective if and only if $\Ker T=\{0\}$.
+\end{theorem}
+\begin{proof}
+  If $T$ is injective and $T(v)=0=T(0)$, then $v=0$. Conversely, suppose $\Ker T=\{0\}$ and
+  $T(v_1)=T(v_2)$. Then $T(v_1-v_2)=0$, so $v_1-v_2=0$.
+\end{proof}
+
+\begin{theorem}[Rank--nullity]\label{thm:ranknull}
+  If $V$ is finite-dimensional and $T\in L(V,W)$, then
+  \[
+    \dim V=\dim\Ker T+\dim\Ran T .
+  \]
+\end{theorem}
+\begin{proof}
+  Take a basis $u_1,\dots,u_k$ of $\Ker T$ and extend it to a basis
+  $u_1,\dots,u_k,v_1,\dots,v_r$ of $V$. We claim that $T(v_1),\dots,T(v_r)$ is a basis
+  of $\Ran T$, which gives $\dim V=k+r$. They generate: for any $v=\sum a_iu_i+\sum b_jv_j$ we have
+  $T(v)=\sum b_jT(v_j)$, since $T(u_i)=0$. They are independent: if
+  $\sum b_jT(v_j)=0$, then $\sum b_jv_j\in\Ker T$, so $\sum b_jv_j=\sum a_iu_i$ for some
+  $a_i$; independence of the whole basis forces all the $a_i$ and $b_j$ to vanish.
+\end{proof}
+
+\begin{corollary}\label{cor:inj-surj}
+  If $\dim V<\infty$ and $T\in L(V)$, then $T$ is injective $\iff$ $T$ is surjective $\iff$ $T$ is invertible.
+\end{corollary}
+\begin{proof}
+  By Theorem~\ref{thm:inj-ker}, $T$ is injective iff $\dim\Ker T=0$, which by rank--nullity
+  holds iff $\dim\Ran T=\dim V$, that is, iff $\Ran T=V$.
+\end{proof}
+
+The next example shows that finite dimension cannot be dropped.
+
+\begin{example}\label{ex:shifts}
+  On the space of complex sequences $(z_1,z_2,\dots)$ consider the left shift
+  $\ell(z_1,z_2,z_3,\dots)=(z_2,z_3,\dots)$ and the right shift
+  $\rho(z_1,z_2,z_3,\dots)=(0,z_1,z_2,\dots)$. Are they injective, surjective, bijective?
+  Why does this not contradict Corollary~\ref{cor:inj-surj}?
+\end{example}
+\begin{solution}
+  The left shift forgets the first entry: $\ell(1,0,0,\dots)=0$, so $\ell$ is not injective.
+  It is surjective: $(w_1,w_2,\dots)=\ell(0,w_1,w_2,\dots)$.
+  The right shift is injective ($\rho(z)=0$ forces all $z_i=0$) but not surjective, since
+  nothing maps to $(1,0,0,\dots)$. Neither is bijective.
+
+  There is no contradiction because the space is infinite-dimensional, and
+  Corollary~\ref{cor:inj-surj} needs the rank--nullity theorem, which needs $\dim V<\infty$.
+\end{solution}
+
+\begin{example}\label{ex:ranknull}
+  Let $T:\R^3\to\R^2$, $T(x,y,z)=(x+y,\,y+z)$. Find $\Ker T$, $\Ran T$ and check rank--nullity.
+\end{example}
+\begin{solution}
+  $T(x,y,z)=0$ means $x=-y$ and $z=-y$, so $\Ker T=\{(-t,t,-t):t\in\R\}=\Span\{(-1,1,-1)\}$ has dimension $1$.
+  For the range, note $T(1,0,0)=(1,0)$ and $T(0,0,1)=(0,1)$, so $\Ran T=\R^2$ has dimension $2$.
+  Rank--nullity: $\dim\R^3=3=1+2$.
+\end{solution}
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[>=stealth]
+    \node[font=\small] at (-4.5,1.15) {$V$};
+    \draw[fill=ink!8,draw=ink] (-5.7,-0.6) rectangle (-1.3,1.0);
+    \draw[fill=figacc!25,draw=figacc] (-5.5,-0.4) rectangle (-3.6,0.8);
+    \draw[fill=navy!20,draw=navy] (-3.6,-0.4) rectangle (-1.5,0.8);
+    \node[font=\small,figacc] at (-4.55,0.2) {$\Ker T$};
+    \node[font=\small,navy] at (-2.55,0.2) {the rest};
+    \draw[->,thick,navy] (-2.55,-0.65) -- (0.9,-0.65) node[midway,below,font=\small] {$T$ is injective here};
+    \draw[->,thick,figacc] (-4.55,-0.65)  -- ++(0,-0.3);
+    \node[font=\small,figacc] at (-4.55,-1.25) {sent to $0$};
+    \node[font=\small] at (3.3,1.15) {$W$};
+    \draw[fill=ink!8,draw=ink] (1.3,-0.6) rectangle (5.3,1.0);
+    \draw[fill=navy!20,draw=navy] (1.5,-0.4) rectangle (3.4,0.8);
+    \node[font=\small,navy] at (2.45,0.2) {$\Ran T$};
+    \node[font=\footnotesize] at (4.3,0.2) {unreached};
+  \end{tikzpicture}
+  \caption{Rank--nullity: the part of $V$ that $T$ kills ($\Ker T$) and the part
+  that it sends one-to-one onto $\Ran T$ add up to all of $V$, so
+  $\dim V=\dim\Ker T+\dim\Ran T$.}
+  \label{fig:ranknull}
+\end{figure}
+
+\subsection{Matrices}
+
+Linear maps between finite-dimensional spaces become matrices once we pick bases.
+Let $v_1,\dots,v_n$ be a basis of $V$ and $w_1,\dots,w_m$ a basis of $W$. For
+each $i$ write $T(v_i)=\sum_jM_{ji}w_j$. The \term{matrix of $T$} in these bases is
+$M=(M_{ji})$, an $m\times n$ array whose $i$th column holds the coordinates of $T(v_i)$:
+\[
+  \text{coordinates of }T(v)\ =\ M\cdot\text{coordinates of }v .
+\]
+This is the one idea to hold on to: \emph{the columns of the matrix are the images
+of the basis vectors.}
+
+\begin{example}\label{ex:matrices}
+  Find the matrix of $D:P_3\to P_3$, $D(p)=p'$, in the basis $1,x,x^2,x^3$, and of the rotation
+  $R_\theta$ of $\R^2$ by an angle $\theta$ in the canonical basis.
+\end{example}
+\begin{solution}
+  The images are $D(1)=0$, $D(x)=1$, $D(x^2)=2x$, $D(x^3)=3x^2$. Writing each in coordinates
+  gives the columns
+  \[
+    M_D=\begin{pmatrix}0&1&0&0\\0&0&2&0\\0&0&0&3\\0&0&0&0\end{pmatrix}.
+  \]
+  (Taking four derivatives of a cubic gives $0$, and indeed $M_D^4=0$.)
+
+  The rotation sends $e_1=(1,0)$ to $(\cos\theta,\sin\theta)$ and $e_2=(0,1)$ to
+  $(-\sin\theta,\cos\theta)$, so
+  \[
+    M_{R_\theta}=\begin{pmatrix}\cos\theta&-\sin\theta\\ \sin\theta&\cos\theta\end{pmatrix}.
+  \]
+\end{solution}
+
+A matrix depends on the bases chosen, but the map does not. If $P$ is the matrix whose
+columns are the new basis vectors written in the old basis, the matrix of $T\in L(V)$
+changes by $M'=P^{-1}MP$. The next example shows why it is worth choosing the basis
+well.
+
+\begin{example}\label{ex:changebasis}
+  Let $T(x,y)=(x+y,\,x+y)$ on $\R^2$. Find its matrix in the canonical basis and in the basis
+  $b_1=(1,1)$, $b_2=(1,-1)$.
+\end{example}
+\begin{solution}
+  In the canonical basis $T(e_1)=(1,1)$ and $T(e_2)=(1,1)$, so
+  $M=\begin{pmatrix}1&1\\1&1\end{pmatrix}$.
+  In the new basis, $T(b_1)=(2,2)=2b_1$ and $T(b_2)=(0,0)=0\,b_2$, so
+  \[
+    M'=\begin{pmatrix}2&0\\0&0\end{pmatrix}.
+  \]
+  We can check the formula $M'=P^{-1}MP$ with $P=\begin{pmatrix}1&1\\1&-1\end{pmatrix}$
+  and $P^{-1}=\tfrac12\begin{pmatrix}1&1\\1&-1\end{pmatrix}$: indeed $MP=\begin{pmatrix}2&0\\2&0\end{pmatrix}$ and
+  $P^{-1}MP=\begin{pmatrix}2&0\\0&0\end{pmatrix}$.
+  In the good basis the map is simply ``stretch $b_1$ by $2$ and kill $b_2$'' (Figure~\ref{fig:changebasis}).
+\end{solution}
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[>=stealth,scale=1.15]
+    \draw[ink!20] (-2.4,-2.4) grid (2.4,2.4);
+    \draw[->,ink] (-2.4,0)--(2.4,0); \draw[->,ink] (0,-2.4)--(0,2.4);
+    \draw[very thick,navy,->] (0,0)--(1,1) node[above left] {$b_1$};
+    \draw[very thick,navy,->] (0,0)--(1,-1) node[below right] {$b_2$};
+    \draw[very thick,figacc,->] (0,0)--(2,2) node[right] {$T(b_1)=2b_1$};
+    \fill[figacc] (0,0) circle (2.2pt);
+    \node[figacc,font=\small,anchor=north east] at (-0.1,-0.1) {$T(b_2)=0$};
+  \end{tikzpicture}
+  \caption{The map $T(x,y)=(x+y,x+y)$ in the basis $b_1,b_2$: it stretches $b_1$ by a
+  factor $2$ and sends $b_2$ to $0$. Its matrix there is $\diag(2,0)$.}
+  \label{fig:changebasis}
+\end{figure}
+
+\paragraph{Rank, transpose and adjoint.}
+The \term{rank} of a matrix is the dimension of the space generated by its columns,
+which is the same as that generated by its rows, and it equals $\dim\Ran T$. The
+\term{transpose} $M^{t}$ swaps rows and columns, $(M^t)_{ij}=M_{ji}$. The
+\term{adjoint} (or conjugate transpose) $M^\dagger$ also conjugates each entry,
+$(M^\dagger)_{ij}=\overline{M_{ji}}$. For real matrices the two coincide. All three
+have the same rank, and $(AB)^t=B^tA^t$, $(AB)^\dagger=B^\dagger A^\dagger$: the order flips.
+
+\paragraph{Square matrices.}
+Some square matrices $M$ over $\C$ have names that we will use constantly. The
+\term{trace} is $\Tr M=\sum_iM_{ii}$, the sum of the diagonal.
+
+\begin{definition}[Special matrices]\label{def:special}
+  A square complex matrix $M$ is called
+  \begin{itemize}
+    \item \term{Hermitian} if $M^\dagger=M$;
+    \item \term{unitary} if $M^\dagger M=MM^\dagger=\Id$, that is, $M^{-1}=M^\dagger$;
+    \item \term{involutory} if $M^2=\Id$;
+    \item \term{idempotent} if $M^2=M$, and a \term{projector} if it is also Hermitian;
+    \item \term{nilpotent} if $M^k=0$ for some $k$.
+  \end{itemize}
+\end{definition}
+
+Hermitian matrices will be the observables of quantum mechanics, and unitary
+matrices the reversible quantum gates. The determinant, which you already know, tells us when a square matrix
+can be undone: for $A\in M_n(F)$ the following are all equivalent. $A$ is
+invertible; $\det A\neq0$; $\rank A=n$; the columns of $A$ are independent; the
+rows of $A$ are independent; $0$ is not an eigenvalue of $A$; the system $Ax=b$
+has a unique solution for every $b$.
+
+\subsection{The Pauli matrices}
+
+Three $2\times2$ complex matrices are the workhorses of quantum computing:
+\[
+  \sx=\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad
+  \sy=\begin{pmatrix}0&-\ii\\\ii&0\end{pmatrix},\qquad
+  \sz=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+\]
+They are called the \term{Pauli matrices}; in a quantum circuit they are the gates
+$X$, $Y$ and $Z$. We write $\sigma_1,\sigma_2,\sigma_3$ for $\sx,\sy,\sz$.
+
+\begin{proposition}\label{prop:pauli}
+  Each Pauli matrix is Hermitian, unitary, involutory and traceless, with determinant $-1$.
+  Moreover, for $j,k\in\{1,2,3\}$,
+  \[
+    \sigma_j\sigma_k=\delta_{jk}\Id+\ii\sum_{l=1}^{3}\varepsilon_{jkl}\,\sigma_l,
+  \]
+  where $\varepsilon_{jkl}$ is $1$ for $(j,k,l)$ an even permutation of $(1,2,3)$, $-1$ for
+  an odd one, and $0$ if two indices coincide.
+\end{proposition}
+\begin{proof}
+  Each matrix equals its conjugate transpose: this is clear for $\sx,\sz$, and for $\sy$
+  swapping rows with columns gives $\begin{pmatrix}0&\ii\\-\ii&0\end{pmatrix}$ and conjugating
+  returns $\sy$. The traces are $0$ and the determinants are $-1,\,-(-\ii)(\ii)=-1,\,-1$. Next,
+  \[
+    \sx^2=\begin{pmatrix}0&1\\1&0\end{pmatrix}^2=\Id,\qquad
+    \sx\sy=\begin{pmatrix}0&1\\1&0\end{pmatrix}\begin{pmatrix}0&-\ii\\\ii&0\end{pmatrix}
+    =\begin{pmatrix}\ii&0\\0&-\ii\end{pmatrix}=\ii\sz,
+  \]
+  and the other products are computed in the same way. Since each $\sigma_j$ is Hermitian
+  with $\sigma_j^2=\Id$, we get $\sigma_j^\dagger\sigma_j=\Id$, so they are unitary.
+\end{proof}
+
+In words: each Pauli matrix squares to the identity, and distinct ones multiply to
+$\pm\ii$ times the third, with $\sx\sy=\ii\sz$, $\sy\sz=\ii\sx$, $\sz\sx=\ii\sy$ and the
+opposite sign in the reverse order. In particular $\sigma_j\sigma_k=-\sigma_k\sigma_j$ for $j\neq k$: Pauli
+matrices \emph{anticommute}. This gives short proofs of identities that look laborious
+by hand.
+
+\begin{example}\label{ex:hadamard}
+  The \emph{Hadamard gate} is $H=\frac{1}{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix}$.
+  Show that $H=(\sx+\sz)/\sqrt2$, that $H^2=\Id$, and that $H\sx H=\sz$.
+\end{example}
+\begin{solution}
+  Adding the matrices, $\sx+\sz=\begin{pmatrix}1&1\\1&-1\end{pmatrix}$, which gives the first claim.
+  For $H^2$, use $\sx^2=\sz^2=\Id$ and the anticommutation $\sx\sz+\sz\sx=0$:
+  \[
+    H^2=\tfrac12(\sx+\sz)^2=\tfrac12(\sx^2+\sx\sz+\sz\sx+\sz^2)=\tfrac12(\Id+0+\Id)=\Id.
+  \]
+  For the last identity, $H\sx H=\tfrac12(\sx+\sz)\sx(\sx+\sz)=\tfrac12(\Id+\sz\sx)(\sx+\sz)$, and expanding,
+  \[
+    \tfrac12\bigl(\sx+\sz+\sz\sx\sx+\sz\sx\sz\bigr)
+    =\tfrac12\bigl(\sx+\sz+\sz-\sx\bigr)=\sz,
+  \]
+  because $\sz\sx\sx=\sz$ and $\sz\sx\sz=-\sx\sz\sz=-\sx$.
+\end{solution}
+
+The identity $H\sx H=\sz$ says that the Hadamard gate exchanges the roles of $\sx$
+and $\sz$. We will see why when we study eigenvectors.
+
+Finally, the Pauli matrices together with the identity form a particularly useful basis.
+
+\begin{theorem}[Pauli basis]\label{thm:paulibasis}
+  $\{\Id,\sx,\sy,\sz\}$ is a basis of $M_2(\C)$ over $\C$. If we write $\sigma_0=\Id$, then
+  every $A\in M_2(\C)$ satisfies $A=\tfrac12\sum_{\mu=0}^{3}\Tr(\sigma_\mu A)\,\sigma_\mu$.
+\end{theorem}
+\begin{proof}
+  Let $A=\begin{pmatrix}a&b\\c&d\end{pmatrix}$. A direct check shows that
+  \[
+    A=\tfrac{a+d}{2}\Id+\tfrac{b+c}{2}\sx+\tfrac{\ii(b-c)}{2}\sy+\tfrac{a-d}{2}\sz,
+  \]
+  so the four matrices generate $M_2(\C)$. Since $\dim M_2(\C)=4$, four generators form a basis.
+  For the coefficients: if $A=\sum_\nu c_\nu\sigma_\nu$, multiplying by $\sigma_\mu$ and taking the trace gives
+  $\Tr(\sigma_\mu A)=\sum_\nu c_\nu\Tr(\sigma_\mu\sigma_\nu)=2c_\mu$, because $\Tr(\sigma_\mu\sigma_\nu)=2\delta_{\mu\nu}$ by
+  Proposition~\ref{prop:pauli}, as $\Tr\Id=2$ and the $\sigma_l$ are traceless.
+\end{proof}
+
+\begin{example}\label{ex:paulidecomp}
+  Decompose $A=\begin{pmatrix}1&2\\3&-1\end{pmatrix}$ and $\ket0\!\bra1=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ in the Pauli basis.
+\end{example}
+\begin{solution}
+  For $A$ we have $a=1,\,b=2,\,c=3,\,d=-1$, so the coefficients are $\tfrac{a+d}{2}=0$, $\tfrac{b+c}{2}=\tfrac52$,
+  $\tfrac{\ii(b-c)}{2}=-\tfrac\ii2$, $\tfrac{a-d}{2}=1$, and
+  \[
+    A=\tfrac52\sx-\tfrac\ii2\sy+\sz .
+  \]
+  For $\ket0\!\bra1$: $a=d=c=0$ and $b=1$, giving $\tfrac12\sx+\tfrac\ii2\sy=\tfrac12(\sx+\ii\sy)$.
+  \emph{Check:} $\sx+\ii\sy=\begin{pmatrix}0&2\\0&0\end{pmatrix}$.
+\end{solution}
+
+\begin{exerciseset}
+  \exercise{1} Decide which of these are vector spaces (over $\R$ or $\C$, as indicated):
+  $\{(x,y)\in\R^2:xy\ge0\}$; the $2\times2$ complex matrices of trace $0$; the Hermitian $2\times2$ matrices over $\C$,
+  and over $\R$; the $2\times2$ unitary matrices; polynomials of degree exactly $3$;
+  $\{f:[0,1]\to\R\text{ differentiable}: f(0)=0\}$ and $\{f:f(0)=1\}$.
+
+  \exercise{2} Is the set of unit vectors of $\C^2$ closed under addition? Under multiplication by complex
+  scalars? Under multiplication by a scalar of modulus $1$? Explain what this says about
+  the structure of the set of qubit states.
+
+  \exercise{1} Decide whether these sets are linearly independent: $\{(1,-1),(1,2),(2,1)\}\subset\R^2$;
+  $\{(1,\ii),(\ii,-1)\}\subset\C^2$; $\{1,x,x^2,(1-x)^2\}\subset P_2$; $\{\sin x,\cos x,\sin(x+1)\}$ as functions on $\R$.
+
+  \exercise{1} Show that $\{\ket0,\ket1\}$, $\{\ket+,\ket-\}$ and $\{\ket{+\ii},\ket{-\ii}\}$ are bases of $\C^2$.
+  Express $\ket0$ in each of them.
+
+  \exercise{2} Prove: any set containing $0$ is dependent; $\{v_1,\dots,v_k\}$ is dependent if and only if some $v_j$
+  is a linear combination of the others; a set $A$ is a basis if and only if every vector is a \emph{unique}
+  linear combination of elements of $A$.
+
+  \exercise{2} Show that $\{v_1,v_2\}$ is independent if and only if $\{v_1+v_2,\,v_1-v_2\}$ is independent.
+
+  \exercise{2} Let $W_1,W_2$ be subspaces of $V$. Show that $W_1\cap W_2$ is a subspace, give an example in $\R^2$ where
+  $W_1\cup W_2$ is not, and prove that $W_1\cup W_2$ is a subspace only if one is contained in the other.
+
+  \exercise{2} Show that $V=W_1\oplus W_2$ if and only if $V=W_1+W_2$ and $W_1\cap W_2=\{0\}$. Prove that
+  the even and the odd functions are subspaces of $\{f:\R\to\R\}$ and that the space is their direct sum.
+
+  \exercise{1} Compute the dimension of: $\C^n$ over $\C$; $M_{m\times n}(\C)$; $P_n$; the diagonal $n\times n$ matrices;
+  the upper triangular ones; the Hermitian $n\times n$ matrices over $\R$; the traceless $n\times n$ complex matrices.
+
+  \exercise{2} Show that the solutions of $y''+y=0$ form a space of dimension $2$ with basis $\{\cos x,\sin x\}$
+  (you may assume the existence and uniqueness theorem for ODEs), and find another basis of complex exponentials.
+
+  \exercise{1} Decide which of these maps are linear, and specify domain and codomain: $T(x,y)=(xy,x)$; $T(z)=\bar z$ on $\C$ (over $\R$? over $\C$?);
+  $f\mapsto f+1$; $f\mapsto f(0)$; $A\mapsto A^t$; $A\mapsto\Tr A$; $A\mapsto\det A$; $A\mapsto BA-AB$ for a fixed $B$.
+
+  \exercise{2} Let $\{v_1,\dots,v_n\}$ be a basis of $V$ and $w_1,\dots,w_n\in W$ arbitrary. Prove there is a unique linear
+  $T$ with $T(v_i)=w_i$. Find the linear $T:\R^2\to\R^3$ with $T(1,1)=(1,0,2)$, $T(1,-1)=(0,1,0)$ and compute $T(3,1)$.
+
+  \exercise{2} Prove that $L(V,W)$ is a vector space, build an explicit basis when $\dim V=n$, $\dim W=m$, and conclude
+  that $\dim L(V,W)=mn$.
+
+  \exercise{2} Show that the composition of linear maps is linear and associative, but not commutative (take $T(x,y)=(y,x)$ and
+  $S(x,y)=(x,0)$ on $\R^2$ and compute $ST-TS$).
+
+  \exercise{2} Let $D:P_4\to P_3$, $D(p)=p'$ and $M:P_3\to P_4$, $M(p)=xp$. Compute $DM-MD$ on $P_3$. Which famous commutation relation does this resemble?
+
+  \exercise{1} For each map find kernel, range and dimensions, and verify rank--nullity: $T(x,y,z)=(x+y,y+z)$;
+  $D:P_n\to P_n$, $D(p)=p'$; $\Tr:M_n(\C)\to\C$; $T(A)=A-A^t$ on $M_n(\R)$.
+
+  \exercise{2} Let $T\in L(V)$ with $T^2=0$. Prove $\Ran T\subseteq\Ker T$ and deduce $\dim\Ran T\le\frac12\dim V$.
+  Give an example with equality in $\C^2$.
+
+  \exercise{3} Let $T\in L(V)$ with $T^2=T$. Prove $V=\Ker T\oplus\Ran T$. Find an operator for which $\Ker T\cap\Ran T\neq\{0\}$.
+
+  \exercise{1} Find the matrices of: $T(x,y)=(x+2y,\,3x-y,\,y)$ in the canonical bases; the reflection across $y=x$; the orthogonal
+  projection onto the $x$-axis; $T(A)=A^t$ on $M_2(\C)$ in the basis $E_{11},E_{12},E_{21},E_{22}$.
+
+  \exercise{2} Let $T(x,y)=(x+y,x+y)$. Verify that the matrices in Example~\ref{ex:changebasis} satisfy $M'=P^{-1}MP$, and
+  prove in general that $\Tr$, $\det$ and rank are invariant under $M\mapsto P^{-1}MP$.
+
+  \exercise{2} The Hadamard gate is the linear map with $H\ket0=\ket+$ and $H\ket1=\ket-$. Find its matrix, and show
+  $H^2=\Id$, $H\sx H=\sz$, $H\sz H=\sx$ and $H\sy H=-\sy$.
+
+  \exercise{1} Classify each of these matrices as Hermitian, unitary, idempotent, projector, nilpotent, involutory (several or none may apply):
+  $\begin{pmatrix}1&0\\0&0\end{pmatrix}$, $\begin{pmatrix}0&1\\0&0\end{pmatrix}$, $\tfrac12\begin{pmatrix}1&1\\1&1\end{pmatrix}$,
+  $\begin{pmatrix}1&1\\0&0\end{pmatrix}$, $\tfrac1{\sqrt2}\begin{pmatrix}1&1\\-1&1\end{pmatrix}$, $\begin{pmatrix}1&0\\0&\ii\end{pmatrix}$,
+  $\begin{pmatrix}2&\ii\\-\ii&3\end{pmatrix}$.
+
+  \exercise{2} Prove: the diagonal entries of a Hermitian matrix are real; the general $2\times2$ Hermitian matrix is $\begin{pmatrix}a&c-d\ii\\c+d\ii&b\end{pmatrix}$
+  with $a,b,c,d\in\R$; if $A,B$ are Hermitian then $AB$ is Hermitian iff $AB=BA$, and $\ii[A,B]$ is Hermitian.
+
+  \exercise{2} Let $P^2=P$. Show that $\Id-P$ is idempotent, that the eigenvalues of $P$ lie in $\{0,1\}$, and find a non-Hermitian idempotent
+  $2\times2$ matrix, describing geometrically what it does.
+
+  \exercise{3} Let $N$ be nilpotent with $N^k=0$. Show that its only eigenvalue is $0$, that $\Id-N$ is invertible with inverse $\Id+N+\dots+N^{k-1}$, and that a
+  nilpotent Hermitian matrix is $0$.
+
+  \exercise{2} Show that the eigenvalues of an involutory matrix are $\pm1$ and that, if $M^2=\Id$, then $P_\pm=\tfrac12(\Id\pm M)$ are idempotents with
+  $P_++P_-=\Id$, $P_+P_-=0$ and $M=P_+-P_-$.
+
+  \exercise{2} Show that $U$ is unitary if and only if its columns form an orthonormal basis of $\C^n$; that products and inverses of unitaries are unitary and $\abs{\det U}=1$;
+  and that the phase gate $S=\diag(1,\ii)$ and $T=\diag(1,e^{\ii\pi/4})$ are unitary with $T^2=S$ and $S^2=\sz$.
+
+  \exercise{1} Verify directly that $\sx,\sy,\sz$ are Hermitian, unitary, involutory and traceless, and compute all products $\sigma_j\sigma_k$ to verify
+  Proposition~\ref{prop:pauli}. Deduce $\sx\sy\sz=\ii\Id$.
+
+  \exercise{2} Define $[A,B]=AB-BA$ and $\{A,B\}=AB+BA$. Show that $[\sigma_j,\sigma_k]=2\ii\sum_l\varepsilon_{jkl}\sigma_l$ and $\{\sigma_j,\sigma_k\}=2\delta_{jk}\Id$,
+  and prove the Jacobi identity $[A,[B,C]]+[B,[C,A]]+[C,[A,B]]=0$ for any matrices.
+
+  \exercise{2} For $a,b\in\R^3$ write $a\cdot\sigma=a_x\sx+a_y\sy+a_z\sz$. Prove $(a\cdot\sigma)(b\cdot\sigma)=(a\cdot b)\Id+\ii(a\times b)\cdot\sigma$.
+  Deduce that for a unit vector $n$ one has $(n\cdot\sigma)^2=\Id$, and that its eigenvalues are $\pm1$.
+
+  \exercise{2} Decompose in the Pauli basis: $\begin{pmatrix}1&3\ii\\-\ii&1\end{pmatrix}$, $\ket0\!\bra0$, $H$ and $\begin{pmatrix}a&b\\c&d\end{pmatrix}$.
+\end{exerciseset}

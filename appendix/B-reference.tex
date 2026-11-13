@@ -1,0 +1,64 @@
+\chapter{Quick reference: states, matrices and gates}\label{app:reference}
+
+\paragraph{Single-qubit states.}
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+  \toprule
+  State & Column vector & Bloch vector\\
+  \midrule
+  $\ket0$ & $\begin{pmatrix}1\\0\end{pmatrix}$ & $(0,0,1)$\\[6pt]
+  $\ket1$ & $\begin{pmatrix}0\\1\end{pmatrix}$ & $(0,0,-1)$\\[6pt]
+  $\ket\pm=\frac{\ket0\pm\ket1}{\sqrt2}$ & $\frac1{\sqrt2}\begin{pmatrix}1\\\pm1\end{pmatrix}$ & $(\pm1,0,0)$\\[6pt]
+  $\ket{\pm\ii}=\frac{\ket0\pm\ii\ket1}{\sqrt2}$ & $\frac1{\sqrt2}\begin{pmatrix}1\\\pm\ii\end{pmatrix}$ & $(0,\pm1,0)$\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Pauli matrices and gates.}
+\begin{center}
+\small
+\begin{tabular}{@{}llll@{}}
+  \toprule
+  Name & Matrix & Eigenvalues & Eigenvectors\\
+  \midrule
+  $X=\sx$ & $\begin{pmatrix}0&1\\1&0\end{pmatrix}$ & $\pm1$ & $\ket\pm$\\[6pt]
+  $Y=\sy$ & $\begin{pmatrix}0&-\ii\\\ii&0\end{pmatrix}$ & $\pm1$ & $\ket{\pm\ii}$\\[6pt]
+  $Z=\sz$ & $\begin{pmatrix}1&0\\0&-1\end{pmatrix}$ & $\pm1$ & $\ket0,\ket1$\\[6pt]
+  $H$ & $\frac1{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix}$ & $\pm1$ & $\cos\frac\pi8\ket0+\sin\frac\pi8\ket1$ and orthogonal\\[6pt]
+  $S$ & $\begin{pmatrix}1&0\\0&\ii\end{pmatrix}$ & $1,\ii$ & $\ket0,\ket1$\\[6pt]
+  $T$ & $\begin{pmatrix}1&0\\0&e^{\ii\pi/4}\end{pmatrix}$ & $1,e^{\ii\pi/4}$ & $\ket0,\ket1$\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Useful identities.}
+\begin{align*}
+  &\sigma_j\sigma_k=\delta_{jk}\Id+\ii\sum_l\varepsilon_{jkl}\sigma_l,\qquad
+  [\sigma_j,\sigma_k]=2\ii\sum_l\varepsilon_{jkl}\sigma_l,\qquad\{\sigma_j,\sigma_k\}=2\delta_{jk}\Id,\\
+  &H=\tfrac{1}{\sqrt2}(X+Z),\quad H^2=\Id,\quad HXH=Z,\quad HZH=X,\quad HYH=-Y,\\
+  &e^{-\ii\theta\,\vec n\cdot\vec\sigma/2}=\cos\tfrac\theta2\,\Id-\ii\sin\tfrac\theta2\,\vec n\cdot\vec\sigma,\\
+  &\ket\psi\!\bra\psi=\tfrac12(\Id+\vec n\cdot\vec\sigma),\qquad \abs{\braket\varphi\psi}^2=\tfrac12(1+\vec m\cdot\vec n).
+\end{align*}
+
+\paragraph{Two-qubit objects.}
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{}}
+  \toprule
+  Object & Definition\\
+  \midrule
+  $\CNOT$ & $\ket0\!\bra0\tp\Id+\ket1\!\bra1\tp X$, matrix $\begin{pmatrix}1&0&0&0\\0&1&0&0\\0&0&0&1\\0&0&1&0\end{pmatrix}$\\[10pt]
+  $\bell00=\ket{\Phi^+}$ & $\frac1{\sqrt2}(\ket{00}+\ket{11})$\\
+  $\bell10=\ket{\Phi^-}$ & $\frac1{\sqrt2}(\ket{00}-\ket{11})$\\
+  $\bell01=\ket{\Psi^+}$ & $\frac1{\sqrt2}(\ket{01}+\ket{10})$\\
+  $\bell11=\ket{\Psi^-}$ & $\frac1{\sqrt2}(\ket{01}-\ket{10})$ (singlet)\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{The postulates in one line each.}
+(1)~A state is a unit vector $\ket\psi\in\Hil$.
+(2)~Closed systems evolve by $\ket\psi\mapsto U\ket\psi$, with $U=e^{-\ii Ht/\hbar}$.
+(3)~A measurement $\{M_m\}$ with $\sum_mM_m^\dagger M_m=\Id$ gives $m$ with probability $\bra\psi M_m^\dagger M_m\ket\psi$ and leaves $M_m\ket\psi/\sqrt{p(m)}$.
+(4)~The state space of a composite system is $\Hil_1\tp\Hil_2$.

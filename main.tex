@@ -15,6 +15,7 @@
 \input{preamble/packages}
 \input{preamble/layout}
 \input{preamble/theorems}
+\input{preamble/boxes}
 \input{preamble/notation}
 
 % ---------- Metadata (keep in sync with frontmatter/titlepage.tex) ----------
@@ -42,10 +43,6 @@
 \addcontentsline{toc}{chapter}{List of Figures}
 \thispagestyle{empty}
 \newpage
-\listoftables
-\addcontentsline{toc}{chapter}{List of Tables}
-\thispagestyle{empty}
-\newpage
 
 \clearpage
 \pagestyle{fancy}
@@ -57,17 +54,19 @@
 
 \part{Mathematics for Quantum Computing I} \label{part:part1}
 \thispagestyle{empty}
-\include{chapters/01-chapter-one}
-\include{chapters/02-chapter-two}
+% Part I is intentionally empty for now.
 
 \part{Mathematics for Quantum Computing II} \label{part:part2}
 \thispagestyle{empty}
-\include{chapters/03-chapter-three}
+\include{chapters/p2-ch1-mathematical-tools}
+\include{chapters/p2-ch2-quantum-postulates}
+
 \include{chapters/04-conclusions}
 
 %---------------------------- BACK MATTER -----------------------------
 \appendix
 \include{appendix/A-appendix}
+\include{appendix/B-reference}
 
 % Only works actually cited appear in the bibliography.
 \printbibliography[heading=bibintoc]

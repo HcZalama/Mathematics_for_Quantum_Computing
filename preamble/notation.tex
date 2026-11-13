@@ -1,9 +1,51 @@
 %======================================================================
-%  notation.tex — your own macros.
-%  Define recurring symbols/names once here and use the macro in the text;
-%  changing the definition then updates the whole book.
+%  notation.tex -- recurring symbols and macros.
+%  Define a symbol once here and use the macro in the text; changing the
+%  definition then updates the whole book.
 %======================================================================
 
-% Examples (delete or replace):
-\newcommand{\term}[1]{\textit{#1}}       % first use of a key term
-\newcommand{\todo}[1]{\hl{[TODO: #1]}}   % highlighted to-do note in the text
+\newcommand{\term}[1]{\textbf{\textit{#1}}}  % first use of a key term
+\newcommand{\todo}[1]{\hl{[TODO: #1]}}       % highlighted to-do note in the text
+
+% Number sets
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+% Dirac notation
+\newcommand{\ket}[1]{\left|#1\right\rangle}
+\newcommand{\bra}[1]{\left\langle#1\right|}
+\newcommand{\braket}[2]{\left\langle#1\middle|#2\right\rangle}
+\newcommand{\ketbra}[2]{\left|#1\right\rangle\!\left\langle#2\right|}
+
+% Misc
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\ii}{\mathrm{i}}                    % imaginary unit
+\newcommand{\dd}{\,\mathrm{d}}                % differential
+
+% Linear algebra
+\newcommand{\Id}{\mathbb{I}}                       % identity operator / matrix
+\newcommand{\dg}{^{\dagger}}                       % adjoint (dagger)
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Ker}{\operatorname{ker}}
+\newcommand{\Ran}{\operatorname{range}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Hil}{\mathcal{H}}
+\newcommand{\comm}[2]{\left[#1,#2\right]}
+\newcommand{\acomm}[2]{\left\{#1,#2\right\}}
+\newcommand{\sx}{\sigma_x}
+\newcommand{\sy}{\sigma_y}
+\newcommand{\sz}{\sigma_z}
+
+% Quantum computing
+\newcommand{\tp}{\otimes}
+\newcommand{\CNOT}{\mathrm{CNOT}}
+\newcommand{\bell}[2]{\ket{\beta_{#1#2}}}
+\newcommand{\ptr}[1]{\Tr_{#1}}
