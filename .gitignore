@@ -19,10 +19,14 @@
 
 # ---------- editor / OS ----------
 .vs/
-.vscode/
 .DS_Store
 Thumbs.db
 
 # ---------- Python ----------
 __pycache__/
 *.pyc
+
+# build directory (auxiliary files)
+build/
+.vscode/*
+!.vscode/settings.json

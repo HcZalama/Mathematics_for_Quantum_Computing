@@ -1,0 +1,5 @@
+{
+  "files.exclude": { "build": true },
+  "latex-workshop.latex.outDir": "%DIR%",
+  "latex-workshop.latex.autoClean.run": "never"
+}
