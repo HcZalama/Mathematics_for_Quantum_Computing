@@ -3,12 +3,12 @@
 %======================================================================
 
 \begin{objectives}
-  You will state Postulates~1 and~2; describe a qubit state and place it on the Bloch sphere; use the Riesz representation theorem to see why every bra comes from a ket; recognise the basic single-qubit gates; pass between the unitary and the Schr\"odinger forms of the dynamics;
+  You will state Postulates~1 and~2; describe a qubit state and place it on the Bloch sphere; see amplitudes as linear functionals, using the Riesz theorem of Section~\ref{sec:dual}; recognise the basic single-qubit gates; pass between the unitary and the Schr\"odinger forms of the dynamics;
   and describe symmetries of a quantum system as unitary representations of groups.
 \end{objectives}
 
 \begin{recall}
-  A Hilbert space, unit vectors and orthonormal bases (Section~\ref{sec:hilbert}); the Pauli matrices (Section~\ref{sec:vector-spaces}); Hermitian and unitary operators, the spectral theorem and the functional calculus $f(A)$ (Section~\ref{sec:operators}).
+  A Hilbert space, unit vectors, orthonormal bases, and the dual space with the Riesz theorem (Sections~\ref{sec:hilbert} and~\ref{sec:dual}); the Pauli matrices (Section~\ref{sec:vector-spaces}); Hermitian and unitary operators, the spectral theorem and the functional calculus $f(A)$ (Section~\ref{sec:operators}).
 \end{recall}
 
 Quantum mechanics is a \emph{framework}, not a theory. It does not tell us which Hilbert space describes a given physical system, or which Hamiltonian governs it; specific theories, such as quantum electrodynamics, answer those questions inside the framework. What the postulates fix is the \emph{form} of every such theory.
@@ -58,56 +58,25 @@ The unit-norm condition is what will make probabilities add up to $1$ (Section~\
 
 Count the parameters. The two amplitudes are four real numbers; normalisation removes one; and we will see that a global phase removes another. Only \emph{two} real parameters remain. Where do they live?
 
-\subsection{States and linear functionals: the Riesz representation theorem}
+\subsection{Amplitudes as linear functionals}
 
-In Section~\ref{sec:hilbert} we introduced the bra $\bra v$ as the row vector $\ket v^\dagger$, and observed that $\ket w\mapsto\braket vw$ is a linear map $\Hil\to\C$, that is, a \emph{linear functional} on $\Hil$. It is natural to ask whether we have found \emph{all} linear functionals this way. The answer is yes, and it is a theorem of Riesz.
+A theme that will run through this chapter is that probabilities come from \emph{amplitudes}, and amplitudes are inner products. For a fixed vector $\ket m$, the map $\ket\psi\mapsto\braket m\psi$ is a linear form on the state space: it is the ``amplitude for finding the system in $\ket m$'' (Postulate~3 will make this precise). The Riesz representation theorem (Theorem~\ref{thm:riesz}, Section~\ref{sec:dual}) says the converse: \emph{every} linear amplitude rule $\varphi:\Hil\to\C$ is of the form $\varphi(\ket\psi)=\braket m\psi$ for a unique vector $\ket m$. So specifying an amplitude rule and specifying a vector are the same thing, which is why a measurement outcome can be described by a ket.
 
-\begin{theorem}[Riesz representation theorem, finite dimension]\label{thm:riesz}
-  Let $\Hil$ be a finite-dimensional Hilbert space and $\varphi:\Hil\to\C$ a linear functional. Then there is a \emph{unique} vector $\ket v\in\Hil$ such that
-  \[
-    \varphi(\ket w)=\braket vw\qquad\text{for all }\ket w\in\Hil .
-  \]
-  Moreover $\abs{\varphi(\ket w)}\le\norm v\norm w$, and equality holds for $\ket w\propto\ket v$, so $\norm v$ is the ``size'' of $\varphi$.
-\end{theorem}
-\begin{proof}
-  \begin{steps}
-    \item \emph{Choose a basis.} Let $\{\ket{e_i}\}$ be an orthonormal basis of $\Hil$. Every $\ket w$ is $\sum_i\braket{e_i}w\ket{e_i}$ (Theorem~\ref{thm:parseval}), so by linearity $\varphi(\ket w)=\sum_i\braket{e_i}w\,\varphi(\ket{e_i})$.
-    \item \emph{Define the candidate.} Put $\ket v=\sum_i\overline{\varphi(\ket{e_i})}\ket{e_i}$. Its bra is $\bra v=\sum_i\varphi(\ket{e_i})\bra{e_i}$ (conjugating the coefficients).
-    \item \emph{Check.} $\braket vw=\sum_i\varphi(\ket{e_i})\braket{e_i}w=\varphi(\ket w)$ by the first step.
-    \item \emph{Uniqueness.} If $\ket v,\ket{v'}$ both work, then $\braket{v-v'}w=0$ for all $\ket w$; taking $\ket w=\ket{v-v'}$ gives $\norm{v-v'}^2=0$.
-    \item \emph{The bound.} It is Cauchy--Schwarz (Theorem~\ref{thm:cs}), with equality for $\ket w\propto\ket v$. \qedhere
-  \end{steps}
-\end{proof}
-
-\begin{corollary}\label{cor:bras-kets}
-  The map $\ket v\mapsto\bra v$ is a bijection from $\Hil$ onto the space $\Hil^*$ of linear functionals; it is conjugate-linear and preserves norms. So \emph{every bra is the bra of a ket}, which is what justifies treating bras and kets as two views of the same information.
-\end{corollary}
-
-\begin{example}[A functional on $\C^2$]\label{ex:riesz-c2}
-  Find the vector representing $\varphi(z_1,z_2)=(1+\ii)z_1-2z_2$.
+\begin{example}[Which state does a detector look for?]\label{ex:detector}
+  A device responds to a qubit $\ket\psi=z_1\ket0+z_2\ket1$ with the amplitude $\varphi(\ket\psi)=\frac1{\sqrt2}(z_1-\ii z_2)$. Find the state $\ket m$ it is tuned to, and its response to $\ket0$ and to $\ket{+\ii}$.
 \end{example}
 \begin{solution}
   \begin{steps}
-    \item \emph{Values on the basis.} $\varphi(\ket0)=\varphi(1,0)=1+\ii$ and $\varphi(\ket1)=\varphi(0,1)=-2$.
-    \item \emph{Representer.} $\ket v=\overline{(1+\ii)}\ket0+\overline{(-2)}\ket1=(1-\ii)\ket0-2\ket1$.
-    \item \emph{Check.} $\braket vw=\overline{(1-\ii)}w_1+\overline{(-2)}w_2=(1+\ii)w_1-2w_2=\varphi(w)$.
+    \item \emph{Check linearity.} $\varphi$ is linear in $(z_1,z_2)$, so Riesz applies.
+    \item \emph{Values on the basis.} $\varphi(\ket0)=\tfrac1{\sqrt2}$ and $\varphi(\ket1)=-\tfrac{\ii}{\sqrt2}$.
+    \item \emph{Representer} (conjugate the values): $\ket m=\tfrac1{\sqrt2}\ket0+\tfrac{\ii}{\sqrt2}\ket1=\ket{+\ii}$, a unit vector.
+    \item \emph{Responses.} $\varphi(\ket0)=\braket{+\ii}0=\tfrac1{\sqrt2}$, with squared modulus $\tfrac12$; and $\varphi(\ket{+\ii})=\braket{+\ii}{+\ii}=1$, with squared modulus $1$.
   \end{steps}
-\end{solution}
-
-\begin{example}[Evaluation at a point, as an inner product]\label{ex:riesz-eval}
-  On $P_1$ (polynomials of degree at most $1$) with $\langle p,q\rangle=\int_{-1}^1\overline p\,q\dd x$, represent the functional $\varphi(p)=p(0)$.
-\end{example}
-\begin{solution}
-  \begin{steps}
-    \item \emph{An orthonormal basis.} $e_0=\frac1{\sqrt2}$ and $e_1=\sqrt{\tfrac32}\,x$: indeed $\int_{-1}^1\tfrac12\dd x=1$, $\int_{-1}^1\tfrac32x^2\dd x=1$, $\int_{-1}^1x\dd x=0$.
-    \item \emph{Values.} $\varphi(e_0)=\tfrac1{\sqrt2}$ and $\varphi(e_1)=0$.
-    \item \emph{Representer.} $v=\overline{\varphi(e_0)}e_0+\overline{\varphi(e_1)}e_1=\tfrac1{\sqrt2}\cdot\tfrac1{\sqrt2}=\tfrac12$.
-    \item \emph{Reading.} $p(0)=\int_{-1}^1\tfrac12\,p(x)\dd x$ for every $p\in P_1$: ``the value at the origin of a straight line is its average over $[-1,1]$''. \emph{Check} with $p=2+3x$: $p(0)=2$ and $\int_{-1}^1\tfrac12(2+3x)\dd x=2$.
-  \end{steps}
+  The detector is tuned to $\ket{+\ii}$: it answers with certainty on that state, and with probability $\tfrac12$ on $\ket0$.
 \end{solution}
 
 \begin{lookahead}
-  Riesz's theorem has two uses in what follows. First, it is the reason a measurement outcome may be described by a ket: the functional ``amplitude to find $m$'' is the bra $\bra m$. Second, applied not to $\Hil$ but to the space of \emph{operators} with the Hilbert--Schmidt inner product, it will identify every linear functional on observables, and in particular every ``state'', with a density operator (Theorem~\ref{thm:riesz-operators}, Section~\ref{sec:density}). In infinite dimension the theorem still holds for \emph{continuous} functionals, and it is a pillar of the theory of Hilbert spaces.
+  Applied not to $\Hil$ but to the space of \emph{operators}, the same theorem identifies every positive, normalised linear form on observables with a density operator (Theorem~\ref{thm:riesz-operators}, Section~\ref{sec:density}): a state is, equally well, a functional that assigns expectation values.
 \end{lookahead}
 
 \subsection{The Bloch sphere}
@@ -344,7 +313,7 @@ Two consequences are immediate:
 \end{steps}
 
 \begin{recall}
-  Examples (e) below and Example~\ref{ex:symmetric-H} use the tensor product, which is treated properly in Section~\ref{sec:composite}. All we need for now: $\C^2\otimes\C^2=\C^4$ has the orthonormal basis $\ket a\ket b=\ket a\otimes\ket b$ with $a,b\in\{0,1\}$; $(A\otimes B)(\ket a\ket b)=A\ket a\otimes B\ket b$; and the matrix of $A\otimes B$ is the Kronecker product of the two matrices.
+  Examples (e) below and Example~\ref{ex:symmetric-H} use the tensor product of Section~\ref{sec:tensor}: $\C^2\otimes\C^2=\C^4$ has the orthonormal basis $\ket a\ket b=\ket a\otimes\ket b$, and $(A\otimes B)(\ket a\ket b)=A\ket a\otimes B\ket b$.
 \end{recall}
 
 \begin{example}[Examples of representations]\label{ex:reps}
@@ -444,12 +413,6 @@ A Hamiltonian $H=H_1+H_2$ can therefore be simulated by alternating the evolutio
   \exercise{1} Find $c>0$ such that $c\bigl((1+\ii)\ket0+2\ket1\bigr)$ is a qubit state. Which of these pairs of states differ only by a global phase: $\ket\psi$ and $-\ket\psi$; $\frac1{\sqrt2}(\ket0+\ket1)$ and $\frac1{\sqrt2}(\ket0+\ii\ket1)$; $\frac1{\sqrt2}(\ket0+\ii\ket1)$ and $\frac1{\sqrt2}(\ii\ket0-\ket1)$?
 
   \exercise{1} Which of $\frac1{\sqrt2}(\ket0+\ket1)$, $\frac12(\ket0+\ket1)$, $\frac{1}{\sqrt{13}}(2\ket0+3\ii\ket1)$ and $\frac13(2\ket0+\ii\ket1)$ are qubit states? For those that are, find the squared moduli of the amplitudes.
-
-  \exercise{2} Prove the Riesz representation theorem in $\C^n$ with the standard inner product directly: if $\varphi(w)=\sum_ic_iw_i$ then $v=(\bar c_1,\dots,\bar c_n)$. Compute the representer of $\varphi(z_1,z_2,z_3)=z_1-\ii z_2+(2+\ii)z_3$ and its norm.
-
-  \exercise{2} On $P_2$ with $\langle p,q\rangle=\int_{-1}^1\overline pq\dd x$, find the vector representing $\varphi(p)=p(0)$ and the one representing $\varphi(p)=p'(0)$. (Use the orthonormal basis $\frac1{\sqrt2},\sqrt{\tfrac32}x,\sqrt{\tfrac58}(3x^2-1)$.)
-
-  \exercise{2} Show that the representer $v$ in Theorem~\ref{thm:riesz} does not depend on the orthonormal basis used to construct it. Show that $\ket v\mapsto\bra v$ is conjugate-linear and preserves norms (Corollary~\ref{cor:bras-kets}).
 
   \exercise{1} Compute the Bloch vectors of $\ket0,\ket1,\ket\pm,\ket{\pm\ii}$, and find $\theta,\phi$ and $\vec n$ for $\ket\psi=\frac1{\sqrt3}\ket0+\sqrt{\tfrac23}\,e^{\ii\pi/3}\ket1$.
 

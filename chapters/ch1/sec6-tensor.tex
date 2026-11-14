@@ -1,0 +1,256 @@
+%======================================================================
+\section{Tensor products}\label{sec:tensor}
+%======================================================================
+
+\begin{objectives}
+  You will build the tensor product $V\otimes W$ of two vector spaces and write its vectors in coordinates; recognise \emph{product} vectors and tell them from general ones; extend inner products and operators to the tensor product, and compute with Kronecker products; and handle states of several qubits with the subscript notation.
+\end{objectives}
+
+\begin{recall}
+  Bases, dimension and linear maps (Section~\ref{sec:vector-spaces}), matrices and rank (Section~\ref{sec:vector-spaces}); inner products and orthonormal bases (Section~\ref{sec:hilbert}); the adjoint, unitary and Hermitian operators, projectors and eigenvectors (Section~\ref{sec:operators}).
+\end{recall}
+
+Quantum computers have many qubits, and physics has many particles. We need a way to build, from the vector spaces of two systems, a vector space for the pair. The construction is called the tensor product. It is purely mathematical, and it is the subject of this section; its physical meaning, as the way quantum systems combine, is Postulate~4 in Section~\ref{sec:composite}.
+
+\paragraph{Where it comes from.}
+A wave function of \emph{two} particles is a function $\psi(x,y)$ of two variables. Some such functions are \emph{products}, $\psi(x,y)=f(x)g(y)$: one function for each particle. But most are not: $\psi(x,y)=x+y$ is not a product, and neither is $e^{-(x-y)^2}$. Every reasonable function of $(x,y)$ can nevertheless be written as a \emph{sum of products}. The space of functions of two variables is the tensor product of the space of functions of $x$ with the space of functions of $y$. The same story happens for matrices: a matrix $ab^t$ (a column times a row) is a ``product'', and a general matrix is a sum of such products. The tensor product is the algebra of this idea.
+
+\subsection{Definition and coordinates}
+
+\begin{definition}[Tensor product]\label{def:tensor}
+  Let $V,W$ be vector spaces with bases $e_1,\dots,e_m$ and $f_1,\dots,f_n$. The \term{tensor product} $V\otimes W$ is the vector space with basis the $mn$ symbols $e_i\otimes f_j$. For $v=\sum_ia_ie_i$ and $w=\sum_jb_jf_j$, the \term{product vector} is
+  \[
+    v\otimes w=\sum_{i,j}a_ib_j\;e_i\otimes f_j .
+  \]
+\end{definition}
+
+So $\dim(V\otimes W)=\dim V\cdot\dim W$. The product $v\otimes w$ is \emph{bilinear}: it is linear in $v$ for fixed $w$ and in $w$ for fixed $v$,
+\[
+  (\lambda v+\lambda'v')\otimes w=\lambda\,v\otimes w+\lambda'\,v'\otimes w,\qquad v\otimes(\mu w+\mu'w')=\mu\,v\otimes w+\mu'\,v\otimes w',
+\]
+because its coefficients $a_ib_j$ are linear in each of $a$ and $b$. (One can show that $V\otimes W$ does not depend on the choice of bases; we use bases because they make everything computable.)
+
+In coordinates, $\C^m\otimes\C^n=\C^{mn}$, and the product of two columns is their \term{Kronecker product}: the second column is copied, scaled by each entry of the first,
+\[
+  \begin{pmatrix}a_1\\\vdots\\a_m\end{pmatrix}\otimes\begin{pmatrix}b_1\\\vdots\\b_n\end{pmatrix}
+  =\begin{pmatrix}a_1b\\\vdots\\a_mb\end{pmatrix}.
+\]
+For qubits we write $\ket a\otimes\ket b=\ket a\ket b=\ket{ab}$, and order the basis of two qubits as $\ket{00},\ket{01},\ket{10},\ket{11}$.
+
+\begin{example}[Coordinates]\label{ex:tensor-coords}
+  Compute $(1,2)^t\otimes(3,4)^t$, $\ket+\otimes\ket0$ and $\ket0\otimes\ket1$ as columns.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{First product.} Copy $(3,4)$ scaled by $1$, then by $2$: $(1,2)^t\otimes(3,4)^t=(3,4,6,8)^t$.
+    \item \emph{$\ket+\otimes\ket0$.} $\ket+=\frac1{\sqrt2}(1,1)^t$ and $\ket0=(1,0)^t$, so the column is $\frac1{\sqrt2}(1,0,1,0)^t$, that is $\frac1{\sqrt2}(\ket{00}+\ket{10})$.
+    \item \emph{$\ket0\otimes\ket1$.} $(1,0)^t\otimes(0,1)^t=(0,1,0,0)^t=\ket{01}$.
+  \end{steps}
+\end{solution}
+
+\begin{example}[Expanding with bilinearity]\label{ex:tensor-bilinear}
+  Expand $(\ket0+\ket1)\otimes(\ket0-\ket1)$ and $\ket+\otimes\ket-$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Distribute} (bilinearity): $(\ket0+\ket1)\otimes(\ket0-\ket1)=\ket{00}-\ket{01}+\ket{10}-\ket{11}$.
+    \item \emph{Normalise.} Since $\ket\pm=\frac1{\sqrt2}(\ket0\pm\ket1)$, $\ket+\otimes\ket-=\tfrac12(\ket{00}-\ket{01}+\ket{10}-\ket{11})$.
+  \end{steps}
+\end{solution}
+
+\subsection{Product vectors and the rest}
+
+Is every vector of $V\otimes W$ of the form $v\otimes w$? No: in general a vector is a \emph{sum} of such products, and this is the mathematical seed of entanglement. There is an exact test for ``being a product''. Arrange the coefficients of $x=\sum_{i,j}c_{ij}\,e_i\otimes f_j$ in an $m\times n$ matrix $C=(c_{ij})$, the \term{coefficient matrix} of $x$.
+
+\begin{theorem}[Product test]\label{thm:entangled-criterion}
+  A non-zero vector $x\in V\otimes W$ is a product $v\otimes w$ if and only if its coefficient matrix has rank $1$. For two qubits ($m=n=2$) this is equivalent to $\det C=0$.
+\end{theorem}
+\begin{proof}
+  \begin{steps}
+    \item \emph{Product $\Rightarrow$ rank one.} If $x=v\otimes w$ with coordinates $a=(a_i)$ and $b=(b_j)$, then $c_{ij}=a_ib_j$, that is, $C=ab^t$ (a column times a row). A non-zero matrix of this form has rank $1$.
+    \item \emph{Rank one $\Rightarrow$ product.} A matrix of rank $1$ has proportional columns, hence can be written $C=ab^t$ for a column $a\neq0$ and a row $b^t\neq0$. Then $c_{ij}=a_ib_j$, and $x=v\otimes w$ with $v=\sum a_ie_i$, $w=\sum b_jf_j$.
+    \item \emph{The $2\times2$ case.} A non-zero $2\times2$ matrix has rank $1$ exactly when its two columns are proportional, which is $\det C=0$. \qedhere
+  \end{steps}
+\end{proof}
+
+\begin{example}[Which vectors are products?]\label{ex:product-or-not}
+  Decide which of the following are products of two vectors of $\C^2$: (a) $\ket+\otimes\ket-$; (b) $\tfrac12(\ket{00}+\ket{01}+\ket{10}+\ket{11})$; (c) $\ket{00}+\ket{11}$; (d) $\ket{00}+\ket{01}+\ket{10}$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item (a) A product by construction.
+    \item (b) $C=\tfrac12\begin{pmatrix}1&1\\1&1\end{pmatrix}$ has $\det C=0$: it is a product, namely $\ket+\otimes\ket+$.
+    \item (c) $C=\begin{pmatrix}1&0\\0&1\end{pmatrix}$ has $\det C=1\neq0$: \emph{not} a product.
+    \item (d) $C=\begin{pmatrix}1&1\\1&0\end{pmatrix}$ has $\det C=-1\neq0$: not a product.
+  \end{steps}
+\end{solution}
+
+\begin{example}[Factoring a product vector]\label{ex:factor}
+  Show that $x=\tfrac12\bigl(\ket{00}+\ii\ket{01}+\ket{10}+\ii\ket{11}\bigr)$ is a product and find its factors.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The coefficient matrix.} $C=\tfrac12\begin{pmatrix}1&\ii\\1&\ii\end{pmatrix}$, whose rows are equal.
+    \item \emph{Rank.} $\det C=\tfrac14(\ii-\ii)=0$, so $C$ has rank $1$ and $x$ is a product.
+    \item \emph{Factor $C=ab^t$.} Take $a=\tfrac1{\sqrt2}(1,1)^t$ (the column pattern) and $b=\tfrac1{\sqrt2}(1,\ii)^t$ (the row pattern): $ab^t=\tfrac12\begin{pmatrix}1&\ii\\1&\ii\end{pmatrix}=C$.
+    \item \emph{Read off.} $x=\ket+\otimes\ket{+\ii}$, with $\ket{+\ii}=\tfrac1{\sqrt2}(\ket0+\ii\ket1)$.
+  \end{steps}
+\end{solution}
+
+\begin{pitfall}
+  The tensor product is \emph{not} the Cartesian product of the two spaces. The Cartesian product $V\times W$ (pairs $(v,w)$ with componentwise sums) has dimension $m+n$, and a sum of two product vectors $v\otimes w+v'\otimes w'$ is generally \emph{not} a product: $\ket{00}+\ket{11}$ is the sum of two products but is not itself one (Example~\ref{ex:product-or-not}(c)). The tensor product has dimension $mn$, much bigger, precisely because it contains all these sums.
+\end{pitfall}
+
+How rare are products? A product $v\otimes w$ is determined by the $m+n$ numbers in $a$ and $b$, but $(\lambda a,\lambda^{-1}b)$ gives the same vector, so it has only $m+n-1$ free complex parameters. A general vector has $mn$. For two qubits that is $3$ against $4$; for $n$ qubits, $n+1$ against $2^n$. \emph{Most vectors of a tensor product are not products.}
+
+\subsection{Inner products}
+
+If $V$ and $W$ are Hilbert spaces, so is $V\otimes W$.
+
+\begin{proposition}[Inner product on $V\otimes W$]\label{prop:tensor-inner}
+  There is a unique inner product on $V\otimes W$ such that
+  \[
+    \braket{v\otimes w}{v'\otimes w'}=\braket v{v'}\,\braket w{w'}.
+  \]
+  If $\{e_i\}$ and $\{f_j\}$ are orthonormal bases, then $\{e_i\otimes f_j\}$ is an orthonormal basis of $V\otimes W$. In particular $\norm{v\otimes w}=\norm v\norm w$.
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item \emph{Define it on the basis.} Declare $\braket{e_i\otimes f_j}{e_k\otimes f_l}=\delta_{ik}\delta_{jl}$ and extend conjugate-linearly in the first argument and linearly in the second. This is the standard inner product of the coefficients, so it satisfies the axioms of Definition~\ref{def:inner}.
+    \item \emph{The product formula.} For $v=\sum a_ie_i$, $w=\sum b_jf_j$, $v'=\sum a'_ke_k$, $w'=\sum b'_lf_l$: $\braket{v\otimes w}{v'\otimes w'}=\sum_{i,j}\overline{a_ib_j}\,a'_ib'_j=\bigl(\sum_i\bar a_ia'_i\bigr)\bigl(\sum_j\bar b_jb'_j\bigr)=\braket v{v'}\braket w{w'}$.
+    \item \emph{Uniqueness.} Product vectors span $V\otimes W$, and the product formula fixes the inner product on them. \qedhere
+  \end{steps}
+\end{proof}
+
+Two consequences are used constantly. A product of unit vectors is a unit vector, and two product vectors are orthogonal as soon as \emph{one} of their factors is.
+
+\begin{example}\label{ex:tensor-inner}
+  Compute $\braket{+0}{-0}$, $\braket{+0}{+1}$ and $\norm{\ket+\otimes\ket{+\ii}}$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item $\braket{+0}{-0}=\braket+-\braket00=0\cdot1=0$.
+    \item $\braket{+0}{+1}=\braket++\braket01=1\cdot0=0$.
+    \item $\norm{\ket+\otimes\ket{+\ii}}=\norm{+}\,\norm{{+\ii}}=1\cdot1=1$.
+  \end{steps}
+\end{solution}
+
+\subsection{Operators on a tensor product}
+
+Operators on $V$ and $W$ combine into operators on $V\otimes W$.
+
+\begin{definition}[Tensor product of operators]\label{def:tensor-op}
+  For $A\in L(V)$ and $B\in L(W)$, the operator $A\otimes B\in L(V\otimes W)$ is the linear map determined by $(A\otimes B)(v\otimes w)=Av\otimes Bw$.
+\end{definition}
+
+It is well defined because product vectors span, and its matrix is the \term{Kronecker product}, with $B$ varying fastest:
+\[
+  \begin{pmatrix}a&b\\c&d\end{pmatrix}\otimes B=\begin{pmatrix}aB&bB\\cB&dB\end{pmatrix}.
+\]
+
+\begin{proposition}[Rules for $A\otimes B$]\label{prop:tensor-rules}
+  For operators of compatible sizes:
+  \begin{enumerate}
+    \item[(a)] $(A\otimes B)(C\otimes D)=AC\otimes BD$;
+    \item[(b)] $(A\otimes B)^\dagger=A^\dagger\otimes B^\dagger$;
+    \item[(c)] $\Tr(A\otimes B)=\Tr A\,\Tr B$;
+    \item[(d)] the tensor product of unitaries (resp.\ Hermitian operators, projectors) is unitary (resp.\ Hermitian, a projector);
+    \item[(e)] if $A\ket v=\lambda\ket v$ and $B\ket w=\mu\ket w$, then $(A\otimes B)(\ket v\otimes\ket w)=\lambda\mu\,\ket v\otimes\ket w$.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item (a) Both sides are linear, so it is enough to compare them on product vectors: $(A\otimes B)(C\otimes D)(v\otimes w)=(A\otimes B)(Cv\otimes Dw)=ACv\otimes BDw=(AC\otimes BD)(v\otimes w)$.
+    \item (b) By Proposition~\ref{prop:tensor-inner}, $\braket{v\otimes w}{(A\otimes B)(v'\otimes w')}=\braket v{Av'}\braket w{Bw'}=\braket{A^\dagger v}{v'}\braket{B^\dagger w}{w'}=\braket{(A^\dagger\otimes B^\dagger)(v\otimes w)}{v'\otimes w'}$.
+    \item (c) In the product basis, $\Tr(A\otimes B)=\sum_{i,j}\bra{e_i\otimes f_j}A\otimes B\ket{e_i\otimes f_j}=\sum_iA_{ii}\sum_jB_{jj}$.
+    \item (d) By (a) and (b): $(U\otimes V)^\dagger(U\otimes V)=U^\dagger U\otimes V^\dagger V=\Id\otimes\Id=\Id$; a Hermitian tensor product has $(H\otimes K)^\dagger=H^\dagger\otimes K^\dagger=H\otimes K$; and if $P^2=P=P^\dagger$, $Q^2=Q=Q^\dagger$, then $(P\otimes Q)^2=P^2\otimes Q^2=P\otimes Q$ and $P\otimes Q$ is Hermitian.
+    \item (e) Immediate from the definition. \qedhere
+  \end{steps}
+\end{proof}
+
+A useful special case is an operator acting on \emph{one} factor only. We write $A_1=A\otimes\Id$ and $B_2=\Id\otimes B$. By rule (a), $A_1B_2=A\otimes B=B_2A_1$: operators acting on different factors always commute.
+
+\begin{example}[Kronecker products]\label{ex:kron}
+  Write $X\otimes Z$, $X\otimes\Id$ and $\Id\otimes X$ as $4\times4$ matrices.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{$X\otimes Z$:} with $X=\begin{pmatrix}0&1\\1&0\end{pmatrix}$ and $B=Z$, the block rule gives $\begin{pmatrix}0\cdot Z&1\cdot Z\\1\cdot Z&0\cdot Z\end{pmatrix}=\begin{pmatrix}0&0&1&0\\0&0&0&-1\\1&0&0&0\\0&-1&0&0\end{pmatrix}$.
+    \item \emph{$X\otimes\Id$:} the blocks are $0\cdot\Id$ and $1\cdot\Id$: $\begin{pmatrix}0&\Id\\\Id&0\end{pmatrix}=\begin{pmatrix}0&0&1&0\\0&0&0&1\\1&0&0&0\\0&1&0&0\end{pmatrix}$. It swaps $\ket{0b}\leftrightarrow\ket{1b}$: it flips the \emph{first} qubit.
+    \item \emph{$\Id\otimes X$:} $\begin{pmatrix}X&0\\0&X\end{pmatrix}=\begin{pmatrix}0&1&0&0\\1&0&0&0\\0&0&0&1\\0&0&1&0\end{pmatrix}$. It flips the \emph{second} qubit.
+  \end{steps}
+\end{solution}
+
+\begin{example}[Acting on product states]\label{ex:kron-act}
+  Compute $(H\otimes H)\ket{00}$ and $(H\otimes H)\ket{11}$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{First.} $(H\otimes H)\ket{00}=H\ket0\otimes H\ket0=\ket+\ket+=\tfrac12(\ket{00}+\ket{01}+\ket{10}+\ket{11})$.
+    \item \emph{Second.} $(H\otimes H)\ket{11}=\ket-\ket-=\tfrac12(\ket{00}-\ket{01}-\ket{10}+\ket{11})$.
+    \item \emph{Pattern.} In general $(H\otimes H)\ket{xy}=\tfrac12\sum_{u,v}(-1)^{xu+yv}\ket{uv}$.
+  \end{steps}
+\end{solution}
+
+\begin{example}[Eigenvalues of a tensor product]\label{ex:kron-eig}
+  Find the eigenvalues and eigenvectors of $Z\otimes Z$ and of $X\otimes Z$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The factors.} $Z$ and $X$ have eigenvalues $\pm1$, with eigenvectors $\ket0,\ket1$ and $\ket\pm$.
+    \item \emph{Rule (e)} gives eigenvectors $\ket a\ket b$ with eigenvalue the product $\lambda\mu$. These form an orthonormal basis (Proposition~\ref{prop:tensor-inner}), so we have found everything.
+    \item \emph{$Z\otimes Z$.} The eigenvectors $\ket{00},\ket{01},\ket{10},\ket{11}$ have eigenvalues $+1,-1,-1,+1$.
+    \item \emph{$X\otimes Z$.} The eigenvectors are $\ket\pm\ket0$ and $\ket\pm\ket1$; the eigenvalue is $+1$ for $\ket+\ket0$ and $\ket-\ket1$, and $-1$ for $\ket-\ket0$ and $\ket+\ket1$.
+    \item \emph{Check.} $\Tr(X\otimes Z)=0=\Tr X\,\Tr Z$, consistent with two eigenvalues $+1$ and two $-1$.
+  \end{steps}
+\end{solution}
+
+Not every operator on $V\otimes W$ is a product $A\otimes B$: the matrices $E_{ij}\otimes E_{kl}$ (with a $1$ in one place) form a basis of the $(mn)^2$-dimensional space of operators, so \emph{every operator is a sum of products}. For instance, the controlled-NOT of Section~\ref{sec:composite}, $\CNOT=\ket0\!\bra0\otimes\Id+\ket1\!\bra1\otimes X$, is a sum of two products and is not itself a product.
+
+\subsection{Several factors}
+
+The construction extends to $V_1\otimes V_2\otimes\cdots\otimes V_n$, of dimension $\prod_i\dim V_i$; the tensor product is associative, $(U\otimes V)\otimes W=U\otimes(V\otimes W)$. For $n$ qubits the basis is the set of $\ket{x_1x_2\cdots x_n}=\ket{x_1}\otimes\cdots\otimes\ket{x_n}$, with $x_i\in\{0,1\}$ (the $2^n$ binary strings), and we write $(\C^2)^{\otimes n}=\C^{2^n}$. In a system of several qubits we use subscripts for the qubit acted upon: in three qubits $X_2=\Id\otimes X\otimes\Id$, and in two qubits $X_1Z_2=X\otimes Z$.
+
+\begin{example}[Operators on three qubits]\label{ex:three-qubits}
+  In three qubits, compute $Z_1Z_3\ket{101}$ and $X_2\ket{101}$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{$Z_1Z_3=Z\otimes\Id\otimes Z$.} It multiplies by the $Z$-eigenvalue of qubits $1$ and $3$: $\ket{101}$ has qubit $1$ in $\ket1$ ($Z\to-1$) and qubit $3$ in $\ket1$ ($Z\to-1$). So $Z_1Z_3\ket{101}=(-1)(-1)\ket{101}=\ket{101}$.
+    \item \emph{$X_2=\Id\otimes X\otimes\Id$} flips the middle qubit: $X_2\ket{101}=\ket{111}$.
+  \end{steps}
+\end{solution}
+
+\begin{lookahead}
+  Everything in this section is arithmetic; the physics comes from \emph{using} it. By Postulate~4 (Section~\ref{sec:composite}), the state space of a composite system is the tensor product of the state spaces of its parts. Product vectors will be the states in which the parts have states of their own; all other vectors will be \emph{entangled}. The exponential size $2^n$ of $(\C^2)^{\otimes n}$ (Example~\ref{ex:nqubits}) is the source of both the power and the difficulty of quantum computing, and the product test of Theorem~\ref{thm:entangled-criterion} will be our first tool for recognising entanglement.
+\end{lookahead}
+
+\begin{exerciseset}
+  \exercise{1} Compute $\ket+\otimes\ket-$ and $(1,\ii)^t\otimes(2,-1)^t$ as column vectors, and expand $(\ket0+2\ket1)\otimes(\ket0-\ii\ket1)$ in the basis $\ket{ab}$.
+
+  \exercise{1} Which of these are products of two vectors of $\C^2$: $\ket{01}+\ket{10}$; $\ket{00}-\ket{01}+\ket{10}-\ket{11}$; $\ket{00}+2\ket{01}+\ii\ket{10}+2\ii\ket{11}$; $\ket{00}+2\ket{01}+\ii\ket{10}+3\ii\ket{11}$? Factor those that are.
+
+  \exercise{2} Prove the product test (Theorem~\ref{thm:entangled-criterion}) for $\C^2\otimes\C^3$: a vector is a product iff all $2\times2$ minors of its $2\times3$ coefficient matrix vanish.
+
+  \exercise{2} Show that $\ket{00}+\ket{11}$ and $\ket{00}+\ket{01}+\ket{10}$ are sums of two and three product vectors but not products, and that every vector of $\C^2\otimes\C^2$ is a sum of at most two products.
+
+  \exercise{2} Count the real parameters (up to a global phase) of a product of $n$ single-qubit states and of a general $n$-qubit state. What does the gap say about the proportion of product states? (Compare with the counting argument in the text.)
+
+  \exercise{1} Compute $(\bra+\otimes\bra0)(\ket{+\ii}\otimes\ket0)$, $(\bra0\otimes\bra0)(\ket+\otimes\ket1)$ and the norm of $\tfrac12(\ket{00}+\ket{01}+\ket{10}+\ket{11})$.
+
+  \exercise{2} Prove the rules (a)--(d) of Proposition~\ref{prop:tensor-rules} in the special case of $2\times2$ matrices, writing both sides as $4\times4$ matrices for $A=X$, $B=Z$, $C=H$, $D=\Id$.
+
+  \exercise{1} Write $Z\otimes\Id$, $\Id\otimes X$ and $X\otimes X$ as $4\times4$ matrices, and check that $(X\otimes X)(Z\otimes\Id)=-(Z\otimes\Id)(X\otimes X)$ while $(X\otimes X)(Z\otimes Z)=(Z\otimes Z)(X\otimes X)$. Explain the difference.
+
+  \exercise{2} Show that $H\otimes H\ket{xy}=\frac12\sum_{u,v}(-1)^{xu+yv}\ket{uv}$, and generalise to $n$ qubits: $H^{\otimes n}\ket x=2^{-n/2}\sum_y(-1)^{x\cdot y}\ket y$ (the Walsh--Hadamard transform).
+
+  \exercise{2} Find the eigenvalues and eigenvectors of $X\otimes X$, of $Y\otimes Y$ and of $X\otimes Y$. Which of the three have a degenerate spectrum?
+
+  \exercise{2} Show that the spectrum of $A\otimes B$ is the set of products $\lambda_i\mu_j$ of eigenvalues when $A,B$ are diagonalisable, and compute $\det(A\otimes B)$ for $A\in M_m$, $B\in M_n$.
+
+  \exercise{3}\label{ex:local-unitary-matrix} For $x=\sum_{ij}c_{ij}\,e_i\otimes f_j$ and unitaries $U,V$, show that $(U\otimes V)x$ has coefficient matrix $UCV^t$, and deduce that the rank of $C$ does not change under local unitaries.
+
+  \exercise{2} Show that $\dim L(V\otimes W)=(mn)^2$ and that $\{E_{ij}\otimes E_{kl}\}$ is a basis. Write $\CNOT$ and the swap $\ket{ab}\mapsto\ket{ba}$ as sums of products of operators.
+
+  \exercise{2} In three qubits compute $X_1X_2X_3\ket{010}$, $Z_1Z_2\ket{110}$ and $(Z_1Z_2)(Z_2Z_3)\ket{101}$, and show that $Z_1Z_2$ and $Z_2Z_3$ commute.
+\end{exerciseset}

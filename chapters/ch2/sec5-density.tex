@@ -7,7 +7,7 @@
 \end{objectives}
 
 \begin{recall}
-  Positive operators (Section~\ref{sec:measurement}); the trace and the Hilbert--Schmidt inner product $\Tr(A^\dagger B)$ (Sections~\ref{sec:vector-spaces} and~\ref{sec:hilbert}); the Riesz theorem (Section~\ref{sec:state-evolution}); tensor products and measurements on one part of a system (Section~\ref{sec:composite}).
+  Positive operators (Section~\ref{sec:measurement}); the trace and the Hilbert--Schmidt inner product $\Tr(A^\dagger B)$ (Sections~\ref{sec:vector-spaces} and~\ref{sec:hilbert}); the Riesz theorem (Section~\ref{sec:dual}); tensor products (Section~\ref{sec:tensor}) and measurements on one part of a system (Section~\ref{sec:composite}).
 \end{recall}
 
 So far a system has been described by a state vector, and that is enough if we know exactly how it was prepared. Two situations break this assumption. In the first, the preparation is itself random: a source emits $\ket{\psi_i}$ with probability $p_i$ and we do not know which.
@@ -121,7 +121,7 @@ with pure states on the boundary sphere (Proposition~\ref{prop:bloch}) and the m
 
 \subsection{States as functionals: the Riesz theorem for operators}
 
-There is a second, more abstract, way to see what a state is, and it uses the Riesz theorem of Section~\ref{sec:state-evolution} on a space different from $\Hil$. What an experimentalist ultimately has is a rule that assigns to every observable $A$ its expectation value $\omega(A)$. That rule is a \emph{linear functional on the space of operators}, and it is positive and normalised:
+There is a second, more abstract, way to see what a state is, and it uses the Riesz theorem of Section~\ref{sec:dual} on a space different from $\Hil$. What an experimentalist ultimately has is a rule that assigns to every observable $A$ its expectation value $\omega(A)$. That rule is a \emph{linear functional on the space of operators}, and it is positive and normalised:
 \begin{steps}
   \item \emph{linear:} $\omega(aA+bB)=a\,\omega(A)+b\,\omega(B)$;
   \item \emph{positive:} $\omega(A)\ge0$ whenever $A\ge0$ (an event cannot have negative expected count);

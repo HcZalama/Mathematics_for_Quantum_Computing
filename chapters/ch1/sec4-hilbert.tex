@@ -139,8 +139,7 @@ Physicists write vectors in a notation due to Dirac that is compact, a little st
 In $\C^n$ this is nothing but matrix multiplication: $\braket\varphi\psi=\varphi^\dagger\psi$ is a row times a column, a $1\times1$ matrix, while $\ket\psi\!\bra\varphi=\psi\varphi^\dagger$ is a column times a row, an $n\times n$ matrix. The rules are the ones inherited from the inner product: $\overline{\braket\varphi\psi}=\braket\psi\varphi$, the bra of $\lambda\ket\psi$ is $\bar\lambda\bra\psi$, and $\norm{\ket\psi}^2=\braket\psi\psi$.
 Throughout the book, \emph{a state is a normalised ket}, $\braket\psi\psi=1$.
 
-A bra can be seen as a \emph{linear form}: the map $\ket w\mapsto\braket vw$ is linear, so $\bra v$ belongs to the space $V^*=L(V,\C)$ of linear forms on $V$, the \term{dual space}. Every linear form on a finite-dimensional Hilbert space arises this way, a fact known as the Riesz representation theorem, which we prove in Section~\ref{sec:state-evolution} (Theorem~\ref{thm:riesz}).
-The correspondence $\ket v\mapsto\bra v$ is conjugate-linear and one-to-one. That is why bras and kets are two faces of the same information.
+A bra is more than a notation: it is a \emph{linear form} on the space, and in Section~\ref{sec:dual} we show that every linear form is a bra (the Riesz representation theorem). The correspondence $\ket v\mapsto\bra v$ is conjugate-linear and one-to-one, which is why bras and kets are two faces of the same information.
 
 \begin{example}\label{ex:kets}
   Let $\ket\psi=\frac1{\sqrt3}\ket0+\frac{1+\ii}{\sqrt3}\ket1$. Check that it is normalised, write $\bra\psi$, compute $\braket0\psi$, and find the matrix $\ket\psi\!\bra\psi$ with its trace.
@@ -229,6 +228,93 @@ so the matrix element $A_{ij}$ is the $i$th coordinate of $A\ket{e_j}$, in agree
     \item \emph{The matrix.} $\begin{pmatrix}0&\ii\\-\ii&0\end{pmatrix}=-\sy$ in this basis: the change of basis from $\{\ket0,\ket1\}$ to $\{\ket\pm\}$ turns $\sy$ into $-\sy$ (as $H\sy H=-\sy$).
   \end{steps}
 \end{solution}
+
+\subsection{The dual space and the Riesz theorem}\label{sec:dual}
+
+Bras have been lurking in the background: we said that $\bra v$ ``eats'' a ket and returns a number. This subsection makes that precise, and answers a natural question: are there linear maps from $\Hil$ to $\C$ that are \emph{not} bras? The answer is no, and it is a theorem. We first set up the general language of linear forms, which needs no inner product, and then use the inner product.
+
+\paragraph{Linear forms and the dual basis.}
+A \term{linear form} (or linear functional) on a vector space $V$ is a linear map $\varphi:V\to F$ into the scalars. The set $V^*=L(V,F)$ of all of them is a vector space, the \term{dual space} of $V$, and by Section~\ref{sec:vector-spaces} $\dim V^*=\dim V\cdot1=\dim V$. To describe linear forms concretely we use a basis.
+
+\begin{definition}[Dual basis]\label{def:dualbasis}
+  Let $v_1,\dots,v_n$ be a basis of $V$. Its \term{dual basis} $v_1^*,\dots,v_n^*\in V^*$ is defined by $v_i^*(v_j)=\delta_{ij}$. Equivalently, $v_i^*$ is the linear form that returns the $i$th coordinate: $v_i^*\bigl(\sum_j\lambda_jv_j\bigr)=\lambda_i$.
+\end{definition}
+
+The dual basis is indeed a basis of $V^*$: every linear form $\varphi$ is determined by its values on the $v_j$, and
+\[
+  \varphi=\sum_i\varphi(v_i)\,v_i^* .
+\]
+(Evaluate both sides on $v_j$: the left gives $\varphi(v_j)$, the right gives $\sum_i\varphi(v_i)\delta_{ij}=\varphi(v_j)$.) In $F^n$, where vectors are columns, linear forms are \emph{rows}, and the dual basis is the set of rows $v_i^*$ with $v_i^*v_j=\delta_{ij}$.
+
+\begin{example}[A dual basis]\label{ex:dualbasis}
+  Find the dual basis of $B=\{v_1=(1,0),\,v_2=(1,1)\}\subset\R^2$, and use it to find the coordinates of $(3,5)$ in $B$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The unknown rows.} Write $v_1^*=(a\ \ b)$ and $v_2^*=(c\ \ d)$, acting on columns.
+    \item \emph{$v_1^*$.} The conditions $v_1^*(v_1)=1$ and $v_1^*(v_2)=0$ read $a=1$ and $a+b=0$, so $v_1^*=(1\ \ -1)$.
+    \item \emph{$v_2^*$.} The conditions $v_2^*(v_1)=0$ and $v_2^*(v_2)=1$ read $c=0$ and $c+d=1$, so $v_2^*=(0\ \ 1)$.
+    \item \emph{Coordinates.} The coordinates of $(3,5)$ are $v_1^*(3,5)=3-5=-2$ and $v_2^*(3,5)=5$.
+    \item \emph{Check.} $-2(1,0)+5(1,1)=(3,5)$.
+  \end{steps}
+\end{solution}
+
+\begin{pitfall}
+  The form $v_i^*$ depends on the \emph{whole} basis, not just on $v_i$. In Example~\ref{ex:dualbasis}, $v_1=(1,0)$ has $v_1^*=(1\ \ -1)$, but in the canonical basis $\{(1,0),(0,1)\}$ the dual vector of $(1,0)$ is $(1\ \ 0)$. Changing the \emph{other} basis vector changes the dual of the first.
+\end{pitfall}
+
+\paragraph{The Riesz representation theorem.}
+With an inner product, the dual basis of an \emph{orthonormal} basis is easy: by Theorem~\ref{thm:parseval} the $i$th coordinate of $\ket\psi$ is $\braket{e_i}\psi$, so $e_i^*=\bra{e_i}$. The following theorem says that this is no accident: every linear form is a bra.
+
+\begin{theorem}[Riesz representation theorem, finite dimension]\label{thm:riesz}
+  Let $\Hil$ be a finite-dimensional Hilbert space and $\varphi:\Hil\to\C$ a linear form. Then there is a \emph{unique} vector $\ket v\in\Hil$ such that
+  \[
+    \varphi(\ket w)=\braket vw\qquad\text{for all }\ket w\in\Hil .
+  \]
+  Moreover $\abs{\varphi(\ket w)}\le\norm v\norm w$, with equality for $\ket w\propto\ket v$, so $\norm v$ is the ``size'' of $\varphi$.
+\end{theorem}
+\begin{proof}
+  \begin{steps}
+    \item \emph{Choose a basis.} Let $\{\ket{e_i}\}$ be an orthonormal basis of $\Hil$. By Theorem~\ref{thm:parseval} every $\ket w$ is $\sum_i\braket{e_i}w\ket{e_i}$, so by linearity $\varphi(\ket w)=\sum_i\braket{e_i}w\,\varphi(\ket{e_i})$.
+    \item \emph{Define the candidate.} Put $\ket v=\sum_i\overline{\varphi(\ket{e_i})}\ket{e_i}$. Its bra is $\bra v=\sum_i\varphi(\ket{e_i})\bra{e_i}$ (conjugating the coefficients).
+    \item \emph{Check.} $\braket vw=\sum_i\varphi(\ket{e_i})\braket{e_i}w=\varphi(\ket w)$ by the first step.
+    \item \emph{Uniqueness.} If $\ket v,\ket{v'}$ both work, then $\braket{v-v'}w=0$ for all $\ket w$; taking $\ket w=\ket{v-v'}$ gives $\norm{v-v'}^2=0$.
+    \item \emph{The bound} is Cauchy--Schwarz (Theorem~\ref{thm:cs}), with equality for $\ket w\propto\ket v$. \qedhere
+  \end{steps}
+\end{proof}
+
+\begin{corollary}\label{cor:bras-kets}
+  The map $\ket v\mapsto\bra v$ is a bijection from $\Hil$ onto the space $\Hil^*$ of linear forms; it is conjugate-linear and preserves norms. So \emph{every bra is the bra of a ket}, which justifies treating bras and kets as two views of the same information.
+\end{corollary}
+
+Note that the correspondence is \emph{conjugate}-linear: the form $\bra{\lambda v}$ is $\bar\lambda\bra v$. This is why a form is represented by the \emph{conjugate} of its values on the basis, as in the proof.
+
+\begin{example}[A linear form on $\C^2$]\label{ex:riesz-c2}
+  Find the vector representing $\varphi(z_1,z_2)=(1+\ii)z_1-2z_2$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Values on the basis.} $\varphi(\ket0)=\varphi(1,0)=1+\ii$ and $\varphi(\ket1)=\varphi(0,1)=-2$.
+    \item \emph{Representer.} $\ket v=\overline{(1+\ii)}\ket0+\overline{(-2)}\ket1=(1-\ii)\ket0-2\ket1$.
+    \item \emph{Check.} $\braket vw=\overline{(1-\ii)}w_1+\overline{(-2)}w_2=(1+\ii)w_1-2w_2=\varphi(w)$.
+  \end{steps}
+\end{solution}
+
+\begin{example}[Evaluation at a point, as an inner product]\label{ex:riesz-eval}
+  On $P_1$ (polynomials of degree at most $1$) with $\langle p,q\rangle=\int_{-1}^1\overline p\,q\dd x$, represent the functional $\varphi(p)=p(0)$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{An orthonormal basis.} $e_0=\frac1{\sqrt2}$ and $e_1=\sqrt{\tfrac32}\,x$: indeed $\int_{-1}^1\tfrac12\dd x=1$, $\int_{-1}^1\tfrac32x^2\dd x=1$, $\int_{-1}^1x\dd x=0$.
+    \item \emph{Values.} $\varphi(e_0)=\tfrac1{\sqrt2}$ and $\varphi(e_1)=0$.
+    \item \emph{Representer.} $v=\overline{\varphi(e_0)}e_0+\overline{\varphi(e_1)}e_1=\tfrac1{\sqrt2}\cdot\tfrac1{\sqrt2}=\tfrac12$.
+    \item \emph{Reading.} $p(0)=\int_{-1}^1\tfrac12\,p(x)\dd x$ for every $p\in P_1$: ``the value at the origin of a straight line is its average over $[-1,1]$''. \emph{Check} with $p=2+3x$: $p(0)=2$ and $\int_{-1}^1\tfrac12(2+3x)\dd x=2$.
+  \end{steps}
+\end{solution}
+
+\begin{lookahead}
+  Riesz's theorem has two uses in what follows. First, it makes it legitimate to describe a measurement outcome by a ket: the ``amplitude to find the outcome $m$'' is a linear form, hence a bra $\bra m$ (Section~\ref{sec:state-evolution}). Second, applied to the space of \emph{operators}, with the Hilbert--Schmidt inner product $\Tr(A^\dagger B)$, it identifies every ``state'' with a density operator (Theorem~\ref{thm:riesz-operators}, Section~\ref{sec:density}). In infinite dimension the theorem still holds for \emph{continuous} linear forms, and it is a pillar of the theory of Hilbert spaces.
+\end{lookahead}
 
 \subsection{Gram--Schmidt}
 
@@ -342,7 +428,13 @@ In particular, every finite-dimensional Hilbert space has an orthonormal basis.
 
   \exercise{3} Two ONBs $\{\ket{e_i}\},\{\ket{f_j}\}$ of $\C^n$ are \emph{mutually unbiased} if $\abs{\braket{e_i}{f_j}}^2=1/n$ for all $i,j$. Show that the eigenbases of $\sx,\sy,\sz$ are pairwise mutually unbiased. Interpret: a state from one basis gives completely random outcomes when measured in another.
 
-  \exercise{2} Let $B=\{(1,0),(1,1)\}\subset\R^2$. Find the dual basis $\{v_1^*,v_2^*\}$ as row vectors (so that $v_i^*(v_j)=\delta_{ij}$) and use it to compute the coordinates of $(3,5)$ in $B$.
+  \exercise{2} Find the dual basis $\{v_1^*,v_2^*\}$ of $B=\{(1,1),(1,2)\}\subset\R^2$ as row vectors (so that $v_i^*(v_j)=\delta_{ij}$) and use it to compute the coordinates of $(3,4)$ in $B$. Show that $\{v_1^*,v_2^*\}$ is a basis of $(\R^2)^*$ and that $\varphi=\sum_i\varphi(v_i)v_i^*$ for every linear form $\varphi$.
+
+  \exercise{2} Prove the Riesz representation theorem in $\C^n$ with the standard inner product directly: if $\varphi(w)=\sum_ic_iw_i$ then $v=(\bar c_1,\dots,\bar c_n)$. Compute the representer of $\varphi(z_1,z_2,z_3)=z_1-\ii z_2+(2+\ii)z_3$ and its norm.
+
+  \exercise{2} On $P_2$ with $\langle p,q\rangle=\int_{-1}^1\overline pq\dd x$, find the vector representing $\varphi(p)=p(0)$ and the one representing $\varphi(p)=p'(0)$. (Use the orthonormal basis $\frac1{\sqrt2},\sqrt{\tfrac32}x,\sqrt{\tfrac58}(3x^2-1)$.)
+
+  \exercise{2} Show that the representer $v$ in Theorem~\ref{thm:riesz} does not depend on the orthonormal basis used to construct it. Show that $\ket v\mapsto\bra v$ is conjugate-linear and preserves norms (Corollary~\ref{cor:bras-kets}).
 
   \exercise{3} Show that the dual basis of $\{\ket0,\ket+\}$ in $\C^2$ does not consist of the bras $\bra0,\bra+$, and explain why for an orthonormal basis it does.
 
