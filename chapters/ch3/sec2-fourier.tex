@@ -1,0 +1,259 @@
+%======================================================================
+\section{Fourier transforms}\label{sec:fourier}
+%======================================================================
+
+\begin{objectives}
+  You will expand periodic functions in Fourier series, compute Fourier transforms and use their main properties; relate the width of a function to the width of its transform;
+  use the discrete Fourier transform as a unitary matrix; and see the characteristic function of a probability measure as a Fourier transform.
+\end{objectives}
+
+\begin{recall}
+  The inner product $\langle f,g\rangle=\int\overline fg$, orthonormal bases and Parseval's identity (Section~\ref{sec:hilbert}); unitary operators (Section~\ref{sec:operators}); the momentum operator (Section~\ref{sec:operators}, Remark) and the uncertainty relation (Section~\ref{sec:measurement}); unitary representations (Section~\ref{sec:grouprep}); $\omega=e^{2\pi\ii/N}$ and roots of unity (Section~\ref{sec:complex}).
+\end{recall}
+
+A wave function $\psi(x)$ tells us where a particle is likely to be found. The \emph{same} information can be encoded in a second function $\hat\psi(k)$, which tells us how much of each wavelength the wave contains, and therefore, as we shall see, what momentum
+the particle is likely to have. The dictionary between $\psi$ and $\hat\psi$ is the Fourier transform. It is a change of orthonormal basis in an infinite-dimensional Hilbert space, so the language of Chapter~\ref{ch:tools} applies directly.
+
+\subsection{Fourier series}
+
+Consider the space $L^2([0,1])$ of (complex) functions $f$ on $[0,1]$ with $\int_0^1\abs{f}^2<\infty$, with the inner product $\langle f,g\rangle=\int_0^1\overline{f(x)}\,g(x)\dd x$ of Section~\ref{sec:hilbert}. For $n\in\Z$ put $e_n(x)=e^{2\pi\ii nx}$.
+
+\begin{proposition}[An orthonormal system]\label{prop:expo-orthonormal}
+  The functions $e_n$, $n\in\Z$, are orthonormal: $\langle e_m,e_n\rangle=\delta_{mn}$.
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item $\langle e_m,e_n\rangle=\int_0^1e^{-2\pi\ii mx}e^{2\pi\ii nx}\dd x=\int_0^1e^{2\pi\ii(n-m)x}\dd x$.
+    \item If $n=m$ the integrand is $1$, and the integral is $1$.
+    \item If $n\neq m$, the integral is $\bigl[\frac{e^{2\pi\ii(n-m)x}}{2\pi\ii(n-m)}\bigr]_0^1=\frac{1-1}{2\pi\ii(n-m)}=0$. \qedhere
+  \end{steps}
+\end{proof}
+
+It is a fact (not proved here) that this system is also \emph{complete}: it is an orthonormal basis of $L^2([0,1])$. By Theorem~\ref{thm:parseval} (valid also in infinite dimension) every $f\in L^2$ is then expanded, and Parseval's identity holds:
+\[
+  f=\sum_{n\in\Z}c_ne_n,\quad c_n=\langle e_n,f\rangle=\int_0^1f(x)e^{-2\pi\ii nx}\dd x,\qquad \int_0^1\abs{f}^2\dd x=\sum_{n\in\Z}\abs{c_n}^2 .
+\]
+This is a \term{Fourier series}: $f$ is decomposed into pure oscillations $e^{2\pi\ii nx}$ of frequency $n$, with amplitudes $c_n$.
+
+\begin{example}[Fourier coefficients of a ramp, and a surprise]\label{ex:fourier-ramp}
+  Compute the Fourier coefficients of $f(x)=x$ on $[0,1)$, and use Parseval's identity to evaluate $\sum_{n\ge1}1/n^2$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The zeroth coefficient.} $c_0=\int_0^1x\dd x=\tfrac12$.
+    \item \emph{The others ($n\neq0$).} Integrate by parts with $u=x$, $\dd v=e^{-2\pi\ii nx}\dd x$:
+      \[
+        c_n=\Bigl[\frac{x\,e^{-2\pi\ii nx}}{-2\pi\ii n}\Bigr]_0^1+\frac1{2\pi\ii n}\int_0^1e^{-2\pi\ii nx}\dd x
+        =\frac{1}{-2\pi\ii n}+0=\frac{\ii}{2\pi n},
+      \]
+      since $e^{-2\pi\ii n}=1$ and the last integral vanishes.
+    \item \emph{The norm.} $\int_0^1x^2\dd x=\tfrac13$.
+    \item \emph{Parseval.} $\tfrac13=\abs{c_0}^2+\sum_{n\neq0}\abs{c_n}^2=\tfrac14+2\sum_{n\ge1}\frac1{4\pi^2n^2}$.
+    \item \emph{Solve.} Hence $\tfrac{1}{2\pi^2}\sum_{n\ge1}n^{-2}=\tfrac13-\tfrac14=\tfrac1{12}$, that is,
+      \[
+        \sum_{n=1}^\infty\frac1{n^2}=\frac{\pi^2}{6}.
+      \]
+  \end{steps}
+  A statement about orthonormal bases in a Hilbert space has produced a classical number-theoretic identity.
+\end{solution}
+
+\subsection{The Fourier transform on $\R$}
+
+For functions on the whole line there is no period, and the discrete frequencies $n$ become a continuous frequency (wave number) $k\in\R$. We use the symmetric, unitary normalisation.
+
+\begin{definition}[Fourier transform]\label{def:ft}
+  For $f\in L^1(\R)\cap L^2(\R)$, its \term{Fourier transform} is
+  \[
+    \hat f(k)=(\FT f)(k)=\frac1{\sqrt{2\pi}}\int_{\R}f(x)\,e^{-\ii kx}\dd x,
+    \qquad\text{and}\qquad
+    f(x)=\frac1{\sqrt{2\pi}}\int_{\R}\hat f(k)\,e^{\ii kx}\dd k
+  \]
+  is the \term{inversion formula}.
+\end{definition}
+
+The function $\hat f(k)$ is the amplitude of the pure wave $e^{\ii kx}$ inside $f$, in the same way as $c_n$ above; the inversion formula is the continuous analogue of ``$f=\sum c_ne_n$''. The most important theorem is the analogue of Parseval's identity.
+
+\begin{theorem}[Plancherel]\label{thm:plancherel}
+  $\FT$ extends to a \emph{unitary} operator on $L^2(\R)$: $\ \norm{\hat f}=\norm f$ and $\langle\hat f,\hat g\rangle=\langle f,g\rangle$.
+\end{theorem}
+
+We use this without proof. Unitary is the key word: \emph{the Fourier transform is just a change of orthonormal basis}, from the ``position'' basis to the ``wave-number'' basis, and, as for any unitary, it preserves norms, and therefore probabilities.
+The properties that make it useful turn calculus into algebra.
+
+\begin{proposition}[Properties of the Fourier transform]\label{prop:ftprops}
+  Let $f,g$ be sufficiently regular, with $f$ and $f'$ vanishing at $\pm\infty$. Then
+  \begin{enumerate}
+    \item[(a)] \emph{linearity:} $\widehat{af+bg}=a\hat f+b\hat g$;
+    \item[(b)] \emph{translation:} if $(\tau_af)(x)=f(x-a)$, then $\widehat{\tau_af}(k)=e^{-\ii ka}\hat f(k)$;
+    \item[(c)] \emph{derivative:} $\widehat{f'}(k)=\ii k\,\hat f(k)$;
+    \item[(d)] \emph{multiplication by $x$:} $\widehat{xf}(k)=\ii\,\hat f\,'(k)$;
+    \item[(e)] \emph{scaling:} for $a\neq0$, $\widehat{f(a\,\cdot)}(k)=\frac1{\abs a}\hat f(k/a)$.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item (a) The integral is linear.
+    \item (b) Substitute $y=x-a$: $\frac1{\sqrt{2\pi}}\int f(x-a)e^{-\ii kx}\dd x=\frac1{\sqrt{2\pi}}\int f(y)e^{-\ii k(y+a)}\dd y=e^{-\ii ka}\hat f(k)$.
+    \item (c) Integrate by parts: $\int f'(x)e^{-\ii kx}\dd x=\bigl[f(x)e^{-\ii kx}\bigr]_{-\infty}^\infty+\ii k\int f(x)e^{-\ii kx}\dd x$, and the boundary term vanishes.
+    \item (d) Differentiate under the integral sign: $\hat f\,'(k)=\frac1{\sqrt{2\pi}}\int f(x)(-\ii x)e^{-\ii kx}\dd x=-\ii\,\widehat{xf}(k)$, and multiply by $\ii$.
+    \item (e) Substitute $y=ax$ (for $a>0$; the case $a<0$ is the same up to orientation): $\frac1{\sqrt{2\pi}}\int f(ax)e^{-\ii kx}\dd x=\frac1{a}\frac1{\sqrt{2\pi}}\int f(y)e^{-\ii(k/a)y}\dd y$. \qedhere
+  \end{steps}
+\end{proof}
+
+Property (c) is the one that matters most to physics: \emph{differentiation becomes multiplication}. This is why the Fourier transform solves linear differential equations with constant coefficients, such as Schr\"odinger's free equation.
+
+\paragraph{The Gaussian is its own transform.}
+Gaussians are the one family that Fourier transforms map to themselves, and they will turn out to be the states of minimal uncertainty.
+
+\begin{example}\label{ex:gaussian-ft}
+  Show that $f(x)=e^{-x^2/2}$ has $\hat f(k)=e^{-k^2/2}$, and deduce the transform of $g(x)=e^{-x^2/(2\sigma^2)}$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{A differential equation for $f$.} $f'(x)=-x\,f(x)$.
+    \item \emph{Transform it.} Apply $\FT$, with (c) on the left and (d) on the right: $\ii k\hat f(k)=-\ii\,\hat f\,'(k)$, that is, $\hat f\,'(k)=-k\,\hat f(k)$.
+    \item \emph{Solve.} The solutions are $\hat f(k)=\hat f(0)\,e^{-k^2/2}$.
+    \item \emph{The constant.} $\hat f(0)=\frac1{\sqrt{2\pi}}\int e^{-x^2/2}\dd x=\frac{\sqrt{2\pi}}{\sqrt{2\pi}}=1$. So $\hat f(k)=e^{-k^2/2}$.
+    \item \emph{Rescale.} $g(x)=f(x/\sigma)$, which is $f(a\,\cdot)$ with $a=1/\sigma$. By (e), $\hat g(k)=\sigma\,\hat f(\sigma k)=\sigma\,e^{-\sigma^2k^2/2}$.
+  \end{steps}
+  Note the reciprocal relation: a Gaussian of width $\sigma$ in $x$ becomes a Gaussian of width $1/\sigma$ in $k$.
+\end{solution}
+
+\subsection{Width in $x$ against width in $k$}
+
+Property (e) says it all: compressing a function by $a>1$ stretches its transform by the same factor. A narrow function needs many wavelengths to be built; a wide one needs few. This trade-off is quantitative.
+
+\begin{example}[The Gaussian wave packet saturates the uncertainty relation]\label{ex:gaussian-uncertainty}
+  Let $\psi(x)=(\pi\sigma^2)^{-1/4}e^{-x^2/(2\sigma^2)}$. Check that $\psi$ and $\hat\psi$ are normalised, compute the standard deviations $\Delta x$ of $\abs\psi^2$ and $\Delta k$ of $\abs{\hat\psi}^2$, and show $\Delta x\,\Delta k=\tfrac12$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The position density.} $\abs{\psi(x)}^2=\frac1{\sigma\sqrt\pi}e^{-x^2/\sigma^2}$, a Gaussian $N(0,s^2)$ with $2s^2=\sigma^2$. It integrates to $1$, has mean $0$ and variance $\sigma^2/2$, so $\Delta x=\sigma/\sqrt2$.
+    \item \emph{The transform.} By Example~\ref{ex:gaussian-ft}, $\hat\psi(k)=(\pi\sigma^2)^{-1/4}\sigma\,e^{-\sigma^2k^2/2}=(\sigma^2/\pi)^{1/4}e^{-\sigma^2k^2/2}$.
+    \item \emph{The wave-number density.} $\abs{\hat\psi(k)}^2=\frac\sigma{\sqrt\pi}e^{-\sigma^2k^2}$, a Gaussian with $2s_k^2=1/\sigma^2$: it integrates to $1$ (as Plancherel promises), has mean $0$ and variance $\frac1{2\sigma^2}$, so $\Delta k=\frac1{\sigma\sqrt2}$.
+    \item \emph{The product.} $\Delta x\,\Delta k=\frac\sigma{\sqrt2}\cdot\frac1{\sigma\sqrt2}=\frac12$, whatever the value of $\sigma$.
+  \end{steps}
+\end{solution}
+
+The momentum of a particle is $p=\hbar k$, so $\Delta x\,\Delta p=\hbar/2$: the Gaussian attains the lower bound of the Heisenberg--Robertson relation (Theorem~\ref{thm:uncertainty}), which for $[\hat x,\hat p]=\ii\hbar$ reads $\Delta x\,\Delta p\ge\hbar/2$. For other shapes the product is larger. The uncertainty principle is, in this light, a theorem about Fourier transforms.
+
+\begin{lookahead}
+  Since $\FT$ is unitary and $\widehat{f'}=\ii k\hat f$, the momentum operator $\hat p=-\ii\hbar\frac{d}{dx}$ becomes \emph{multiplication by $\hbar k$} in the wave-number representation. So the kinetic energy $\hat p^2/2m$ is the multiplication operator $\hbar^2k^2/2m$, and
+  the free-particle propagator $e^{-\ii\hat Ht/\hbar}$ (Proposition~\ref{prop:schrodinger}) multiplies $\hat\psi(k)$ by the phase $e^{-\ii\hbar k^2t/2m}$. The free Schr\"odinger equation of Section~\ref{sec:motivation} is solved by one Fourier transform, one multiplication by a phase, and one inverse transform.
+  This is the spectral theorem for $\hat p$, in action.
+\end{lookahead}
+
+\subsection{The discrete Fourier transform}
+
+On $\C^N$ the Fourier transform becomes a finite matrix. Let $\omega=e^{2\pi\ii/N}$.
+
+\begin{definition}[Discrete Fourier transform]\label{def:dft}
+  The \term{discrete Fourier transform} is the $N\times N$ matrix $F_N$ with entries $(F_N)_{jk}=\frac1{\sqrt N}\,\omega^{jk}$ for $j,k=0,\dots,N-1$.
+\end{definition}
+
+\begin{theorem}\label{thm:dft-unitary}
+  $F_N$ is unitary.
+\end{theorem}
+\begin{proof}
+  We show that the columns of $F_N$ are orthonormal.
+  \begin{steps}
+    \item The inner product of columns $k$ and $k'$ is $\sum_j\overline{\tfrac{\omega^{jk}}{\sqrt N}}\tfrac{\omega^{jk'}}{\sqrt N}=\frac1N\sum_{j=0}^{N-1}\omega^{j(k'-k)}$.
+    \item If $k=k'$ every term is $1$, so the sum is $N$ and the inner product is $1$.
+    \item If $k\neq k'$ put $r=\omega^{k'-k}\neq1$; since $r^N=1$, the geometric sum is $\sum_jr^j=\frac{1-r^N}{1-r}=0$. \qedhere
+  \end{steps}
+\end{proof}
+
+\begin{example}\label{ex:dft}
+  Write $F_2$ and $F_4$, and compute $F_4$ applied to $\frac12(1,1,1,1)^t$ and to $(1,0,0,0)^t$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{$F_2$.} $\omega=e^{\ii\pi}=-1$, so $F_2=\frac1{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix}$: \emph{the Hadamard gate}.
+    \item \emph{$F_4$.} Here $\omega=\ii$, and the entries are $\ii^{jk}/2$:
+      \[
+        F_4=\frac12\begin{pmatrix}1&1&1&1\\1&\ii&-1&-\ii\\1&-1&1&-1\\1&-\ii&-1&\ii\end{pmatrix}.
+      \]
+    \item \emph{Uniform vector.} $F_4\cdot\frac12(1,1,1,1)^t$: the first row gives $\frac14\cdot4=1$; every other row sums to $0$ (the sum of the fourth roots of unity vanishes). The result is $(1,0,0,0)^t$.
+    \item \emph{Basis vector.} $F_4(1,0,0,0)^t$ is the first column, $\tfrac12(1,1,1,1)^t$.
+  \end{steps}
+  So $F_4$ exchanges ``perfectly localised'' and ``perfectly spread out'' vectors: the discrete analogue of the position--momentum duality.
+\end{solution}
+
+\begin{lookahead}
+  As a unitary matrix, $F_{2^n}$ is a legitimate quantum gate on $n$ qubits: the \emph{quantum Fourier transform}. For $n=1$ it is the Hadamard gate, and for general $n$ it can be implemented with about $n^2$ elementary gates, exponentially fewer than the $2^n$ entries of the matrix suggest. It is the engine of Shor's algorithm: it turns a hidden \emph{period} of a function, which is spread
+  over the amplitudes, into a sharply peaked distribution that a measurement can read.
+\end{lookahead}
+
+\subsection{The characteristic function of a probability measure}
+
+If $X$ has a density $f$, then the Fourier transform of the \emph{density} is, up to normalisation, a very useful object.
+
+\begin{definition}[Characteristic function]\label{def:charfn}
+  The \term{characteristic function} of a random variable $X$ is $\varphi_X(k)=\EE\bigl[e^{\ii kX}\bigr]$. If $X$ has density $f$, then $\varphi_X(k)=\int e^{\ii kx}f(x)\dd x=\sqrt{2\pi}\,\hat f(-k)$; if $X$ is discrete, $\varphi_X(k)=\sum_xp(x)e^{\ii kx}$.
+\end{definition}
+
+\begin{proposition}\label{prop:charfn}
+  For every random variable: (a) $\varphi_X(0)=1$ and $\abs{\varphi_X(k)}\le1$; (b) $\varphi_{aX+b}(k)=e^{\ii kb}\varphi_X(ak)$; (c) if $X,Y$ are independent then $\varphi_{X+Y}=\varphi_X\varphi_Y$; (d) $\varphi_X'(0)=\ii\,\EE[X]$ when $\EE\abs X<\infty$.
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item (a) $e^{\ii0}=1$, and $\abs{\EE[e^{\ii kX}]}\le\EE\abs{e^{\ii kX}}=1$.
+    \item (b) $\EE[e^{\ii k(aX+b)}]=e^{\ii kb}\EE[e^{\ii(ka)X}]$.
+    \item (c) By independence, $\EE[e^{\ii kX}e^{\ii kY}]=\EE[e^{\ii kX}]\,\EE[e^{\ii kY}]$.
+    \item (d) Differentiate $\EE[e^{\ii kX}]$ at $k=0$: $\EE[\ii Xe^{\ii kX}]\big|_{k=0}=\ii\,\EE X$. \qedhere
+  \end{steps}
+\end{proof}
+
+\begin{example}\label{ex:charfn}
+  Find $\varphi$ for a Bernoulli$(p)$ variable and for $N(0,\sigma^2)$, and show that the sum of two independent $N(0,\sigma_1^2)$ and $N(0,\sigma_2^2)$ variables is $N(0,\sigma_1^2+\sigma_2^2)$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Bernoulli.} $\varphi(k)=(1-p)e^{0}+p\,e^{\ii k}=1-p+pe^{\ii k}$.
+    \item \emph{Gaussian.} The density is $f(x)=\frac1{\sigma\sqrt{2\pi}}e^{-x^2/(2\sigma^2)}$, so $\varphi(k)=\int e^{\ii kx}f(x)\dd x=\sqrt{2\pi}\hat f(-k)$. By Example~\ref{ex:gaussian-ft}, $\hat f(k)=\frac1{\sigma\sqrt{2\pi}}\sigma e^{-\sigma^2k^2/2}$, giving $\varphi(k)=e^{-\sigma^2k^2/2}$.
+    \item \emph{The sum.} By (c), $\varphi_{X+Y}(k)=e^{-\sigma_1^2k^2/2}e^{-\sigma_2^2k^2/2}=e^{-(\sigma_1^2+\sigma_2^2)k^2/2}$, the characteristic function of $N(0,\sigma_1^2+\sigma_2^2)$. A characteristic function determines the distribution (a standard theorem, the injectivity of the Fourier transform), which proves the claim.
+  \end{steps}
+\end{solution}
+
+A beautiful connection with quantum mechanics: for an observable $M=\sum_mmP_m$ measured in the state $\ket\psi$ with outcome $X$,
+\[
+  \varphi_X(k)=\sum_mp(m)e^{\ii km}=\bra\psi e^{\ii kM}\ket\psi .
+\]
+The characteristic function of the measurement statistics is the expectation value of the \emph{unitary} $e^{\ii kM}$. For $M=Z$, for example, $\bra\psi e^{\ii kZ}\ket\psi=\cos k+\ii\,n_z\sin k$, the characteristic function of the $\pm1$ variable with mean $n_z$.
+
+\begin{lookahead}
+  The map $k\mapsto e^{\ii kM}$ is a \emph{unitary representation of the group} $(\R,+)$ (Section~\ref{sec:grouprep}), and the statement above says that all the statistics of $M$ are encoded in the expectation of this representation. This is the viewpoint of Stone's theorem, and the starting point of the
+  Fourier-analytic approach to quantum measurement.
+\end{lookahead}
+
+\begin{exerciseset}
+  \exercise{1} Check that $\{e_n\}$ is an orthonormal system (Proposition~\ref{prop:expo-orthonormal}) by computing $\langle e_1,e_1\rangle$, $\langle e_1,e_2\rangle$ and $\langle e_0,e_{-3}\rangle$.
+
+  \exercise{2} Compute the Fourier coefficients of $f(x)=\cos(2\pi x)$ and of $f(x)=\sin^2(\pi x)$ on $[0,1]$ (use $e^{\ii\theta}$ to rewrite them), and verify Parseval's identity.
+
+  \exercise{2} Compute the Fourier coefficients of $f(x)=\mathbf 1_{[0,1/2)}(x)$ (the square wave). Which coefficients vanish? Use Parseval to evaluate $\sum_{n\ \mathrm{odd}}1/n^2$.
+
+  \exercise{2} Using Example~\ref{ex:fourier-ramp}, show that $\sum_{n\ge1}\frac{\sin(2\pi nx)}{n}=\frac{\pi}{2}(1-2x)$ for $0<x<1$ is the (formal) Fourier series of the ramp, by combining $c_n$ and $c_{-n}$.
+
+  \exercise{2} Prove parts (b) and (e) of Proposition~\ref{prop:ftprops}, and verify them for $f(x)=e^{-x^2/2}$.
+
+  \exercise{2} Compute the Fourier transform of $f(x)=\mathbf 1_{[-1,1]}(x)$ and show that it is $\sqrt{2/\pi}\,\frac{\sin k}{k}$. Where is $\hat f$ concentrated when the interval is narrowed to $[-a,a]$?
+
+  \exercise{2} Show that if $f$ is real and even, then $\hat f$ is real and even.
+
+  \exercise{3} The \emph{convolution} is $(f*g)(x)=\int f(y)g(x-y)\dd y$. Show that $\widehat{f*g}=\sqrt{2\pi}\,\hat f\,\hat g$, and use it to show that the convolution of two Gaussians $N(0,\sigma_1^2)$ and $N(0,\sigma_2^2)$ is $N(0,\sigma_1^2+\sigma_2^2)$.
+
+  \exercise{2} For the Gaussian packet of Example~\ref{ex:gaussian-uncertainty}, verify all the integrals, and compute $\Delta x\,\Delta p$ with $p=\hbar k$. Repeat for $\psi(x)=(\pi\sigma^2)^{-1/4}e^{-x^2/(2\sigma^2)}e^{\ii k_0x}$ and explain the role of $k_0$.
+
+  \exercise{3} Free evolution: let $\hat\psi(k,0)$ be the initial transform. Show that $\hat\psi(k,t)=\hat\psi(k,0)e^{-\ii\hbar k^2t/2m}$ solves the free Schr\"odinger equation, and that $\abs{\hat\psi(k,t)}$ does not depend on $t$. Deduce that the momentum distribution is conserved.
+
+  \exercise{1} Compute $F_3$ explicitly (with $\omega=e^{2\pi\ii/3}$) and check that its first two columns are orthonormal.
+
+  \exercise{2} Prove that $F_N^2$ is the permutation $e_j\mapsto e_{-j\bmod N}$, and deduce $F_N^4=\Id$ and that the eigenvalues of $F_N$ lie in $\{1,-1,\ii,-\ii\}$.
+
+  \exercise{2} Compute $F_4$ applied to $(1,0,1,0)^t$ and to $(1,1,0,0)^t$. Explain the first result in terms of periodicity.
+
+  \exercise{2} Show that the characteristic function of $N(\mu,\sigma^2)$ is $e^{\ii\mu k-\sigma^2k^2/2}$, and use $\varphi'(0)=\ii\EE X$ and $\varphi''(0)=-\EE X^2$ to recover its mean and variance.
+
+  \exercise{2} Let $\ket\psi$ have Bloch vector $\vec n$. Show that $\bra\psi e^{\ii k\,\vec v\cdot\vec\sigma}\ket\psi=\cos k+\ii\sin k\,(\vec n\cdot\vec v)$ for a unit vector $\vec v$, and identify the distribution that it characterises.
+\end{exerciseset}

@@ -1,0 +1,166 @@
+%======================================================================
+\section{Shannon entropy}\label{sec:shannon}
+%======================================================================
+
+\begin{objectives}
+  You will compute the Shannon entropy of a distribution and interpret it as an average surprise and as a compression rate; prove its basic properties; and work with joint and conditional entropies and the mutual information.
+\end{objectives}
+
+\begin{recall}
+  Probability distributions, random variables, expectation, independence and conditional probability (Section~\ref{sec:prob}).
+\end{recall}
+
+How much information is there in the outcome of a random experiment? The answer depends only on the probabilities. A coin that always lands heads tells us nothing; a fair coin tells us one bit; a fair die tells us more. Claude Shannon~\cite{shannon1948} found the function that quantifies this, and
+it turned out to have an operational meaning: it is the number of bits per symbol needed to store a stream of such outcomes.
+
+\paragraph{Conventions.}
+Logarithms are in base $2$, so entropy is measured in \emph{bits}, unless we write $\ln$. We use $0\log0=0$, which is the limit of $x\log x$ as $x\to0^+$. Distributions are finite.
+
+\subsection{Information content and entropy}
+
+If an event of probability $p$ occurs, how surprised should we be? A reasonable measure should be large for rare events and $0$ for certain ones, and surprises of \emph{independent} events should add (the surprise of two independent events is the sum). Since probabilities of independent events multiply, the logarithm is the natural choice.
+
+\begin{definition}[Surprise and Shannon entropy]\label{def:shannon}
+  The \term{information content} (or surprise) of an event of probability $p>0$ is $-\log p$. The \term{Shannon entropy} of a random variable $X$ with distribution $p(x)$ is its average surprise,
+  \[
+    \Hs(X)=\Hs(p)=-\sum_xp(x)\log p(x)=\EE\bigl[-\log p(X)\bigr].
+  \]
+\end{definition}
+
+\begin{example}\label{ex:shannon-values}
+  Compute the entropy of: (a) a fair coin; (b) a coin with $\PP(1)=0.1$; (c) a uniform variable on $8$ outcomes; (d) a deterministic variable.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item (a) $-\tfrac12\log\tfrac12-\tfrac12\log\tfrac12=\tfrac12+\tfrac12=1$ bit.
+    \item (b) $-0.1\log0.1-0.9\log0.9=0.1\times3.322+0.9\times0.152\approx0.332+0.137=0.469$ bits.
+    \item (c) Each $p=\tfrac18$, so $\Hs=-\log\tfrac18=\log8=3$ bits.
+    \item (d) A single outcome with $p=1$ contributes $-1\cdot\log1=0$: no surprise at all.
+  \end{steps}
+  The biased coin carries less than a bit: we can usually guess the outcome.
+\end{solution}
+
+For two outcomes with probabilities $p,1-p$ the entropy is the \term{binary entropy} $h(p)=-p\log p-(1-p)\log(1-p)$, plotted in Figure~\ref{fig:binary-entropy}. It is $0$ at $p=0,1$, symmetric about $p=\tfrac12$, and maximal ($=1$) at $p=\tfrac12$.
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[width=0.7\linewidth, height=5.4cm, xmin=0, xmax=1, ymin=0, ymax=1.25,
+        xlabel={$p$}, ylabel={$h(p)$ (bits)}, axis lines=left, clip=false,
+        xtick={0,0.25,0.5,0.75,1}, ytick={0,0.5,1},
+        label style={font=\footnotesize}, tick label style={font=\footnotesize}]
+      \addplot[navy, very thick, samples=200, domain=0.001:0.999] {-x*ln(x)/ln(2)-(1-x)*ln(1-x)/ln(2)};
+      \addplot[only marks, mark=*, mark size=1.8pt, figacc] coordinates {(0.5,1) (0.1,0.469) (0.25,0.811)};
+      \node[figacc, font=\footnotesize, anchor=south] at (axis cs:0.5,1.0) {fair coin};
+      \node[figacc, font=\footnotesize, anchor=west] at (axis cs:0.12,0.42) {$p=0.1$};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{The binary entropy $h(p)$. A fair coin is the most unpredictable (one bit); a very biased one is almost predictable.}
+  \label{fig:binary-entropy}
+\end{figure}
+
+\begin{proposition}[Basic properties]\label{prop:shannon-props}
+  For a distribution $p$ on $n$ outcomes:
+  \begin{enumerate}
+    \item[(a)] $\Hs(p)\ge0$, with equality iff $p$ is deterministic;
+    \item[(b)] $\Hs(p)\le\log n$, with equality iff $p$ is uniform.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item (a) Each term $-p(x)\log p(x)$ is $\ge0$ because $0\le p(x)\le1$, and vanishes only if $p(x)\in\{0,1\}$. The sum vanishes only if every $p(x)\in\{0,1\}$, that is, if one outcome has probability $1$.
+    \item (b) Restrict to the outcomes with $p(x)>0$ (say $m\le n$ of them). The logarithm is \emph{concave}, so Jensen's inequality (for a concave $f$ and weights $p(x)\ge0$ summing to $1$: $\sum_xp(x)f(a_x)\le f\bigl(\sum_xp(x)a_x\bigr)$) gives
+      \[
+        \Hs(p)=\sum_xp(x)\log\frac1{p(x)}\le\log\Bigl(\sum_xp(x)\cdot\frac1{p(x)}\Bigr)=\log m\le\log n .
+      \]
+    \item Equality in Jensen requires $1/p(x)$ to be constant on the support, and $m=n$: the distribution is uniform. \qedhere
+  \end{steps}
+\end{proof}
+
+\subsection{Several variables}
+
+For a pair $(X,Y)$ with joint distribution $p(x,y)$, we use the joint entropy $\Hs(X,Y)=-\sum_{x,y}p(x,y)\log p(x,y)$, and we define the conditional entropy as the average remaining uncertainty:
+$\Hs(Y\mid X)=\sum_xp_X(x)\,\Hs(Y\mid X=x)$, where $\Hs(Y\mid X=x)$ is the entropy of the conditional distribution $p(y\mid x)=p(x,y)/p_X(x)$.
+
+\begin{proposition}[Chain rule]\label{prop:chainrule}
+  $\Hs(X,Y)=\Hs(X)+\Hs(Y\mid X)$.
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item Write $p(x,y)=p_X(x)\,p(y\mid x)$, so $\log p(x,y)=\log p_X(x)+\log p(y\mid x)$.
+    \item Multiply by $-p(x,y)$ and sum over $x,y$.
+    \item The first part gives $-\sum_xp_X(x)\log p_X(x)=\Hs(X)$ (summing $p(x,y)$ over $y$).
+    \item The second part gives $-\sum_xp_X(x)\sum_yp(y\mid x)\log p(y\mid x)=\sum_xp_X(x)\Hs(Y\mid X=x)=\Hs(Y\mid X)$. \qedhere
+  \end{steps}
+\end{proof}
+
+How much does knowing $X$ tell us about $Y$? The answer is the reduction of the uncertainty about $Y$.
+
+\begin{definition}[Mutual information]\label{def:mutualinfo}
+  $I(X\!:\!Y)=\Hs(X)+\Hs(Y)-\Hs(X,Y)=\Hs(Y)-\Hs(Y\mid X)$.
+\end{definition}
+
+The two forms agree by the chain rule. We shall prove in Section~\ref{sec:relent} that $I(X\!:\!Y)\ge0$, with equality iff $X$ and $Y$ are independent; equivalently, \emph{conditioning never increases entropy}, $\Hs(Y\mid X)\le\Hs(Y)$.
+
+\begin{example}[Correlated and independent qubit outcomes]\label{ex:mutual-info}
+  Compute $\Hs(X),\Hs(Y),\Hs(X,Y)$ and $I(X\!:\!Y)$ for the $Z\otimes Z$ outcomes of (a) $\ket+\ket+$ and (b) $\ket{\Phi^+}$ (Example~\ref{ex:joint-bell}).
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{(a)} The joint distribution is uniform on $4$ outcomes, so $\Hs(X,Y)=2$; both marginals are fair, $\Hs(X)=\Hs(Y)=1$. Hence $I=1+1-2=0$: independent.
+    \item \emph{(b)} The joint distribution is $(\tfrac12,0,0,\tfrac12)$, so $\Hs(X,Y)=1$; the marginals are fair, $\Hs(X)=\Hs(Y)=1$. Hence $I=1+1-1=1$ bit: knowing $X$ determines $Y$ completely.
+  \end{steps}
+\end{solution}
+
+\subsection{Entropy as a compression rate}
+
+The entropy is not just a convenient formula; it has an operational meaning.
+
+\begin{theorem}[Shannon's source coding theorem, informally]\label{thm:source-coding}
+  A source emitting independent symbols with distribution $p$ can be compressed to $\Hs(p)$ bits per symbol, asymptotically for long messages, and no better.
+\end{theorem}
+
+We do not prove this, but a small example shows the idea: give short codewords to likely symbols.
+
+\begin{example}[A code that reaches the entropy]\label{ex:huffman}
+  A source emits $a,b,c,d$ with probabilities $\tfrac12,\tfrac14,\tfrac18,\tfrac18$. Compute $\Hs$, and find a prefix code whose average length equals it.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Entropy.} $\Hs=\tfrac12\log2+\tfrac14\log4+2\cdot\tfrac18\log8=\tfrac12+\tfrac12+\tfrac34=1.75$ bits.
+    \item \emph{A code.} Use $a\mapsto0$, $b\mapsto10$, $c\mapsto110$, $d\mapsto111$. No codeword is a prefix of another, so a stream of bits can be decoded unambiguously.
+    \item \emph{Average length.} $\tfrac12\cdot1+\tfrac14\cdot2+\tfrac18\cdot3+\tfrac18\cdot3=1.75$ bits per symbol.
+  \end{steps}
+  A naive fixed-length code would use $2$ bits per symbol; here the code length of each symbol is exactly its surprise $-\log p(x)$, and so the average equals $\Hs$.
+\end{solution}
+
+\begin{lookahead}
+  The quantum version of this theorem, due to Schumacher, says that $n$ copies of a quantum state $\rho$ can be compressed into $n\,\Ss(\rho)$ qubits, where $\Ss$ is the von Neumann entropy of Section~\ref{sec:vonneumann}. The classical capacity of a noisy channel has an equally precise answer: a binary symmetric channel that flips each bit with probability $\varepsilon$ can transmit reliably
+  $1-h(\varepsilon)$ bits per use, which for $\varepsilon=0.1$ is $1-0.469\approx0.531$.
+\end{lookahead}
+
+\begin{exerciseset}
+  \exercise{1} Compute the entropy of the distributions $(\tfrac12,\tfrac12)$, $(\tfrac13,\tfrac13,\tfrac13)$, $(0.9,0.1)$, $(\tfrac12,\tfrac14,\tfrac14)$ and $(1,0,0)$.
+
+  \exercise{1} Show $h(p)=h(1-p)$ and find the maximum of $h$ (set $h'(p)=0$).
+
+  \exercise{2} A die is loaded so that $6$ appears with probability $\tfrac12$ and the other faces with probability $\tfrac1{10}$ each. Compute its entropy and compare with $\log6$.
+
+  \exercise{2} Prove Proposition~\ref{prop:shannon-props}(b) a second way: compare $\Hs(p)$ with $\log n$ using $\ln x\le x-1$ applied to $x=\frac1{np(x)}$.
+
+  \exercise{2} Show that $\Hs$ is invariant under relabelling of the outcomes, and that adding outcomes of probability $0$ does not change it.
+
+  \exercise{2} Let $X$ and $Y$ be independent. Show that $\Hs(X,Y)=\Hs(X)+\Hs(Y)$ and $I(X\!:\!Y)=0$.
+
+  \exercise{2} For the joint distribution $p(0,0)=\tfrac12,\ p(0,1)=\tfrac14,\ p(1,1)=\tfrac14,\ p(1,0)=0$, compute $\Hs(X),\Hs(Y),\Hs(X,Y),\Hs(Y\mid X),\Hs(X\mid Y)$ and $I(X\!:\!Y)$.
+
+  \exercise{2} Compute $I(X\!:\!Y)$ for the outcomes of $Z\otimes Z$ on $\bell01$ and on $\ket0\ket+$, and for the classical mixture $\tfrac12\ket{00}\!\bra{00}+\tfrac12\ket{11}\!\bra{11}$.
+
+  \exercise{2} Let $X$ be a fair bit and $Y=X\oplus N$ with $N$ an independent Bernoulli$(\varepsilon)$ noise bit. Show $I(X\!:\!Y)=1-h(\varepsilon)$, and evaluate it for $\varepsilon=0.1$.
+
+  \exercise{2} Find a prefix code for the distribution $(\tfrac12,\tfrac14,\tfrac18,\tfrac1{16},\tfrac1{16})$ with average length equal to its entropy.
+
+  \exercise{3} Prove that $\Hs$ is a concave function of the distribution: $\Hs(\lambda p+(1-\lambda)q)\ge\lambda\Hs(p)+(1-\lambda)\Hs(q)$. (Hint: $x\mapsto-x\log x$ is concave.)
+
+  \exercise{3} Show that for any function $g$, $\Hs(g(X))\le\Hs(X)$, with equality when $g$ is injective.
+\end{exerciseset}

@@ -7,6 +7,10 @@
   physical properties exist before measurement and cannot be influenced at a distance, and show that quantum mechanics violates it.
 \end{objectives}
 
+\begin{recall}
+  The singlet and the Bell states (Section~\ref{sec:composite}); expectation values of observables (Section~\ref{sec:measurement}); reduced density operators (Section~\ref{sec:density}); the groups $SU(2)$ and the representation $U\otimes U$ (Section~\ref{sec:grouprep}).
+\end{recall}
+
 % \begin{quote}
 %   \emph{Anybody who is not shocked by quantum theory has not understood it.} --- Niels Bohr
 % \end{quote}
@@ -25,12 +29,16 @@ Take the singlet $\ket{\Psi^-}=\bell11=\frac1{\sqrt2}(\ket{01}-\ket{10})$, a sta
   Let $\ket{\Psi^-}$ be the singlet and $\vec v$ any unit vector. If the observable $\vec v\cdot\vec\sigma$ is measured on both qubits, the two results are always opposite.
 \end{proposition}
 \begin{proof}
-  For any unitary $U$, the coefficient matrix of $(U\tp U)\ket{\Psi^-}$ is $UCU^t$, with $C=\frac1{\sqrt2}\begin{pmatrix}0&1\\-1&0\end{pmatrix}$. For $2\times2$ matrices, $U\begin{pmatrix}0&1\\-1&0\end{pmatrix}U^t=(\det U)\begin{pmatrix}0&1\\-1&0\end{pmatrix}$, so
-  \begin{equation}\label{eq:singlet-inv}
-    (U\tp U)\ket{\Psi^-}=(\det U)\ket{\Psi^-}.
-  \end{equation}
-  Let $\ket a,\ket b$ be the orthonormal eigenvectors of $\vec v\cdot\vec\sigma$ with eigenvalues $+1,-1$, and let $U$ be the unitary with $U\ket0=\ket a$, $U\ket1=\ket b$. Then $(U\tp U)\ket{\Psi^-}=\frac1{\sqrt2}(\ket{ab}-\ket{ba})$, which by \eqref{eq:singlet-inv} equals $(\det U)\ket{\Psi^-}$.
-  Hence, up to a global phase, $\ket{\Psi^-}=\frac1{\sqrt2}(\ket{ab}-\ket{ba})$: the outcomes $(+1,-1)$ and $(-1,+1)$ each have probability $\tfrac12$, and $(+1,+1),(-1,-1)$ have probability $0$.
+  \begin{steps}
+    \item \emph{Local unitaries on the coefficient matrix.} For any unitary $U$, the coefficient matrix of $(U\tp U)\ket{\Psi^-}$ is $UCU^t$, with $C=\frac1{\sqrt2}\begin{pmatrix}0&1\\-1&0\end{pmatrix}$ (Exercise~\ref{ex:local-unitary-matrix}).
+    \item \emph{A $2\times2$ identity.} $U\begin{pmatrix}0&1\\-1&0\end{pmatrix}U^t=(\det U)\begin{pmatrix}0&1\\-1&0\end{pmatrix}$, so
+      \begin{equation}\label{eq:singlet-inv}
+        (U\tp U)\ket{\Psi^-}=(\det U)\ket{\Psi^-}.
+      \end{equation}
+    \item \emph{Choose $U$ adapted to $\vec v$.} Let $\ket a,\ket b$ be the orthonormal eigenvectors of $\vec v\cdot\vec\sigma$ with eigenvalues $+1,-1$, and $U$ the unitary with $U\ket0=\ket a$, $U\ket1=\ket b$. Then $(U\tp U)\ket{\Psi^-}=\frac1{\sqrt2}(\ket{ab}-\ket{ba})$.
+    \item \emph{Compare.} By \eqref{eq:singlet-inv} this equals $(\det U)\ket{\Psi^-}$, so up to a global phase $\ket{\Psi^-}=\frac1{\sqrt2}(\ket{ab}-\ket{ba})$.
+    \item \emph{Read off the outcomes.} The outcomes $(+1,-1)$ and $(-1,+1)$ each have probability $\tfrac12$, and $(+1,+1),(-1,-1)$ have probability $0$. \qedhere
+  \end{steps}
 \end{proof}
 
 Now put Alice and Bob far apart, each with one qubit of the singlet. Alice measures along $\vec v$ and gets $+1$. She can then predict with certainty that Bob, if he measures along the same $\vec v$, will get $-1$, without having touched his qubit. By EPR's criterion, the value of $\vec v\cdot\vec\sigma$ for Bob's qubit is an element of reality, and this holds for \emph{every} direction $\vec v$.
@@ -72,15 +80,27 @@ Together these two are called \term{local realism}. They are exactly the assumpt
   \]
 \end{theorem}
 \begin{proof}
-  Consider the quantity $QS+RS+RT-QT=(Q+R)S+(R-Q)T$. Since $Q,R=\pm1$, either $Q+R=0$ or $R-Q=0$, so exactly one of the two terms vanishes, and the other is $\pm2$ (as $S,T=\pm1$). Hence
-  $QS+RS+RT-QT=\pm2$ in every run. Let $p(q,r,s,t)$ be the probability that before the measurements $Q=q,R=r,S=s,T=t$; it may depend on Charlie's procedure and on noise. Then
-  \[
-    \mathbb E(QS+RS+RT-QT)=\sum_{qrst}p(q,r,s,t)(qs+rs+rt-qt)\le2\sum_{qrst}p(q,r,s,t)=2 .
-  \]
-  By linearity of expectation, the left side equals $\mathbb E(QS)+\mathbb E(RS)+\mathbb E(RT)-\mathbb E(QT)$. (Alice and Bob can estimate each of these four averages from their data by pairing runs where they chose the corresponding measurements.)
+  \begin{steps}
+    \item \emph{Factor the combination.} $QS+RS+RT-QT=(Q+R)S+(R-Q)T$.
+    \item \emph{One term vanishes.} Since $Q,R=\pm1$, either $Q+R=0$ or $R-Q=0$, and the other bracket is $\pm2$. As $S,T=\pm1$, in every single run $QS+RS+RT-QT=\pm2$.
+    \item \emph{Average over runs.} Let $p(q,r,s,t)$ be the probability that before the measurements $Q=q,R=r,S=s,T=t$; it may depend on Charlie's procedure and on noise. Then $\EE(QS+RS+RT-QT)=\sum_{qrst}p(q,r,s,t)(qs+rs+rt-qt)\le2\sum_{qrst}p(q,r,s,t)=2$.
+    \item \emph{Split by linearity.} The left side equals $\EE(QS)+\EE(RS)+\EE(RT)-\EE(QT)$, and Alice and Bob can estimate each of these four averages from their data by pairing the runs in which they chose the corresponding measurements. \qedhere
+  \end{steps}
 \end{proof}
 
 Notice what the theorem is: a statement about \emph{any} theory satisfying local realism, and not about quantum mechanics.
+
+\begin{example}[Deterministic assignments]\label{ex:deterministic}
+  Evaluate $QS+RS+RT-QT$ for the assignments $(Q,R,S,T)=(1,1,1,1)$, $(1,-1,1,-1)$ and $(-1,1,-1,-1)$, and find the largest value any local-realistic strategy can reach.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item $(1,1,1,1)$: $1+1+1-1=2$.
+    \item $(1,-1,1,-1)$: $QS=1$, $RS=-1$, $RT=1$, $QT=-1$, so $1-1+1+1=2$.
+    \item $(-1,1,-1,-1)$: $QS=1$, $RS=-1$, $RT=-1$, $QT=1$, so $1-1-1-1=-2$.
+    \item \emph{All $16$ assignments} give $\pm2$ (proof of Theorem~\ref{thm:chsh}), and a random mixture of them can only average to something in $[-2,2]$. So no classical strategy beats $2$.
+  \end{steps}
+\end{solution}
 
 \subsection{Quantum mechanics violates the inequality}
 
@@ -94,9 +114,13 @@ The relevant expectation values come from a neat lemma.
   For real vectors $\vec a,\vec b$ and the singlet, $\ \bra{\Psi^-}(\vec a\cdot\vec\sigma)\tp(\vec b\cdot\vec\sigma)\ket{\Psi^-}=-\,\vec a\cdot\vec b$.
 \end{lemma}
 \begin{proof}
-  Put $U=e^{-\ii t\sigma_j}$ in \eqref{eq:singlet-inv}: $\det U=1$ because $\Tr\sigma_j=0$, so $(U\tp U)\ket{\Psi^-}=\ket{\Psi^-}$ for all $t$. Differentiating at $t=0$ gives $(\sigma_j\tp\Id+\Id\tp\sigma_j)\ket{\Psi^-}=0$, that is, $(\Id\tp\sigma_k)\ket{\Psi^-}=-(\sigma_k\tp\Id)\ket{\Psi^-}$.
-  Therefore $\bra{\Psi^-}\sigma_j\tp\sigma_k\ket{\Psi^-}=-\bra{\Psi^-}\sigma_j\sigma_k\tp\Id\ket{\Psi^-}=-\Tr\bigl(\sigma_j\sigma_k\,\rho^A\bigr)=-\tfrac12\Tr(\sigma_j\sigma_k)=-\delta_{jk}$, using $\rho^A=\tfrac12\Id$ (Example~\ref{ex:reduced-bell}).
-  The lemma follows by linearity.
+  \begin{steps}
+    \item \emph{The singlet is invariant.} Put $U=e^{-\ii t\sigma_j}$ in \eqref{eq:singlet-inv}: $\det U=1$ because $\Tr\sigma_j=0$, so $(U\tp U)\ket{\Psi^-}=\ket{\Psi^-}$ for all $t$. (In the language of Section~\ref{sec:grouprep}: the singlet is fixed by the representation $U\tp U$ of $SU(2)$.)
+    \item \emph{Differentiate at $t=0$.} $(\sigma_j\tp\Id+\Id\tp\sigma_j)\ket{\Psi^-}=0$, that is, $(\Id\tp\sigma_k)\ket{\Psi^-}=-(\sigma_k\tp\Id)\ket{\Psi^-}$.
+    \item \emph{Move $\sigma_k$ across.} $\bra{\Psi^-}\sigma_j\tp\sigma_k\ket{\Psi^-}=-\bra{\Psi^-}\sigma_j\sigma_k\tp\Id\ket{\Psi^-}$.
+    \item \emph{Reduce to the first qubit.} By Proposition~\ref{prop:reduced} and $\rho^A=\tfrac12\Id$ (Example~\ref{ex:reduced-bell}), this is $-\Tr(\sigma_j\sigma_k\,\rho^A)=-\tfrac12\Tr(\sigma_j\sigma_k)=-\delta_{jk}$.
+    \item \emph{Linearity} gives the lemma for arbitrary $\vec a,\vec b$. \qedhere
+  \end{steps}
 \end{proof}
 
 In the singlet the correlation of two spin measurements is minus the cosine of the angle between the axes. With $\vec z,\vec x$ the unit vectors of the axes, Alice measures along $\vec a_Q=\vec z$, $\vec a_R=\vec x$ and Bob along
@@ -143,6 +167,10 @@ analyses the exact assumptions needed. The consensus is that Nature is not local
   \item Quantum mechanics does \emph{not} allow faster-than-light signalling. Alice's choice of measurement does not change Bob's reduced state, which is $\tfrac12\Id$ whatever she does (Exercise~\ref{ex:no-signalling}), so Bob sees only random outcomes; the correlations appear only when the two lists of results are \emph{compared}, which requires ordinary communication.
   \item The violation is not an anomaly of one state. Every entangled pure state violates some Bell inequality, and for us the lesson is constructive: entanglement is a genuinely new resource, beyond anything classical.
 \end{itemize}
+
+\begin{lookahead}
+  Bell's theorem has become a practical tool. In device-independent cryptography, two parties who observe a CHSH value above $2$ can certify, without trusting their devices, that their outcomes are genuinely random and unknown to any eavesdropper. Entropy bounds of the kind studied in Chapter~\ref{ch:info} (Section~\ref{sec:vonneumann}) are then used to quantify how much an eavesdropper can possibly learn.
+\end{lookahead}
 
 For quantum computing the lesson has been, historically, vague but fruitful: there is something profoundly different about entangled states, and a lot of progress has come from asking ``what would a little entanglement buy me in this problem?''. We have already seen one answer, superdense coding (Section~\ref{sec:superdense}). Teleportation, quantum cryptography and the
 speed-up of quantum algorithms are others, and they are the subject of the courses that follow.

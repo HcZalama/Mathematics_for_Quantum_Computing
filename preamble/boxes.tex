@@ -73,7 +73,7 @@
 \newtcolorbox{solution}{%
   bookbox, colback=white, borderline west={2.5pt}{0pt}{ink},
   before skip=0pt, top=2pt,
-  before upper={\textit{Solution.}\ },
+  before upper={\@endparpenalty=\@M\relax\textit{Solution.}\ },
   after upper={\qedmark{\square}},
 }
 
@@ -93,6 +93,18 @@
 }
 \newnote{xref}{Cross-reference}
 \newnote{whereitsits}{Where this sits}
+\newnote{lookahead}{Looking ahead}
+\newnote{recall}{Recall}
+
+% ---------- Step-by-step lists for proofs, solutions and explanations ----------
+% \begin{steps} \item ... \end{steps}   (a short, ordered chain of reasoning)
+% \begin{steps*} \item ... \end{steps*} (the same, numbered)
+\newlist{steps}{itemize}{2}
+\setlist[steps,1]{label=\textcolor{navy}{\small$\blacktriangleright$}, leftmargin=1.5em, itemsep=0.35em, topsep=0.3em, parsep=0pt}
+\setlist[steps,2]{label=\textcolor{ink}{\scriptsize$\bullet$}, leftmargin=1.3em, itemsep=0.2em, topsep=0.2em, parsep=0pt}
+\newlist{stepsn}{enumerate}{2}
+\setlist[stepsn,1]{label=\textcolor{navy}{\small\bfseries\arabic*.}, leftmargin=1.7em, itemsep=0.35em, topsep=0.3em, parsep=0pt}
+\setlist[stepsn,2]{label=\textcolor{ink}{(\alph*)}, leftmargin=1.5em, itemsep=0.2em, topsep=0.2em, parsep=0pt}
 
 % ---------- Learning objectives: just two rules ----------
 \newtcolorbox{objectives}[1][In this section]{%
@@ -105,8 +117,9 @@
 % ---------- Remark and proof: plain text ----------
 \newcommand{\qedmark}[1]{\leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill\quad$#1$}
 
-\renewenvironment{proof}[1][Proof]{\par\addvspace{0.4em}\noindent\textit{#1.}\ }%
+\renewenvironment{proof}[1][Proof]{\par\addvspace{0.4em}\@endparpenalty=\@M\relax\noindent\textit{#1.}\ }%
   {\qedmark{\blacksquare}\par\addvspace{0.6em}}
+\providecommand{\qedhere}{}\renewcommand{\qedhere}{}   % the end mark is added automatically
 \newenvironment{remark}{\par\addvspace{0.3em}\noindent\textit{Remark.}\ }%
   {\par\addvspace{0.3em}}
 

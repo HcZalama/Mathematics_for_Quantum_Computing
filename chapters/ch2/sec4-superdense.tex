@@ -7,6 +7,10 @@
   by sending a single qubit, using an entangled pair shared in advance.
 \end{objectives}
 
+\begin{recall}
+  The Bell states and the controlled-NOT (Section~\ref{sec:composite}); the gates $X$, $Z$, $H$ (Section~\ref{sec:state-evolution}); the fact that orthonormal states can be told apart with certainty (Section~\ref{sec:measurement}).
+\end{recall}
+
 A qubit lives in a two-dimensional space, yet a single measurement of it yields only one classical bit. It is therefore surprising that one qubit can
 \emph{carry} two bits. The catch is that Alice and Bob must share an entangled pair beforehand. The protocol, due to Bennett and Wiesner~\cite{bennett1992}, is the simplest illustration of entanglement as a resource, and it uses every postulate.
 
@@ -55,10 +59,14 @@ To send the two bits $xy\in\{00,01,10,11\}$ Alice applies to her qubit the gate 
   Alice's operation maps $\bell00$ to $\bell xy$ up to a global phase, and Bob's circuit sends $\bell xy$ to $\ket x\ket y$, so Bob recovers $xy$ with certainty.
 \end{proposition}
 \begin{proof}
-  Acting on the first qubit, $Z^x\tp\Id$ gives $\frac1{\sqrt2}(\ket{00}+(-1)^x\ket{11})$, and then $X^y\tp\Id$ gives $\frac1{\sqrt2}(\ket{y0}+(-1)^x\ket{\bar y1})$.
-  For $y=0$ this is $\bell x0$. For $y=1$ it is $\frac1{\sqrt2}(\ket{10}+(-1)^x\ket{01})=(-1)^x\bell x1$, equal to $\bell x1$ up to a global phase.
-  Bob applies $\CNOT$, which flips the second qubit when the first is $\ket1$: $\bell xy=\frac{1}{\sqrt2}(\ket{0y}+(-1)^x\ket{1\bar y})\mapsto\frac1{\sqrt2}(\ket0+(-1)^x\ket1)\ket y$, which is $\ket+\ket y$ for $x=0$ and $\ket-\ket y$ for $x=1$.
-  Finally the Hadamard gate on the first qubit maps $\ket\pm\mapsto\ket{0},\ket{1}$, leaving $\ket x\ket y$. Measuring in the computational basis then returns $(x,y)$ with probability $1$.
+  \begin{steps}
+    \item \emph{Alice's $Z^x$.} Acting on the first qubit, $Z^x\tp\Id$ gives $\frac1{\sqrt2}(\ket{00}+(-1)^x\ket{11})$.
+    \item \emph{Alice's $X^y$.} Then $X^y\tp\Id$ gives $\frac1{\sqrt2}(\ket{y0}+(-1)^x\ket{\bar y1})$.
+    \item \emph{Compare with the Bell state.} For $y=0$ this is $\bell x0$. For $y=1$ it is $\frac1{\sqrt2}(\ket{10}+(-1)^x\ket{01})=(-1)^x\bell x1$, equal to $\bell x1$ up to a global phase.
+    \item \emph{Bob's $\CNOT$.} It flips the second qubit when the first is $\ket1$: $\bell xy=\frac{1}{\sqrt2}(\ket{0y}+(-1)^x\ket{1\bar y})\mapsto\frac1{\sqrt2}(\ket0+(-1)^x\ket1)\ket y$, which is $\ket+\ket y$ for $x=0$ and $\ket-\ket y$ for $x=1$.
+    \item \emph{Bob's Hadamard} on the first qubit maps $\ket\pm\mapsto\ket{0},\ket{1}$, leaving $\ket x\ket y$.
+    \item \emph{Measure} in the computational basis: $(x,y)$ is returned with probability $1$. \qedhere
+  \end{steps}
 \end{proof}
 
 The bits $x,y$ are therefore the two values Bob reads from the final measurement. Equivalently, Bob has performed a measurement in the Bell basis, which can only be told apart, perfectly, because the four Bell states are orthogonal (Proposition~\ref{prop:distinguish-orthogonal}).
@@ -67,8 +75,12 @@ The bits $x,y$ are therefore the two values Bob reads from the final measurement
   Alice wants to send $xy=10$. Follow the protocol.
 \end{example}
 \begin{solution}
-  Alice applies $Z$ to her qubit: $\frac1{\sqrt2}(\ket{00}+\ket{11})\mapsto\frac1{\sqrt2}(\ket{00}-\ket{11})=\bell10$. Bob applies $\CNOT$: $\ket{00}\mapsto\ket{00}$ and $\ket{11}\mapsto\ket{10}$, giving $\frac1{\sqrt2}(\ket0-\ket1)\ket0=\ket-\ket0$.
-  The Hadamard on the first qubit sends $\ket-\mapsto\ket1$, so the state is $\ket{10}$: Bob reads $x=1$, $y=0$.
+  \begin{steps}
+    \item \emph{Alice.} She applies $Z$ to her qubit: $\frac1{\sqrt2}(\ket{00}+\ket{11})\mapsto\frac1{\sqrt2}(\ket{00}-\ket{11})=\bell10$.
+    \item \emph{Bob's $\CNOT$.} $\ket{00}\mapsto\ket{00}$ and $\ket{11}\mapsto\ket{10}$, giving $\frac1{\sqrt2}(\ket0-\ket1)\ket0=\ket-\ket0$.
+    \item \emph{Bob's Hadamard.} It sends $\ket-\mapsto\ket1$ on the first qubit, so the state is $\ket{10}$.
+    \item \emph{Result.} Bob reads $x=1$, $y=0$.
+  \end{steps}
 \end{solution}
 
 \begin{remark}
@@ -76,6 +88,10 @@ The bits $x,y$ are therefore the two values Bob reads from the final measurement
   so it carries no information at all about $xy$ (Example~\ref{ex:reduced-bell} below). The information is stored in the \emph{correlations} between the two qubits, not in either one.
   Nor does the protocol beat Nature's accounting: it transmits two bits using one qubit \emph{sent}, but one entangled pair \emph{already shared}.
 \end{remark}
+
+\begin{lookahead}
+  Superdense coding has a mirror image, \emph{teleportation}, in which a shared Bell pair and two classical bits let Alice transmit an unknown qubit to Bob. Both rest on the same fact: the four Bell states are perfectly distinguishable. In information-theoretic terms (Section~\ref{sec:vonneumann}), the shared pair carries a quantum mutual information of $2$ bits between Alice's and Bob's halves, which is exactly the number of classical bits that Alice can add to a single qubit sent.
+\end{lookahead}
 
 \begin{exerciseset}
   \exercise{1} Verify the table of operations: compute $\bigl(X^yZ^x\tp\Id\bigr)\bell00$ for each $xy$ and compare with $\bell xy$.

@@ -3,15 +3,15 @@
 %======================================================================
 
 \begin{objectives}
-  You will state Postulate~3 and compute outcome probabilities and post-measurement states; prove
-  that non-orthogonal states cannot be perfectly distinguished; work with projective measurements,
-  expectation values and the uncertainty principle; explain why global phases are unobservable
-  and relative phases are not; and use POVMs when only statistics matter.
+  You will state Postulate~3 and compute outcome probabilities and post-measurement states; prove that non-orthogonal states cannot be perfectly distinguished; work with projective measurements, expectation values and the uncertainty principle; explain why global phases are unobservable and relative phases are not;
+  recognise positive operators; and use POVMs when only statistics matter.
 \end{objectives}
 
-Unitary evolution describes a system that is left alone. But to learn anything about a system
-an experimentalist, who is an external system, must interact with it, and the system is then no
-longer closed. Postulate~3 describes what this does.
+\begin{recall}
+  Orthogonal projectors and the spectral decomposition $M=\sum_mm\,P_m$ (Section~\ref{sec:operators}); the Cauchy--Schwarz inequality (Section~\ref{sec:hilbert}); Bloch vectors and the gates (Section~\ref{sec:state-evolution}).
+\end{recall}
+
+Unitary evolution describes a system that is left alone. But to learn anything about a system an experimentalist, who is an external system, must interact with it, and the system is then no longer closed. Postulate~3 describes what this does.
 
 \subsection{General measurements}
 
@@ -25,24 +25,28 @@ longer closed. Postulate~3 describes what this does.
   The operators satisfy the \term{completeness equation} $\sum_mM_m^\dagger M_m=\Id$.
 \end{postulate}
 
+Read the postulate as a recipe with three steps:
+\begin{steps}
+  \item apply each $M_m$ to the state; the squared length of $M_m\ket\psi$ is the probability of outcome $m$;
+  \item the outcome that actually occurs is random, with these probabilities;
+  \item the state after the measurement is $M_m\ket\psi$ rescaled to length $1$.
+\end{steps}
 Completeness is exactly what makes probabilities add to one:
 \[
   \sum_mp(m)=\bra\psi\Bigl(\sum_mM_m^\dagger M_m\Bigr)\ket\psi=\braket\psi\psi=1\quad\text{for every state.}
 \]
-(Over $\C$ this requirement is equivalent to the operator identity, because
-if $\bra\psi A\ket\psi=0$ for all $\ket\psi$ then $A=0$, and the identity is much easier to check.)
+(Over $\C$ this requirement is equivalent to the operator identity, because if $\bra\psi A\ket\psi=0$ for all $\ket\psi$ then $A=0$, and the identity is much easier to check.)
 
 \begin{example}\label{ex:meas-comp}
   Measure a qubit $\ket\psi=a\ket0+b\ket1$ in the computational basis, with $M_0=\ket0\!\bra0$ and $M_1=\ket1\!\bra1$.
 \end{example}
 \begin{solution}
-  Both operators are Hermitian with $M_m^2=M_m$, so completeness holds: $M_0^\dagger M_0+M_1^\dagger M_1=M_0+M_1=\Id$. The probabilities are
-  $p(0)=\bra\psi M_0\ket\psi=\abs a^2$ and $p(1)=\abs b^2$, and the post-measurement states are
-  \[
-    \frac{M_0\ket\psi}{\abs a}=\frac a{\abs a}\ket0,\qquad \frac{M_1\ket\psi}{\abs b}=\frac b{\abs b}\ket1 .
-  \]
-  The factors $a/\abs a$ and $b/\abs b$ have modulus one: they are global phases, irrelevant (Section~\ref{sec:phase-global}). So the state \emph{collapses} to $\ket0$ or $\ket1$ with probabilities $\abs a^2,\abs b^2$.
-  The amplitudes of Postulate~1 are, in this sense, the square roots of probabilities, which is why $\abs a^2+\abs b^2=1$ (Figure~\ref{fig:meas-qubit}).
+  \begin{steps}
+    \item \emph{Completeness.} Both operators are Hermitian with $M_m^2=M_m$, so $M_0^\dagger M_0+M_1^\dagger M_1=M_0+M_1=\Id$.
+    \item \emph{Probabilities.} $p(0)=\bra\psi M_0\ket\psi=\abs a^2$ and $p(1)=\abs b^2$.
+    \item \emph{Post-measurement states.} $\dfrac{M_0\ket\psi}{\abs a}=\dfrac a{\abs a}\ket0$ and $\dfrac{M_1\ket\psi}{\abs b}=\dfrac b{\abs b}\ket1$.
+    \item \emph{Reading.} The factors $a/\abs a$ and $b/\abs b$ have modulus one: they are global phases, irrelevant (Section~\ref{sec:phase-global}). So the state \emph{collapses} to $\ket0$ or $\ket1$ with probabilities $\abs a^2,\abs b^2$. The amplitudes of Postulate~1 are, in this sense, the square roots of probabilities, which is why $\abs a^2+\abs b^2=1$ (Figure~\ref{fig:meas-qubit}).
+  \end{steps}
 \end{solution}
 
 \begin{figure}[htb]
@@ -57,17 +61,26 @@ if $\bra\psi A\ket\psi=0$ for all $\ket\psi$ then $A=0$, and the identity is muc
     \draw[very thick,figacc,->] (0,0) -- ({2.4*cos(35)},0);
     \draw[very thick,figacc,->] (0,0) -- (0,{2.4*sin(35)});
   \end{tikzpicture}
-  \caption{For a state with real amplitudes, $\ket\psi=a\ket0+b\ket1$ with $a=\cos\alpha$, $b=\sin\alpha$. The outcome probabilities
-  are the squared lengths $a^2,b^2$ of the two projections, and they add to $1$ by Pythagoras.}
+  \caption{For a state with real amplitudes, $\ket\psi=a\ket0+b\ket1$ with $a=\cos\alpha$, $b=\sin\alpha$. The outcome probabilities are the squared lengths $a^2,b^2$ of the two projections, and they add to $1$ by Pythagoras.}
   \label{fig:meas-qubit}
 \end{figure}
 
-Measurement differs from evolution in two ways. Evolution is deterministic and reversible, $U^{-1}=U^\dagger$. Measurement is probabilistic, and typically irreversible: $M_m$ generally has a non-trivial kernel,
-so it loses information.
+\begin{example}[The same state in two bases]\label{ex:two-bases}
+  Let $\ket\psi=\tfrac15\bigl(3\ket0+4\ii\ket1\bigr)$ (Example~\ref{ex:read-amplitudes}). Compare the outcome probabilities of the measurement in the computational basis and in the $\ket\pm$ basis.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Computational basis.} $p(0)=\tfrac9{25}=0.36$, $p(1)=\tfrac{16}{25}=0.64$.
+    \item \emph{$\ket\pm$ basis: the overlaps.} $\braket\pm\psi=\tfrac1{\sqrt2}\cdot\tfrac15(3\pm4\ii)$.
+    \item \emph{Squared moduli.} $\abs{3\pm4\ii}^2=25$, so $p(\pm)=\tfrac1{2}\cdot\tfrac{25}{25}=\tfrac12$ each.
+  \end{steps}
+  The state looks lopsided in one basis and perfectly balanced in the other. Probabilities depend on \emph{which question} we ask, and a state is a complete list of the answers to all of them.
+\end{solution}
+
+Measurement differs from evolution in two ways. Evolution is deterministic and reversible, $U^{-1}=U^\dagger$. Measurement is probabilistic, and typically irreversible: $M_m$ generally has a non-trivial kernel, so it loses information.
 
 \begin{remark}
-  A measuring device is itself a quantum system, so the system plus the apparatus form a larger isolated system, which by Postulate~2 evolves unitarily. Could Postulate~3 be \emph{derived} from Postulate~2?
-  Despite a great deal of work, physicists still disagree; this is the \emph{measurement problem}. We take the pragmatic view: in practice it is clear when to apply Postulate~2 and when to apply Postulate~3.
+  A measuring device is itself a quantum system, so the system plus the apparatus form a larger isolated system, which by Postulate~2 evolves unitarily. Could Postulate~3 be \emph{derived} from Postulate~2? Despite a great deal of work, physicists still disagree; this is the \emph{measurement problem}. We take the pragmatic view: in practice it is clear when to apply Postulate~2 and when to apply Postulate~3.
 \end{remark}
 
 Measurements can be chained. Measuring with $\{L_l\}$ and then with $\{M_m\}$ turns out to be one single measurement.
@@ -76,9 +89,12 @@ Measurements can be chained. Measuring with $\{L_l\}$ and then with $\{M_m\}$ tu
   Measuring with $\{L_l\}$ and afterwards with $\{M_m\}$ is equivalent to a single measurement with operators $N_{lm}=M_mL_l$.
 \end{proposition}
 \begin{proof}
-  Outcome $l$ has probability $\bra\psi L_l^\dagger L_l\ket\psi$ and leaves $\ket{\psi_l}=L_l\ket\psi/\norm{L_l\psi}$. Then outcome $m$ has conditional probability $\bra{\psi_l}M_m^\dagger M_m\ket{\psi_l}$, so the
-  joint probability of $(l,m)$ is $\bra\psi L_l^\dagger M_m^\dagger M_mL_l\ket\psi=\bra\psi N_{lm}^\dagger N_{lm}\ket\psi$, and the final state is $N_{lm}\ket\psi$ normalised.
-  Completeness: $\sum_{l,m}N_{lm}^\dagger N_{lm}=\sum_lL_l^\dagger\bigl(\sum_mM_m^\dagger M_m\bigr)L_l=\sum_lL_l^\dagger L_l=\Id$.
+  \begin{steps}
+    \item \emph{First measurement.} Outcome $l$ has probability $\bra\psi L_l^\dagger L_l\ket\psi$ and leaves $\ket{\psi_l}=L_l\ket\psi/\norm{L_l\psi}$.
+    \item \emph{Second measurement.} Given this, outcome $m$ has conditional probability $\bra{\psi_l}M_m^\dagger M_m\ket{\psi_l}$.
+    \item \emph{Joint probability.} Multiplying, $\PP(l,m)=\bra\psi L_l^\dagger M_m^\dagger M_mL_l\ket\psi=\bra\psi N_{lm}^\dagger N_{lm}\ket\psi$, and the final state is $N_{lm}\ket\psi$ normalised.
+    \item \emph{Completeness.} $\sum_{l,m}N_{lm}^\dagger N_{lm}=\sum_lL_l^\dagger\bigl(\sum_mM_m^\dagger M_m\bigr)L_l=\sum_lL_l^\dagger L_l=\Id$. \qedhere
+  \end{steps}
 \end{proof}
 
 Note the order: $N_{lm}=M_mL_l$, the first measurement acts first.
@@ -87,31 +103,42 @@ Note the order: $N_{lm}=M_mL_l$, the first measurement acts first.
   Measure first in the computational basis, $L_l=\ket l\!\bra l$, and then in the $\ket\pm$ basis, $M_\pm=\ket\pm\!\bra\pm$. Find the probabilities for $\ket\psi=a\ket0+b\ket1$.
 \end{example}
 \begin{solution}
-  The four operators are $N_{l\pm}=\ket\pm\!\bra\pm\ket l\!\bra l=\braket\pm l\,\ket\pm\!\bra l=\frac{1}{\sqrt2}(\pm1)^l\ket\pm\!\bra l$. Acting on $\ket\psi$ gives $\frac1{\sqrt2}(\pm1)^l\,\psi_l\ket\pm$ with
-  $\psi_0=a$, $\psi_1=b$, so the probability of $(l,\pm)$ is $\tfrac12\abs{\psi_l}^2$ for each sign, and the final state is $\ket\pm$ up to a phase. Completeness: $\sum_{l,\pm}\tfrac12\abs{\psi_l}^2=\abs a^2+\abs b^2=1$.
+  \begin{steps}
+    \item \emph{The operators.} $N_{l\pm}=\ket\pm\!\bra\pm\ket l\!\bra l=\braket\pm l\,\ket\pm\!\bra l=\frac{(\pm1)^l}{\sqrt2}\ket\pm\!\bra l$.
+    \item \emph{Acting on $\ket\psi$.} $N_{l\pm}\ket\psi=\frac{(\pm1)^l}{\sqrt2}\psi_l\ket\pm$, with $\psi_0=a$, $\psi_1=b$.
+    \item \emph{Probabilities.} $\PP(l,\pm)=\tfrac12\abs{\psi_l}^2$, for each sign. The final state is $\ket\pm$ up to a phase.
+    \item \emph{Completeness check.} $\sum_{l,\pm}\tfrac12\abs{\psi_l}^2=\abs a^2+\abs b^2=1$.
+  \end{steps}
   The second measurement is completely random whatever the first outcome: after having been forced into $\ket0$ or $\ket1$, the state has no memory of its previous superposition.
 \end{solution}
 
 \subsection{Distinguishing quantum states}
 
-Here is a game. Alice chooses a state $\ket{\psi_i}$, $1\le i\le n$, from a set known to both players and gives it to Bob, who must name $i$. Classically, distinct states can be told apart, at least in principle.
-Quantum mechanically the answer depends on the geometry of the set.
+Here is a game. Alice chooses a state $\ket{\psi_i}$, $1\le i\le n$, from a set known to both players and gives it to Bob, who must name $i$. Classically, distinct states can be told apart, at least in principle. Quantum mechanically the answer depends on the geometry of the set.
 
 \begin{proposition}\label{prop:distinguish-orthogonal}
   If the states $\ket{\psi_i}$ are orthonormal, Bob can identify $i$ with certainty.
 \end{proposition}
 \begin{proof}
-  Let Bob use $M_i=\ket{\psi_i}\!\bra{\psi_i}$ for $i\ge1$ and $M_0=\sqrt{\Id-\sum_{i\ge1}\ket{\psi_i}\!\bra{\psi_i}}$. The sum $\sum_{i\ge1}\ket{\psi_i}\!\bra{\psi_i}$ is a projector, so $\Id$ minus it is a projector and $M_0^\dagger M_0=\Id-\sum_{i\ge1}\ket{\psi_i}\!\bra{\psi_i}$, whence completeness. If $\ket{\psi_i}$ was prepared, $p(i)=\bra{\psi_i}M_i\ket{\psi_i}=1$.
+  \begin{steps}
+    \item \emph{The measurement.} Let Bob use $M_i=\ket{\psi_i}\!\bra{\psi_i}$ for $i\ge1$ and $M_0=\sqrt{\Id-\sum_{i\ge1}\ket{\psi_i}\!\bra{\psi_i}}$.
+    \item \emph{Completeness.} The sum $\sum_{i\ge1}\ket{\psi_i}\!\bra{\psi_i}$ is a projector, so $\Id$ minus it is a projector and $M_0^\dagger M_0=\Id-\sum_{i\ge1}\ket{\psi_i}\!\bra{\psi_i}$. Hence $\sum_iM_i^\dagger M_i=\Id$.
+    \item \emph{Success.} If $\ket{\psi_i}$ was prepared, $p(i)=\bra{\psi_i}M_i\ket{\psi_i}=1$. \qedhere
+  \end{steps}
 \end{proof}
 
 \begin{theorem}[Non-orthogonal states cannot be distinguished]\label{thm:no-distinguish}
   If $\braket{\psi_1}{\psi_2}\neq0$, no measurement can identify with certainty which of $\ket{\psi_1},\ket{\psi_2}$ was prepared.
 \end{theorem}
 \begin{proof}
-  Suppose, for contradiction, that Bob measures $\{M_j\}$ and guesses $i=f(j)\in\{1,2\}$ from the outcome $j$, and is always right. Define $E_i=\sum_{j:f(j)=i}M_j^\dagger M_j$, so $E_1+E_2=\Id$.
-  ``Always right'' means $\bra{\psi_1}E_1\ket{\psi_1}=1=\bra{\psi_2}E_2\ket{\psi_2}$. Since $E_1+E_2=\Id$, we get $\bra{\psi_1}E_2\ket{\psi_1}=0$, that is $\norm{\sqrt{E_2}\psi_1}=0$, so $\sqrt{E_2}\ket{\psi_1}=0$.
-  Now decompose, exactly as in the proof of Cauchy--Schwarz, $\ket{\psi_2}=\alpha\ket{\psi_1}+\beta\ket\varphi$ with $\ket\varphi\perp\ket{\psi_1}$ a unit vector, $\alpha=\braket{\psi_1}{\psi_2}$, $\abs\alpha^2+\abs\beta^2=1$ and $\abs\beta<1$ because $\alpha\neq0$.
-  Then $\sqrt{E_2}\ket{\psi_2}=\beta\sqrt{E_2}\ket\varphi$, so $\bra{\psi_2}E_2\ket{\psi_2}=\abs\beta^2\bra\varphi E_2\ket\varphi\le\abs\beta^2<1$, since $E_2\le\Id$. This contradicts $\bra{\psi_2}E_2\ket{\psi_2}=1$.
+  Suppose, for contradiction, that Bob measures $\{M_j\}$ and guesses $i=f(j)\in\{1,2\}$ from the outcome $j$, and is always right.
+  \begin{steps}
+    \item \emph{Group outcomes by guess.} Define $E_i=\sum_{j:f(j)=i}M_j^\dagger M_j$, so $E_1+E_2=\Id$.
+    \item \emph{``Always right''} means $\bra{\psi_1}E_1\ket{\psi_1}=1=\bra{\psi_2}E_2\ket{\psi_2}$.
+    \item \emph{A consequence.} Since $E_1+E_2=\Id$, we get $\bra{\psi_1}E_2\ket{\psi_1}=0$, that is $\norm{\sqrt{E_2}\psi_1}=0$, so $\sqrt{E_2}\ket{\psi_1}=0$.
+    \item \emph{Decompose $\ket{\psi_2}$} as in the proof of Cauchy--Schwarz: $\ket{\psi_2}=\alpha\ket{\psi_1}+\beta\ket\varphi$ with $\ket\varphi\perp\ket{\psi_1}$ a unit vector, $\alpha=\braket{\psi_1}{\psi_2}$, $\abs\alpha^2+\abs\beta^2=1$, and $\abs\beta<1$ because $\alpha\neq0$.
+    \item \emph{Contradiction.} $\sqrt{E_2}\ket{\psi_2}=\beta\sqrt{E_2}\ket\varphi$, so $\bra{\psi_2}E_2\ket{\psi_2}=\abs\beta^2\bra\varphi E_2\ket\varphi\le\abs\beta^2<1$ (as $E_2\le\Id$). This contradicts $\bra{\psi_2}E_2\ket{\psi_2}=1$. \qedhere
+  \end{steps}
 \end{proof}
 
 So orthogonality is the only thing that makes states perfectly distinguishable. In particular $\ket0$ and $\ket+$ cannot be told apart reliably. This is the basis of everything from quantum key distribution to the no-cloning theorem.
@@ -134,54 +161,72 @@ The average outcome needs no eigenvalues:
 \[
   \langle M\rangle=\sum_mm\,p(m)=\sum_mm\bra\psi P_m\ket\psi=\bra\psi M\ket\psi,
 \]
-and the \term{standard deviation} follows from $(\Delta M)^2=\langle(M-\langle M\rangle)^2\rangle=\langle M^2\rangle-\langle M\rangle^2$. Because $M-\langle M\rangle$ is Hermitian, $(\Delta M)^2=\norm{(M-\langle M\rangle)\psi}^2\ge0$, and
-$\Delta M=0$ exactly when $\ket\psi$ is an eigenvector of $M$. If we prepare $\ket\psi$ many times and measure $M$ each time, $\langle M\rangle$ is the mean and $\Delta M$ the typical spread of the results.
-A state has a definite value of $M$ iff it is an eigenstate of $M$.
+and the \term{standard deviation} follows from $(\Delta M)^2=\langle(M-\langle M\rangle)^2\rangle=\langle M^2\rangle-\langle M\rangle^2$. Because $M-\langle M\rangle$ is Hermitian, $(\Delta M)^2=\norm{(M-\langle M\rangle)\psi}^2\ge0$, and $\Delta M=0$ exactly when $\ket\psi$ is an eigenvector of $M$.
+If we prepare $\ket\psi$ many times and measure $M$ each time, $\langle M\rangle$ is the mean and $\Delta M$ the typical spread of the results (this is just the expectation and standard deviation of the random variable ``outcome'', see Section~\ref{sec:prob} and Example~\ref{ex:rv-qm}). A state has a definite value of $M$ iff it is an eigenstate of $M$.
 
 \begin{example}\label{ex:meas-pauli}
   Let $\ket\psi=\frac1{\sqrt3}\bigl(\ket0+(1+\ii)\ket1\bigr)$. Find the outcomes, probabilities, $\langle M\rangle$ and $\Delta M$ for $M=X,Y,Z$.
 \end{example}
 \begin{solution}
-  Each of $X,Y,Z$ has outcomes $\pm1$ with projectors $P_\pm=\tfrac12(\Id\pm\sigma_j)$. By Example~\ref{ex:parseval} the probabilities for $Z$ are $\tfrac13,\tfrac23$, for $X$ they are $\abs{\braket+\psi}^2=\tfrac56$ and $\abs{\braket-\psi}^2=\tfrac16$,
-  and for $Y$ they are $\abs{\braket{+\ii}\psi}^2=\tfrac56$ and $\tfrac16$. Then
-  \[
-    \langle X\rangle=\tfrac56-\tfrac16=\tfrac23,\quad \langle Y\rangle=\tfrac23,\quad \langle Z\rangle=\tfrac13-\tfrac23=-\tfrac13,
-  \]
-  and since $M^2=\Id$, $(\Delta M)^2=1-\langle M\rangle^2$, so $\Delta X=\Delta Y=\tfrac{\sqrt5}3$ and $\Delta Z=\tfrac{\sqrt8}3$. These are the components of the Bloch vector $\vec n=(\tfrac23,\tfrac23,-\tfrac13)$ (Proposition~\ref{prop:bloch}); note $\abs{\vec n}=1$.
+  \begin{steps}
+    \item \emph{Outcomes and projectors.} Each of $X,Y,Z$ has outcomes $\pm1$ with projectors $P_\pm=\tfrac12(\Id\pm\sigma_j)$.
+    \item \emph{Probabilities.} By Example~\ref{ex:parseval}: for $Z$ they are $\tfrac13,\tfrac23$; for $X$ they are $\abs{\braket+\psi}^2=\tfrac56$ and $\abs{\braket-\psi}^2=\tfrac16$; for $Y$ they are $\abs{\braket{+\ii}\psi}^2=\tfrac56$ and $\tfrac16$.
+    \item \emph{Expectations.} $\langle X\rangle=\tfrac56-\tfrac16=\tfrac23$, $\langle Y\rangle=\tfrac23$, $\langle Z\rangle=\tfrac13-\tfrac23=-\tfrac13$.
+    \item \emph{Standard deviations.} Since $M^2=\Id$, $(\Delta M)^2=1-\langle M\rangle^2$, so $\Delta X=\Delta Y=\tfrac{\sqrt5}3$ and $\Delta Z=\tfrac{\sqrt8}3$.
+    \item \emph{Check.} $(\tfrac23,\tfrac23,-\tfrac13)$ is the Bloch vector of $\ket\psi$ (Proposition~\ref{prop:bloch}), and $\abs{\vec n}=1$.
+  \end{steps}
 \end{solution}
 
 For a real unit vector $\vec v$, the observable $\vec v\cdot\vec\sigma$ is called, for historical reasons, \emph{spin along the axis $\vec v$}. By Exercise~\ref{ex:vn-sigma-eig2} it has eigenvalues $\pm1$ with projectors $P_\pm=\tfrac12(\Id\pm\vec v\cdot\vec\sigma)$.
 Measuring it on a state with Bloch vector $\vec n$ gives $+1$ with probability $\tfrac12(1+\vec n\cdot\vec v)$.
 
+\begin{example}[Tilted measurement axis]\label{ex:tilted}
+  A qubit is in $\ket0$. It is measured along $\vec v=(\sin\theta,0,\cos\theta)$. Find the probability of $+1$ and the post-measurement state when $+1$ occurs.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The Bloch vector of $\ket0$} is $\vec n=(0,0,1)$, so $\vec n\cdot\vec v=\cos\theta$.
+    \item \emph{The probability.} $p(+1)=\tfrac12(1+\cos\theta)=\cos^2\tfrac\theta2$.
+    \item \emph{The post-measurement state.} $P_+\ket0=\tfrac12(\Id+\vec v\cdot\vec\sigma)\ket0=\tfrac12\bigl((1+\cos\theta)\ket0+\sin\theta\ket1\bigr)=\cos\tfrac\theta2\bigl(\cos\tfrac\theta2\ket0+\sin\tfrac\theta2\ket1\bigr)$.
+    \item \emph{Normalise.} Dividing by $\cos\frac\theta2=\sqrt{p(+1)}$ gives $\cos\tfrac\theta2\ket0+\sin\tfrac\theta2\ket1$, the state with Bloch vector $\vec v$.
+  \end{steps}
+  This is the quantum version of Malus's law for polarisers: the probability falls as $\cos^2$ of half the angle on the Bloch sphere, and a successful outcome leaves the system pointing exactly along the measurement axis.
+\end{solution}
+
 \subsection{The uncertainty principle}
 
-If $C$ and $D$ do not commute, they cannot both be sharp in the same state. The precise statement is the following.
+If $C$ and $D$ do not commute, that is, if their commutator $[C,D]=CD-DC$ (Section~\ref{sec:vector-spaces}) is not zero, they cannot both be sharp in the same state. The precise statement is the following.
 
 \begin{theorem}[Heisenberg--Robertson]\label{thm:uncertainty}
   For Hermitian $C,D$ and any state $\ket\psi$, $\ \Delta C\,\Delta D\ge\tfrac12\bigl|\langle[C,D]\rangle\bigr|$.
 \end{theorem}
 \begin{proof}
-  Let $A=C-\langle C\rangle$ and $B=D-\langle D\rangle$, Hermitian, and write $\langle AB\rangle=x+\ii y$ with $x,y\in\R$. Since $\langle BA\rangle=\overline{\langle AB\rangle}$, we get $\langle[A,B]\rangle=2\ii y$ and $\langle\{A,B\}\rangle=2x$, so
-  \[
-    \abs{\langle[A,B]\rangle}^2+\abs{\langle\{A,B\}\rangle}^2=4\abs{\langle AB\rangle}^2 .
-  \]
-  By Cauchy--Schwarz, $\abs{\langle AB\rangle}^2=\abs{\braket{A\psi}{B\psi}}^2\le\langle A^2\rangle\langle B^2\rangle$. Dropping the non-negative anticommutator term,
-  $\abs{\langle[A,B]\rangle}^2\le4\langle A^2\rangle\langle B^2\rangle$. Finally $[A,B]=[C,D]$, $\langle A^2\rangle=(\Delta C)^2$ and $\langle B^2\rangle=(\Delta D)^2$; taking square roots gives the theorem.
+  \begin{steps}
+    \item \emph{Centre the operators.} Let $A=C-\langle C\rangle$ and $B=D-\langle D\rangle$, both Hermitian, so $[A,B]=[C,D]$, $\langle A^2\rangle=(\Delta C)^2$ and $\langle B^2\rangle=(\Delta D)^2$.
+    \item \emph{Real and imaginary parts.} Write $\langle AB\rangle=x+\ii y$ with $x,y\in\R$. Since $\langle BA\rangle=\overline{\langle AB\rangle}$, we get $\langle[A,B]\rangle=2\ii y$ and $\langle\{A,B\}\rangle=2x$. Hence $\abs{\langle[A,B]\rangle}^2+\abs{\langle\{A,B\}\rangle}^2=4\abs{\langle AB\rangle}^2$.
+    \item \emph{Cauchy--Schwarz.} $\abs{\langle AB\rangle}^2=\abs{\braket{A\psi}{B\psi}}^2\le\langle A^2\rangle\langle B^2\rangle$.
+    \item \emph{Drop the anticommutator term} (it is $\ge0$): $\abs{\langle[A,B]\rangle}^2\le4\langle A^2\rangle\langle B^2\rangle=4(\Delta C)^2(\Delta D)^2$.
+    \item \emph{Square roots} give the theorem. \qedhere
+  \end{steps}
 \end{proof}
 
 \begin{example}\label{ex:uncertainty-check}
   Check the uncertainty relation for $X,Y$ on the state of Example~\ref{ex:meas-pauli}, and on $\ket0$.
 \end{example}
 \begin{solution}
-  Since $[X,Y]=2\ii Z$, the right-hand side is $\tfrac12\abs{\langle2\ii Z\rangle}=\abs{\langle Z\rangle}$. For the state of Example~\ref{ex:meas-pauli}: $\Delta X\Delta Y=\tfrac59\ge\tfrac13=\abs{\langle Z\rangle}$. For $\ket0$: $\langle Z\rangle=1$ and $\Delta X=\Delta Y=1$, so $1\ge1$, with equality.
+  \begin{steps}
+    \item \emph{The right-hand side.} $[X,Y]=2\ii Z$, so $\tfrac12\abs{\langle[X,Y]\rangle}=\abs{\langle Z\rangle}$.
+    \item \emph{The state of Example~\ref{ex:meas-pauli}.} $\Delta X\Delta Y=\tfrac59\ge\tfrac13=\abs{\langle Z\rangle}$.
+    \item \emph{The state $\ket0$.} $\langle Z\rangle=1$ and $\Delta X=\Delta Y=1$ (outcomes $\pm1$ with probability $\tfrac12$ each), so $1\ge1$: equality.
+  \end{steps}
 \end{solution}
 
 \begin{pitfall}
-  The principle is often misquoted as ``measuring $C$ accurately disturbs $D$''. Measurement does disturb the system (Postulate~3), but that is not the content of the theorem. The statement is statistical: prepare many copies of $\ket\psi$,
-  measure $C$ on some and $D$ on the others, and the spreads of the two lists obey the inequality. It is a property of the state and the operators, not of the quality of an apparatus. Commuting observables can have a common eigenbasis, hence states with $\Delta C=\Delta D=0$.
+  The principle is often misquoted as ``measuring $C$ accurately disturbs $D$''. Measurement does disturb the system (Postulate~3), but that is not the content of the theorem. The statement is statistical: prepare many copies of $\ket\psi$, measure $C$ on some and $D$ on the others, and the spreads of the two lists obey the inequality.
+  It is a property of the state and the operators, not of the quality of an apparatus. Commuting observables can have a common eigenbasis, hence states with $\Delta C=\Delta D=0$.
 \end{pitfall}
 
-For position and momentum, $[\hat x,\hat p]=\ii\hbar$ gives $\Delta x\,\Delta p\ge\hbar/2$. Taking the trace of $[A,B]=\ii\hbar\Id$ in finite dimension would give $0=\ii\hbar n$, absurd (Exercise~\ref{ex:no-xp}): position and momentum need infinite-dimensional Hilbert spaces.
+For position and momentum, $[\hat x,\hat p]=\ii\hbar$ gives $\Delta x\,\Delta p\ge\hbar/2$; we saw in Example~\ref{ex:gaussian-uncertainty} that Gaussians attain this bound. Taking the trace of $[A,B]=\ii\hbar\Id$ in finite dimension would give $0=\ii\hbar n$, absurd (Exercise~\ref{ex:no-xp}): position and momentum need infinite-dimensional Hilbert spaces.
 
 \subsection{Phase: global and relative}\label{sec:phase-global}
 
@@ -189,67 +234,122 @@ For position and momentum, $[\hat x,\hat p]=\ii\hbar$ gives $\Delta x\,\Delta p\
   For every $\gamma\in\R$, the states $\ket\psi$ and $e^{\ii\gamma}\ket\psi$ give identical statistics for every measurement, with post-measurement states that agree up to a global phase.
 \end{proposition}
 \begin{proof}
-  $\bra\psi e^{-\ii\gamma}M_m^\dagger M_me^{\ii\gamma}\ket\psi=\bra\psi M_m^\dagger M_m\ket\psi$, and $M_me^{\ii\gamma}\ket\psi=e^{\ii\gamma}M_m\ket\psi$.
+  \begin{steps}
+    \item \emph{Probabilities.} $\bra\psi e^{-\ii\gamma}M_m^\dagger M_me^{\ii\gamma}\ket\psi=\bra\psi M_m^\dagger M_m\ket\psi$: the phase cancels.
+    \item \emph{States.} $M_me^{\ii\gamma}\ket\psi=e^{\ii\gamma}M_m\ket\psi$: the phase is carried along. \qedhere
+  \end{steps}
 \end{proof}
 
-Hence \emph{global phases are physically irrelevant}: a state is really a \emph{ray} $\{e^{\ii\gamma}\ket\psi\}$, the matrix $\ket\psi\!\bra\psi$ is blind to $\gamma$, and for a qubit the set of rays is the Bloch sphere.
-\emph{Relative} phases, on the other hand, matter. The states $\ket\pm=\frac1{\sqrt2}(\ket0\pm\ket1)$ have the same amplitude moduli, $\frac1{\sqrt2}$ for $\ket0$, and amplitudes for $\ket1$ differing by the factor $-1$.
-Measured in the computational basis, they give the same statistics $(\tfrac12,\tfrac12)$; but measured in the $\ket\pm$ basis, $\ket+$ gives $+1$ with certainty and $\ket-$ gives $-1$ with certainty. States differing by a relative phase are physically different, and the
-relative phase is basis dependent. This is exactly the phenomenon of Example~\ref{ex:relative-phase}.
+Hence \emph{global phases are physically irrelevant}: a state is really a \emph{ray} $\{e^{\ii\gamma}\ket\psi\}$, the matrix $\ket\psi\!\bra\psi$ is blind to $\gamma$, and for a qubit the set of rays is the Bloch sphere. \emph{Relative} phases, on the other hand, matter. The states $\ket\pm=\frac1{\sqrt2}(\ket0\pm\ket1)$ have the same amplitude moduli, $\frac1{\sqrt2}$ for $\ket0$, and amplitudes for $\ket1$ differing by the factor $-1$.
+Measured in the computational basis, they give the same statistics $(\tfrac12,\tfrac12)$; but measured in the $\ket\pm$ basis, $\ket+$ gives $+1$ with certainty and $\ket-$ gives $-1$ with certainty. States differing by a relative phase are physically different, and the relative phase is basis dependent. This is exactly the phenomenon of Example~\ref{ex:relative-phase}.
 
 \begin{example}\label{ex:phase-pairs}
-  Decide which of these pairs describe the same physical state: (a) $\ket\psi$ and $-\ket\psi$; (b) $\frac1{\sqrt2}(\ket0+\ket1)$ and $\frac1{\sqrt2}(\ket0+\ii\ket1)$;
-  (c) $\frac1{\sqrt2}(\ket0+\ii\ket1)$ and $\frac1{\sqrt2}(\ii\ket0-\ket1)$. For the pairs that differ, find a measurement that distinguishes them.
+  Decide which of these pairs describe the same physical state: (a) $\ket\psi$ and $-\ket\psi$; (b) $\frac1{\sqrt2}(\ket0+\ket1)$ and $\frac1{\sqrt2}(\ket0+\ii\ket1)$; (c) $\frac1{\sqrt2}(\ket0+\ii\ket1)$ and $\frac1{\sqrt2}(\ii\ket0-\ket1)$. For the pairs that differ, find a measurement that distinguishes them.
 \end{example}
 \begin{solution}
-  (a) Same: $-1=e^{\ii\pi}$ is a global phase.
-  (b) Different: they are $\ket+$ and $\ket{+\ii}$, with Bloch vectors $(1,0,0)$ and $(0,1,0)$, and no global phase relates them. Measuring $X$ gives $+1$ with probability $1$ on the first and $\tfrac12$ on the second.
-  (c) Same: $\frac1{\sqrt2}(\ii\ket0-\ket1)=\ii\cdot\frac1{\sqrt2}(\ket0+\ii\ket1)$, because $\ii\cdot\ii=-1$.
+  \begin{steps}
+    \item (a) Same: $-1=e^{\ii\pi}$ is a global phase.
+    \item (b) Different: they are $\ket+$ and $\ket{+\ii}$, with Bloch vectors $(1,0,0)$ and $(0,1,0)$, and no global phase relates them. Measuring $X$ gives $+1$ with probability $1$ on the first and $\tfrac12$ on the second.
+    \item (c) Same: $\frac1{\sqrt2}(\ii\ket0-\ket1)=\ii\cdot\frac1{\sqrt2}(\ket0+\ii\ket1)$, because $\ii\cdot\ii=-1$.
+  \end{steps}
 \end{solution}
 
 \begin{example}\label{ex:phase-xy}
   For $\ket{\psi_\varphi}=\frac1{\sqrt2}(\ket0+e^{\ii\varphi}\ket1)$, find the probabilities of the outcome $+1$ when measuring $X$ and $Y$.
 \end{example}
 \begin{solution}
-  The Bloch vector is $\vec n=(\cos\varphi,\sin\varphi,0)$, so by the rule above, $P(X=+1)=\tfrac12(1+\cos\varphi)$ and $P(Y=+1)=\tfrac12(1+\sin\varphi)$. As $\varphi$ varies, both probabilities oscillate; the relative phase is directly observable.
+  \begin{steps}
+    \item \emph{The Bloch vector} is $\vec n=(\cos\varphi,\sin\varphi,0)$ (here $\theta=\pi/2$).
+    \item \emph{The probabilities.} By the rule above, $P(X=+1)=\tfrac12(1+\cos\varphi)$ and $P(Y=+1)=\tfrac12(1+\sin\varphi)$.
+    \item \emph{Reading.} As $\varphi$ varies, both probabilities oscillate; the relative phase is directly observable.
+  \end{steps}
 \end{solution}
+
+\subsection{Positive operators}
+
+Before going on we need a concept that will be used for measurements and for states alike: that of a positive operator. It is the operator analogue of a non-negative number.
+
+\begin{definition}[Positive operator]\label{def:positive}
+  An operator $A$ on $\Hil$ is \term{positive} (written $A\ge0$) if $\bra\psi A\ket\psi\ge0$ for every $\ket\psi\in\Hil$. We write $A\ge B$ if $A-B\ge0$ (the \term{L\"owner order}).
+\end{definition}
+
+The definition requires $\bra\psi A\ket\psi$ to be real and non-negative for all $\ket\psi$; over $\C$ the realness forces $A$ to be Hermitian. The following criteria are how we recognise positive operators in practice.
+
+\begin{theorem}[Characterisations of positivity]\label{thm:positive}
+  For an operator $A$ on a finite-dimensional Hilbert space, the following are equivalent.
+  \begin{enumerate}
+    \item[(i)] $A\ge0$.
+    \item[(ii)] $A$ is Hermitian with all eigenvalues $\ge0$.
+    \item[(iii)] $A=C^2$ for some positive operator $C$ (one writes $C=\sqrt A$, it is unique).
+    \item[(iv)] $A=B^\dagger B$ for some operator $B$.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  \begin{steps}
+    \item \emph{(i)$\Rightarrow$(ii).} Write $A=B+\ii C$ with $B=\tfrac12(A+A^\dagger)$ and $C=\tfrac1{2\ii}(A-A^\dagger)$ both Hermitian. Then $\bra\psi A\ket\psi=\bra\psi B\ket\psi+\ii\bra\psi C\ket\psi$ with both expectation values real, so reality of the sum forces $\bra\psi C\ket\psi=0$ for all $\ket\psi$, hence $C=0$ and $A=B$ is Hermitian. If $A\ket v=\lambda\ket v$ with $\norm v=1$, then $\lambda=\bra vA\ket v\ge0$.
+    \item \emph{(ii)$\Rightarrow$(iii).} By the spectral theorem $A=\sum_i\lambda_i\ket{v_i}\!\bra{v_i}$ with $\lambda_i\ge0$. Put $C=\sum_i\sqrt{\lambda_i}\ket{v_i}\!\bra{v_i}$, which is Hermitian with eigenvalues $\ge0$ (so $C\ge0$ by the direction (ii)$\Rightarrow$(i), below), and $C^2=A$.
+    \item \emph{(iii)$\Rightarrow$(iv).} Take $B=C$; then $B^\dagger B=C^2=A$ since $C$ is Hermitian.
+    \item \emph{(iv)$\Rightarrow$(i).} $\bra\psi B^\dagger B\ket\psi=\norm{B\psi}^2\ge0$.
+    \item \emph{(ii)$\Rightarrow$(i).} If $A=\sum_i\lambda_i\ket{v_i}\!\bra{v_i}$ with $\lambda_i\ge0$ then $\bra\psi A\ket\psi=\sum_i\lambda_i\abs{\braket{v_i}\psi}^2\ge0$. \qedhere
+  \end{steps}
+\end{proof}
+
+For $2\times2$ matrices there is a quick test: a Hermitian matrix $\begin{pmatrix}a&b\\\bar b&d\end{pmatrix}$ is positive iff $a\ge0$, $d\ge0$ and $ad-\abs b^2\ge0$ (trace and determinant are the sum and the product of the eigenvalues, and two real numbers with non-negative sum and product are both non-negative).
+
+\begin{example}[Recognising positive operators]\label{ex:positive-examples}
+  Decide which are positive: (a) $\ket\psi\!\bra\psi$ and any projector; (b) $\begin{pmatrix}2&1\\1&2\end{pmatrix}$; (c) $\begin{pmatrix}1&2\\2&1\end{pmatrix}$; (d) $Z$ and $\Id+Z$; (e) $A^\dagger A$ for $A=\begin{pmatrix}1&1\\0&1\end{pmatrix}$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item (a) $\bra\varphi\bigl(\ket\psi\!\bra\psi\bigr)\ket\varphi=\braket\varphi\psi\braket\psi\varphi=\abs{\braket\psi\varphi}^2\ge0$: positive. A projector has eigenvalues $0,1$: positive.
+    \item (b) Hermitian with eigenvalues $3$ and $1$ (Example~\ref{ex:eigen}): positive. (Test: $a=d=2$, $ad-\abs b^2=3\ge0$.)
+    \item (c) Hermitian, but $ad-\abs b^2=1-4<0$: the eigenvalues are $3$ and $-1$. \emph{Not} positive, although all entries are positive numbers.
+    \item (d) $Z$ has eigenvalue $-1$: not positive. $\Id+Z=2\ket0\!\bra0$ has eigenvalues $2,0$: positive.
+    \item (e) $A^\dagger A=\begin{pmatrix}1&1\\1&2\end{pmatrix}$, which is of the form $B^\dagger B$, so positive by (iv). Check: $ad-\abs b^2=2-1=1\ge0$.
+  \end{steps}
+\end{solution}
+
+\begin{pitfall}
+  ``Positive'' does not mean ``has positive entries'': the matrix in (c) has only positive entries and is not a positive operator. The test is on the \emph{eigenvalues} (or on $\bra\psi A\ket\psi$ for all $\ket\psi$), which does not depend on the basis.
+\end{pitfall}
+
+\begin{lookahead}
+  Positivity is the right notion of ``cannot give a negative probability'' for operators, and it will appear twice in this chapter. In the next subsection the operators $E_m=M_m^\dagger M_m$ giving measurement probabilities are positive by (iv), and form a POVM. In Section~\ref{sec:density} the density operators will be characterised as the positive operators of trace one, and the identity $\rho=(\Id+\vec r\cdot\vec\sigma)/2\ge0\iff\abs{\vec r}\le1$ is exactly the positivity test above applied to a qubit.
+\end{lookahead}
 
 \subsection{POVM measurements}
 
-Postulate~3 gives two things: the statistics $p(m)$ and the post-measurement state. Often only the statistics matter, for instance when the system is measured once and then discarded. In that case it is enough to know the operators
-$E_m=M_m^\dagger M_m$, since $p(m)=\bra\psi E_m\ket\psi$.
+Postulate~3 gives two things: the statistics $p(m)$ and the post-measurement state. Often only the statistics matter, for instance when the system is measured once and then discarded. In that case it is enough to know the operators $E_m=M_m^\dagger M_m$, since $p(m)=\bra\psi E_m\ket\psi$.
 
 \begin{definition}[POVM]\label{def:povm}
-  A \term{POVM} (positive operator-valued measure) is a family $\{E_m\}$ of operators such that (a) each $E_m$ is positive, that is, $\bra\psi E_m\ket\psi\ge0$ for all $\ket\psi$ (equivalently, Hermitian with eigenvalues $\ge0$);
-  (b) $\sum_mE_m=\Id$.
+  A \term{POVM} (positive operator-valued measure) is a family $\{E_m\}$ of operators such that (a) each $E_m$ is positive; (b) $\sum_mE_m=\Id$.
 \end{definition}
 
-Every measurement $\{M_m\}$ defines a POVM $E_m=M_m^\dagger M_m$. Conversely, every POVM arises this way: take $M_m=\sqrt{E_m}$, so $\sum_mM_m^\dagger M_m=\sum_mE_m=\Id$. The POVM determines each $M_m$ only up to a unitary
-applied afterwards: by the polar decomposition, every operator can be written $M=U\sqrt{M^\dagger M}$ with $U$ unitary (the operator analogue of $z=e^{\ii\theta}\abs z$). Two measurements with the same POVM have identical statistics and
-differ only by what the apparatus does afterwards. In the projective case, and only then, $E_m=P_m^\dagger P_m=P_m$.
+Every measurement $\{M_m\}$ defines a POVM $E_m=M_m^\dagger M_m$, positive by Theorem~\ref{thm:positive}(iv). Conversely, every POVM arises this way: take $M_m=\sqrt{E_m}$ (Theorem~\ref{thm:positive}(iii)), so $\sum_mM_m^\dagger M_m=\sum_mE_m=\Id$. The POVM determines each $M_m$ only up to a unitary applied afterwards: by the polar decomposition,
+every operator can be written $M=U\sqrt{M^\dagger M}$ with $U$ unitary (the operator analogue of $z=e^{\ii\theta}\abs z$). Two measurements with the same POVM have identical statistics and differ only by what the apparatus does afterwards. In the projective case, and only then, $E_m=P_m^\dagger P_m=P_m$.
 
 \begin{example}[Never wrong, sometimes silent]\label{ex:unambiguous}
   Alice gives Bob a qubit in $\ket{\psi_1}=\ket0$ or $\ket{\psi_2}=\ket+$. Since these are not orthogonal, Bob cannot always decide (Theorem~\ref{thm:no-distinguish}). Show that he can nevertheless decide \emph{some} of the time without ever being wrong.
 \end{example}
 \begin{solution}
-  Let $c=\frac{\sqrt2}{1+\sqrt2}=2-\sqrt2\approx0.586$ and
-  \[
-    E_1=c\,\ket1\!\bra1,\qquad E_2=c\,\ket-\!\bra-,\qquad E_3=\Id-E_1-E_2 .
-  \]
-  $E_1,E_2$ are positive. For $E_3$: the operator $\ket1\!\bra1+\ket-\!\bra-$ has eigenvalues $1\pm\abs{\braket1-}=1\pm\tfrac1{\sqrt2}$, so $E_3$ has eigenvalues $1-c(1\pm\tfrac1{\sqrt2})$, which are $0$ and $\approx0.83$, both $\ge0$: it is positive. So $\{E_1,E_2,E_3\}$ is a POVM.
-  Now $E_1\ket0=0$, so outcome $1$ is \emph{impossible} for $\ket0$: if it occurs, the state was $\ket+$. Likewise $E_2\ket+=0$: outcome $2$ is impossible for $\ket+$, so if it occurs, the state was $\ket0$. Bob never errs.
-  The probabilities are
-  \begin{center}
-  \begin{tabular}{lccc}
-    \toprule
-    input & $p(E_1)$ & $p(E_2)$ & $p(E_3)$\\
-    \midrule
-    $\ket0$ & $0$ & $c\abs{\braket-0}^2=c/2$ & $1-c/2$\\
-    $\ket+$ & $c\abs{\braket1+}^2=c/2$ & $0$ & $1-c/2$\\
-    \bottomrule
-  \end{tabular}
-  \end{center}
-  The price is that with probability $1-c/2\approx0.71$ Bob gets $E_3$ and learns nothing. The success probability is $c/2=1-\tfrac1{\sqrt2}=1-\abs{\braket0+}\approx0.29$.
+  \begin{steps}
+    \item \emph{The idea.} Make outcome $1$ impossible for $\ket0$ (so it can only come from $\ket+$) and outcome $2$ impossible for $\ket+$. The operator that annihilates $\ket0$ is $\ket1\!\bra1$; the one that annihilates $\ket+$ is $\ket-\!\bra-$.
+    \item \emph{The POVM.} With $c=\frac{\sqrt2}{1+\sqrt2}=2-\sqrt2\approx0.586$, put $E_1=c\ket1\!\bra1$, $E_2=c\ket-\!\bra-$, $E_3=\Id-E_1-E_2$.
+    \item \emph{Positivity.} $E_1,E_2$ are positive. For $E_3$: $\ket1\!\bra1+\ket-\!\bra-$ has eigenvalues $1\pm\abs{\braket1-}=1\pm\tfrac1{\sqrt2}$, so $E_3$ has eigenvalues $1-c(1\pm\tfrac1{\sqrt2})$, which are $0$ and $\approx0.83$: both $\ge0$.
+    \item \emph{Never wrong.} $E_1\ket0=0$, so outcome $1$ is impossible for $\ket0$: if it occurs, the state was $\ket+$. Likewise $E_2\ket+=0$.
+    \item \emph{Probabilities.}
+      \begin{center}
+      \begin{tabular}{lccc}
+        \toprule
+        input & $p(E_1)$ & $p(E_2)$ & $p(E_3)$\\
+        \midrule
+        $\ket0$ & $0$ & $c\abs{\braket-0}^2=c/2$ & $1-c/2$\\
+        $\ket+$ & $c\abs{\braket1+}^2=c/2$ & $0$ & $1-c/2$\\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+    \item \emph{The price.} With probability $1-c/2\approx0.71$ Bob gets $E_3$ and learns nothing. The success probability is $c/2=1-\tfrac1{\sqrt2}=1-\abs{\braket0+}\approx0.29$.
+  \end{steps}
 \end{solution}
 
 We can summarise the three formalisms.
@@ -265,8 +365,8 @@ We can summarise the three formalisms.
   \bottomrule
 \end{tabular}
 \end{center}
-Why bother with the general formalism? It is simpler mathematically, some problems have optimal solutions that are not projective (optimal state discrimination, the trine POVM of Exercise~\ref{ex:trine}), and many real measurements are not repeatable:
-a screen that records a photon destroys it. The good news, shown in Section~\ref{sec:composite}, is that once we have unitaries and composite systems, projective measurements suffice: ancillas turn them into general measurements.
+Why bother with the general formalism? It is simpler mathematically, some problems have optimal solutions that are not projective (optimal state discrimination, the trine POVM of Exercise~\ref{ex:trine}), and many real measurements are not repeatable: a screen that records a photon destroys it.
+The good news, shown in Section~\ref{sec:composite}, is that once we have unitaries and composite systems, projective measurements suffice: ancillas turn them into general measurements.
 
 \begin{exerciseset}
   \exercise{1} Suppose the system is in an eigenstate $\ket\psi$ of an observable $M$ with eigenvalue $m$. What are the average observed value and the standard deviation?
@@ -276,6 +376,8 @@ a screen that records a photon destroys it. The good news, shown in Section~\ref
   \exercise{2} Show $(\vec v\cdot\vec\sigma)^2=\Id$ for a real unit vector $\vec v$ (use $\sigma_j\sigma_k=\delta_{jk}\Id+\ii\sum_l\varepsilon_{jkl}\sigma_l$), deduce that its eigenvalues are $\pm1$ and that the projectors are $P_\pm=\frac12(\Id\pm\vec v\cdot\vec\sigma)$. Compute the probability of the result $+1$ when the state is $\ket0$, and the state afterwards.\label{ex:vn-sigma-eig2}
 
   \exercise{2} Let $\ket\psi=\frac1{\sqrt3}\ket0+\frac{1+\ii}{\sqrt3}\ket1$. Verify Example~\ref{ex:meas-pauli}, and check the three uncertainty relations $\Delta X\Delta Y\ge\abs{\langle Z\rangle}$ and its two cyclic versions.
+
+  \exercise{2} For the state $\ket\psi=\tfrac15(3\ket0+4\ii\ket1)$ compute $\langle X\rangle,\langle Y\rangle,\langle Z\rangle$, the three standard deviations, and the Bloch vector; check the uncertainty relation for each pair.
 
   \exercise{2} Cascades: check the four operators $N_{l\pm}=M_\pm L_l$ of Example~\ref{ex:cascade} satisfy $\sum N^\dagger N=\Id$, and compute probabilities and final states for $\ket\psi=a\ket0+b\ket1$. Show the order matters by repeating with $\{M_\pm\}$ first and $\{L_l\}$ second.
 
@@ -289,15 +391,27 @@ a screen that records a photon destroys it. The good news, shown in Section~\ref
 
   \exercise{3} For $\ket\psi=\cos\frac\theta2\ket0+e^{\ii\phi}\sin\frac\theta2\ket1$ with Bloch vector $\vec n$, show $\langle X\rangle=n_x$, $\langle Y\rangle=n_y$, $\langle Z\rangle=n_z$ and $(\Delta X)^2=1-n_x^2$, $(\Delta Y)^2=1-n_y^2$. Show that $(\Delta X)^2(\Delta Y)^2=n_z^2+n_x^2n_y^2$, check the uncertainty relation, and find when equality holds.
 
-  \exercise{2} On smooth functions vanishing at infinity let $\hat xf=xf$ and $\hat pf=-\ii\hbar f'$. Show that $[\hat x,\hat p]=\ii\hbar\Id$. Using the trace, show that no finite matrices $A,B$ satisfy $[A,B]=\ii\Id$.\label{ex:no-xp}
+  \exercise{2}\label{ex:no-xp} On smooth functions vanishing at infinity let $\hat xf=xf$ and $\hat pf=-\ii\hbar f'$. Show that $[\hat x,\hat p]=\ii\hbar\Id$. Using the trace, show that no finite matrices $A,B$ satisfy $[A,B]=\ii\Id$.
 
   \exercise{2} Express $\ket\pm$ in a basis in which they are \emph{not} the same up to a relative phase. Decide which of the following pairs are the same physical state, and for those that are not find a projective measurement whose statistics differ: $\ket\psi$ and $-\ket\psi$; $\frac1{\sqrt2}(\ket0+\ket1)$ and $\frac1{\sqrt2}(\ket0+\ii\ket1)$; $\frac1{\sqrt2}(\ket0+\ii\ket1)$ and $\frac1{\sqrt2}(\ii\ket0-\ket1)$.
 
   \exercise{2} For $\ket{\psi_\varphi}=\frac1{\sqrt2}(\ket0+e^{\ii\varphi}\ket1)$ compute the probabilities of the outcome $+1$ for $X$ and $Y$ as functions of $\varphi$. Prove that two states whose amplitudes have the same moduli in the computational basis cannot be distinguished by a measurement in that basis, and give an explicit measurement that distinguishes them when they differ by a non-trivial relative phase.
 
-  \exercise{1} Verify that $E_1,E_2$ of Example~\ref{ex:unambiguous} are positive and that $E_3=\Id-E_1-E_2$ is positive (compute the eigenvalues of $\ket1\!\bra1+\ket-\!\bra-$). For two states with overlap $s=\abs{\braket{\psi_1}{\psi_2}}$, conjecture and test the optimal success probability of unambiguous discrimination (it equals $1-s$; check $s=0$ and $s=1$).
+  \exercise{1} Decide which are positive: $\begin{pmatrix}1&0\\0&0\end{pmatrix}$, $\begin{pmatrix}0&1\\1&0\end{pmatrix}$, $\begin{pmatrix}3&\ii\\-\ii&1\end{pmatrix}$, $\begin{pmatrix}1&2\\2&3\end{pmatrix}$, $X+2\Id$, $\ket+\!\bra+-\ket-\!\bra-$.
 
-  \exercise{2} (Trine.) Let $\vec n_k=(\sin\theta_k,0,\cos\theta_k)$ with $\theta_k=2\pi k/3$ and $P_k=\frac12(\Id+\vec n_k\cdot\vec\sigma)$ for $k=0,1,2$. Show $E_k=\frac23P_k$ is a POVM (hint: $\sum_k\vec n_k=0$), and compute $p(k)$ for the state $\ket0$. Explain why it is not projective.\label{ex:trine}
+  \exercise{2} Prove the $2\times2$ test: $\begin{pmatrix}a&b\\\bar b&d\end{pmatrix}\ge0$ iff $a\ge0$, $d\ge0$ and $ad\ge\abs b^2$. Find all real $c$ such that $\begin{pmatrix}1&c\\c&4\end{pmatrix}\ge0$.
+
+  \exercise{2} Find $\sqrt A$ for $A=\begin{pmatrix}5&-3\\-3&5\end{pmatrix}$ and for $A=\ket\psi\!\bra\psi$ with $\norm\psi=1$.
+
+  \exercise{2} Show that if $A,B\ge0$ then $A+B\ge0$ and $\Tr A\ge0$, and that $CAC^\dagger\ge0$ for every $C$. Is $AB\ge0$ in general? (Try $A=\ket0\!\bra0$, $B=\ket+\!\bra+$.)
+
+  \exercise{3} Show that if $A,B\ge0$ then $\Tr(AB)\ge0$. (Hint: write $B=\sum_j\mu_j\ket{w_j}\!\bra{w_j}$.)
+
+  \exercise{2} Prove that $\sqrt{A}$ is unique for $A\ge0$ when $A$ has distinct eigenvalues. Show that $-\sqrt A$ is a square root of $A$ that is not positive.
+
+  \exercise{2} Verify that $E_1,E_2$ of Example~\ref{ex:unambiguous} are positive and that $E_3=\Id-E_1-E_2$ is positive (compute the eigenvalues of $\ket1\!\bra1+\ket-\!\bra-$). For two states with overlap $s=\abs{\braket{\psi_1}{\psi_2}}$, conjecture and test the optimal success probability of unambiguous discrimination (it equals $1-s$; check $s=0$ and $s=1$).
+
+  \exercise{2}\label{ex:trine} (Trine.) Let $\vec n_k=(\sin\theta_k,0,\cos\theta_k)$ with $\theta_k=2\pi k/3$ and $P_k=\frac12(\Id+\vec n_k\cdot\vec\sigma)$ for $k=0,1,2$. Show $E_k=\frac23P_k$ is a POVM (hint: $\sum_k\vec n_k=0$), and compute $p(k)$ for the state $\ket0$. Explain why it is not projective.
 
   \exercise{2} Show that any measurement in which $M_m=E_m=M_m^\dagger M_m$ is a projective measurement. (Hint: first $M_m^\dagger=M_m$ and $M_m^2=M_m$; then use $\sum_mM_m=\Id$ to show $M_mM_{m'}=0$ for $m\neq m'$.)
 

@@ -2,26 +2,34 @@
 \addcontentsline{toc}{chapter}{Preface}
 \markboth{Preface}{Preface}
 
-This book grew out of two courses on the mathematics of quantum computing, taught to undergraduate students who want to understand quantum
-computers and not only to run programs on them. Quantum mechanics is, mathematically, linear algebra in a particular dress, and a quantum
-computer is a machine that manipulates one vector in that dress. If the students master the dress, the rest of the programme (circuits, algorithms,
-error correction) becomes a matter of using it, so this book spends its pages on the dress.
+Quantum computing is often introduced through its circuits and its algorithms, and the mathematics is treated as a prerequisite that students either have or pick up on the way. In my experience it is the other way round. A student who is comfortable with complex amplitudes, with Hilbert spaces and unitary operators, with the tensor product and with entropy finds that a quantum circuit is
+\emph{readable}: each gate is a matrix, each measurement a projection, each algorithm a choice of unitaries. A student who is not comfortable with them can run a program on a quantum computer without ever being able to say why it works. This book is an attempt to spend the time on the mathematics, and to do so in a way that never loses sight of the physics it is for.
 
-\paragraph{What it tries to do.}
-There are excellent references for the subject, and the standard one~\cite{nielsenchuang2010} is the model for much of what follows. This book differs in emphasis. It is meant to be \emph{read}
-by someone meeting these ideas for the first time, so it explains before it states, it prefers one worked example with all the numbers to three paragraphs of generalities, and it keeps its length under control.
-Every concept that matters is followed by a worked example, and every section ends with a graded list of exercises, so that the reader always has something to try.
-
-\paragraph{Who it is for.}
-Readers with a first course in calculus and linear algebra, and some curiosity about physics. No quantum mechanics is assumed. The second part of the book reviews, and where necessary builds, every piece of mathematics that it uses.
+\paragraph{What the book tries to do.}
+There are excellent references on the subject, and the standard one~\cite{nielsenchuang2010} is the model for much of the second chapter. This book differs in how it teaches. It is written for someone meeting these ideas for the first time, and it keeps to four commitments.
+\begin{itemize}
+  \item \textbf{Explain before stating.} Each section begins with the question that the mathematics answers, and ends with exercises that use it.
+  \item \textbf{Show the numbers.} Every concept that matters is followed by a worked example in which every step is written down, because understanding is built by following a computation, not only a theorem.
+  \item \textbf{Proofs in steps.} Proofs and solutions are written as short chains, one idea per line, so that a reader with a pencil can follow and check them.
+  \item \textbf{Keep the physics in sight.} The mathematics is here because it means something. Short ``Looking ahead'' notes say what a notion will mean physically, and where it will be used a few pages later.
+\end{itemize}
 
 \paragraph{How to read it.}
-Read with a pencil. The worked examples are the heart of the book: cover the solution, try the example, and compare. The exercises are marked with one, two or three stars according to difficulty. A one-star exercise should take a few minutes and checks that you
-have understood the definition; a three-star exercise may need an idea, and it is fine to leave it for later. The Introduction explains the visual conventions of the book.
+The three chapters are meant to be read in order, and the roadmap in the Introduction shows the dependencies. Read with a pencil: cover the solution of an example, try it, and compare. The exercises are marked with one, two or three stars; a one-star exercise should take a few minutes and checks that you have understood the definition, while a three-star exercise may need an idea, and it is fine to leave it for later.
+Readers with less time can take shorter routes. For the postulates of quantum mechanics and their use in quantum computing: Sections~\ref{sec:vector-spaces} to~\ref{sec:operators}, then Sections~\ref{sec:state-evolution} to~\ref{sec:composite}, and Section~\ref{sec:density}. For the information-theoretic side: Sections~\ref{sec:density} and~\ref{sec:schmidt}, then Sections~\ref{sec:prob}, \ref{sec:shannon}, \ref{sec:vonneumann} and~\ref{sec:relent}. Readers already fluent in linear algebra can start at Chapter~\ref{ch:postulates} and use Chapter~\ref{ch:tools} for reference; the ``Recall'' notes at the start of each section say what is needed from earlier on.
+
+\paragraph{On rigour.}
+This is a first course, and it makes choices. Everything that the later sections depend on is either proved or computed in full. A few deep results (the completeness of the Fourier basis, Plancherel's theorem, the monotonicity of the relative entropy) are stated precisely and cited, because their proofs would take the reader away from the subject. Where a result is used without proof, the text says so.
+
+\paragraph{What is assumed.}
+A first course in calculus and linear algebra, and some curiosity about physics. No quantum mechanics is assumed.
+
+\paragraph{Acknowledgements.}
+This book has been shaped by the questions of the students who have taken the course on which it is based, and by conversations with colleagues; I am grateful to all of them. Remaining errors are mine, and I will be glad to hear about them.
 
 \paragraph{About the use of AI in this book.}
 This book was written with the assistance of an AI model (Claude, by Anthropic). The author decided the scope of the book, the order in which ideas are introduced, the level of difficulty, the examples and exercises to include and the connections between topics, working from his own lecture slides, his collection of exercises and standard references.
-The AI was used as a writing and typesetting assistant: drafting text from those materials, generating figures in the book's typesetting system, and checking calculations. Numerical results were checked by computer where this was possible. The author reviewed the content and is responsible for it, including any errors that remain.
+The AI was used as a writing and typesetting assistant: drafting text from those materials, producing figures in the book's typesetting system, and checking calculations. Numerical results were checked by computer where this was possible. The author reviewed the content and is responsible for it, including any errors that remain.
 Corrections and suggestions from students and colleagues are welcome and will be incorporated into future editions.
 
 \vspace{1.5em}

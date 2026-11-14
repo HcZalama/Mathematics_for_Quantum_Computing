@@ -3,98 +3,89 @@
 %======================================================================
 
 \begin{objectives}
-  You will compute inner products and norms, prove and use the Cauchy--Schwarz
-  inequality, read and write Dirac notation, expand a vector in an orthonormal
-  basis and interpret the squared coefficients, and build orthonormal bases with the
-  Gram--Schmidt procedure.
+  You will compute inner products and norms, prove and use the Cauchy--Schwarz inequality, read and write Dirac notation, expand a vector in an orthonormal basis and interpret the squared coefficients, and build orthonormal bases with the Gram--Schmidt procedure.
 \end{objectives}
 
-A vector space has no notion of length or angle: we can add vectors, but we
-cannot say whether two of them are close, or perpendicular. Quantum mechanics
-needs both. The overlap between two states will be a complex number, its modulus
-squared will be a probability, and ``perpendicular'' will mean ``perfectly
-distinguishable''. The structure that provides them is the inner product.
+\begin{recall}
+  From Section~\ref{sec:vector-spaces}: complex vector spaces, bases and coordinates, the space $L(V,W)$ of linear maps (in particular the linear maps $V\to\C$), and the adjoint matrix $M^\dagger$ (the conjugate transpose).
+\end{recall}
+
+A vector space has no notion of length or angle: we can add vectors, but we cannot say whether two of them are close, or perpendicular. Quantum mechanics needs both. The overlap between two states will be a complex number, its modulus squared will be a probability, and ``perpendicular'' will mean ``perfectly distinguishable''. The structure that provides them is the inner product.
 
 \subsection{Inner products and norms}
 
 \begin{definition}[Inner product]\label{def:inner}
-  An \term{inner product} on a complex vector space $V$ is a map
-  $\langle\cdot,\cdot\rangle:V\times V\to\C$ such that, for all $u,v,w\in V$ and $\lambda\in\C$:
+  An \term{inner product} on a complex vector space $V$ is a map $\langle\cdot,\cdot\rangle:V\times V\to\C$ such that, for all $u,v,w\in V$ and $\lambda\in\C$:
   \begin{enumerate}
     \item[(i)] $\langle v,w\rangle=\overline{\langle w,v\rangle}$ (conjugate symmetry);
     \item[(ii)] $\langle v,v\rangle\ge0$, with $\langle v,v\rangle=0$ only for $v=0$ (positivity);
     \item[(iii)] $\langle u,v+\lambda w\rangle=\langle u,v\rangle+\lambda\langle u,w\rangle$ (linearity in the second argument).
   \end{enumerate}
-  A vector space with an inner product is called an \term{inner product space}; in finite dimension, it is also a \term{Hilbert space}.
-  The \term{norm} of $v$ is $\norm{v}=\sqrt{\langle v,v\rangle}$.
+  A vector space with an inner product is called an \term{inner product space}; in finite dimension, it is also a \term{Hilbert space}. The \term{norm} of $v$ is $\norm{v}=\sqrt{\langle v,v\rangle}$.
 \end{definition}
 
 \begin{remark}
-  In infinite dimension, a Hilbert space is required to be \emph{complete}, which
-  means that Cauchy sequences converge. Every finite-dimensional inner product space is
-  complete automatically, and we work in finite dimension almost everywhere, so
-  we will not mention completeness again.
+  In infinite dimension, a Hilbert space is required to be \emph{complete}, which means that Cauchy sequences converge. Every finite-dimensional inner product space is complete automatically, and we work in finite dimension almost everywhere, so we will not mention completeness again (except for $L^2$ spaces of functions in Section~\ref{sec:fourier}).
 \end{remark}
 
-Axioms (i) and (iii) imply that the inner product is \emph{conjugate-linear} in the first argument:
-$\langle\lambda v,w\rangle=\bar\lambda\langle v,w\rangle$. This is the convention of physicists; mathematicians often
-put the conjugate on the second argument instead.
+Axioms (i) and (iii) imply that the inner product is \emph{conjugate-linear} in the first argument: $\langle\lambda v,w\rangle=\bar\lambda\langle v,w\rangle$. This is the convention of physicists; mathematicians often put the conjugate on the second argument instead.
 
 \begin{pitfall}
-  Scalars come out of the first slot \emph{conjugated} and out of the second one unchanged.
-  Forgetting this is the most common source of sign and phase errors.
+  Scalars come out of the first slot \emph{conjugated} and out of the second one unchanged. Forgetting this is the most common source of sign and phase errors.
 \end{pitfall}
 
 \paragraph{Examples.}
-On $\C^n$ the standard inner product is $\langle v,w\rangle=\sum_i\overline{v_i}\,w_i$, so $\norm{v}^2=\sum_i\abs{v_i}^2$. On the
-continuous functions $[0,1]\to\C$ we use $\langle f,g\rangle=\int_0^1\overline{f(x)}\,g(x)\dd x$. On $n\times n$ matrices,
-$\langle A,B\rangle=\Tr(A^\dagger B)$, which is the standard inner product of the lists of entries.
+On $\C^n$ the standard inner product is $\langle v,w\rangle=\sum_i\overline{v_i}\,w_i$, so $\norm{v}^2=\sum_i\abs{v_i}^2$. On the continuous functions $[0,1]\to\C$ we use $\langle f,g\rangle=\int_0^1\overline{f(x)}\,g(x)\dd x$. On $n\times n$ matrices, $\langle A,B\rangle=\Tr(A^\dagger B)$, which is the standard inner product of the lists of entries.
 
 \begin{example}\label{ex:isinner}
-  Which of the following are inner products on $\C^2$? (a) $\bar v_1w_1+2\bar v_2w_2$; (b) $\bar v_1w_1-\bar v_2w_2$;
-  (c) $v_1w_1+v_2w_2$; (d) $\overline{(v_1+v_2)}(w_1+w_2)$.
+  Which of the following are inner products on $\C^2$? (a) $\bar v_1w_1+2\bar v_2w_2$; (b) $\bar v_1w_1-\bar v_2w_2$; (c) $v_1w_1+v_2w_2$; (d) $\overline{(v_1+v_2)}(w_1+w_2)$.
 \end{example}
 \begin{solution}
-  (a) Yes. Conjugate symmetry and linearity are clear, and $f(v,v)=\abs{v_1}^2+2\abs{v_2}^2>0$ unless $v=0$.
-
-  (b) No: positivity fails. For $v=(0,1)$ we get $f(v,v)=-1<0$.
-
-  (c) No: there is no conjugate, so it is not conjugate symmetric. It also violates positivity:
-  $f(v,v)=1+\ii^2=0$ for $v=(1,\ii)\neq0$.
-
-  (d) No: $f(v,v)=\abs{v_1+v_2}^2$ vanishes for the non-zero vector $v=(1,-1)$.
+  \begin{steps}
+    \item (a) \emph{Yes.} Conjugate symmetry and linearity are clear, and $f(v,v)=\abs{v_1}^2+2\abs{v_2}^2>0$ unless $v=0$.
+    \item (b) \emph{No:} positivity fails. For $v=(0,1)$ we get $f(v,v)=-1<0$.
+    \item (c) \emph{No:} there is no conjugate, so it is not conjugate symmetric. It also violates positivity: $f(v,v)=1+\ii^2=0$ for $v=(1,\ii)\neq0$.
+    \item (d) \emph{No:} $f(v,v)=\abs{v_1+v_2}^2$ vanishes for the non-zero vector $v=(1,-1)$.
+  \end{steps}
 \end{solution}
 
 \begin{example}\label{ex:fn-inner}
   In the space of continuous functions $[0,1]\to\C$ compute $\langle 1,x\rangle$, $\norm1$ and $\norm x$.
 \end{example}
 \begin{solution}
-  $\langle1,x\rangle=\int_0^1x\dd x=\tfrac12$, $\ \norm1^2=\int_0^11\dd x=1$, and $\norm x^2=\int_0^1x^2\dd x=\tfrac13$, so
-  $\norm1=1$ and $\norm x=1/\sqrt3$. Note that $\tfrac12\le1\cdot\tfrac1{\sqrt3}\approx0.577$, which is no accident: it
-  is the Cauchy--Schwarz inequality below.
+  \begin{steps}
+    \item \emph{The overlap.} $\langle1,x\rangle=\int_0^1x\dd x=\tfrac12$.
+    \item \emph{The norms.} $\norm1^2=\int_0^11\dd x=1$ and $\norm x^2=\int_0^1x^2\dd x=\tfrac13$, so $\norm1=1$ and $\norm x=1/\sqrt3$.
+    \item \emph{A check.} $\tfrac12\le1\cdot\tfrac1{\sqrt3}\approx0.577$, which is no accident: it is the Cauchy--Schwarz inequality below.
+  \end{steps}
 \end{solution}
 
-The next result is the most important inequality in the subject. It says that the
-overlap of two vectors can never be larger than the product of their lengths.
+\begin{example}[Inner products, norms and angle in $\C^3$]\label{ex:c3-inner}
+  Let $u=(1,\ii,0)$ and $v=(2,0,1-\ii)$. Compute $\langle u,v\rangle$, $\norm u$, $\norm v$, and check Cauchy--Schwarz.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Inner product} (conjugate the first vector): $\langle u,v\rangle=\bar1\cdot2+\overline{\ii}\cdot0+\bar0\cdot(1-\ii)=2$.
+    \item \emph{Norms.} $\norm u^2=1+1+0=2$ and $\norm v^2=4+0+\abs{1-\ii}^2=4+2=6$.
+    \item \emph{Cauchy--Schwarz.} $\abs{\langle u,v\rangle}=2\le\sqrt2\sqrt6=\sqrt{12}\approx3.46$. Strict, so $u,v$ are linearly independent.
+    \item \emph{Reading.} The ratio $\abs{\langle u,v\rangle}/(\norm u\norm v)=2/\sqrt{12}\approx0.58$ measures how aligned the two vectors are: $1$ if parallel, $0$ if orthogonal.
+  \end{steps}
+\end{solution}
+
+The next result is the most important inequality in the subject. It says that the overlap of two vectors can never be larger than the product of their lengths.
 
 \begin{theorem}[Cauchy--Schwarz]\label{thm:cs}
-  For all $u,v$ in an inner product space, $\ \abs{\langle u,v\rangle}\le\norm u\,\norm v$, with
-  equality if and only if $u$ and $v$ are linearly dependent.
+  For all $u,v$ in an inner product space, $\ \abs{\langle u,v\rangle}\le\norm u\,\norm v$, with equality if and only if $u$ and $v$ are linearly dependent.
 \end{theorem}
 \begin{proof}
-  If $v=0$ both sides are $0$, so assume $v\ne0$. Split $u$ into a part along $v$ and a remainder
-  (Figure~\ref{fig:cs}):
-  \[
-    u=\frac{\langle v,u\rangle}{\norm v^2}\,v+w,\qquad
-    w:=u-\frac{\langle v,u\rangle}{\norm v^2}\,v .
-  \]
-  Then $w\perp v$, because $\langle v,w\rangle=\langle v,u\rangle-\frac{\langle v,u\rangle}{\norm v^2}\langle v,v\rangle=0$.
-  Since the two pieces are orthogonal, the Pythagorean theorem gives
-  \[
-    \norm u^2=\frac{\abs{\langle v,u\rangle}^2}{\norm v^2}+\norm w^2\ \ge\ \frac{\abs{\langle v,u\rangle}^2}{\norm v^2}.
-  \]
-  Multiplying by $\norm v^2$ and taking square roots gives the inequality, using $\abs{\langle v,u\rangle}=\abs{\langle u,v\rangle}$.
-  Equality holds exactly when $w=0$, that is, when $u$ is a multiple of $v$.
+  \begin{steps}
+    \item \emph{Trivial case.} If $v=0$ both sides are $0$, so assume $v\ne0$.
+    \item \emph{Split $u$} into a part along $v$ and a remainder (Figure~\ref{fig:cs}): $u=\frac{\langle v,u\rangle}{\norm v^2}\,v+w$, with $w:=u-\frac{\langle v,u\rangle}{\norm v^2}\,v$.
+    \item \emph{The remainder is orthogonal to $v$.} $\langle v,w\rangle=\langle v,u\rangle-\frac{\langle v,u\rangle}{\norm v^2}\langle v,v\rangle=0$.
+    \item \emph{Pythagoras.} Since the two pieces are orthogonal, $\norm u^2=\frac{\abs{\langle v,u\rangle}^2}{\norm v^2}+\norm w^2\ \ge\ \frac{\abs{\langle v,u\rangle}^2}{\norm v^2}$.
+    \item \emph{Conclude.} Multiply by $\norm v^2$ and take square roots, using $\abs{\langle v,u\rangle}=\abs{\langle u,v\rangle}$.
+    \item \emph{Equality} holds exactly when $w=0$, that is, when $u$ is a multiple of $v$. \qedhere
+  \end{steps}
 \end{proof}
 
 \begin{figure}[htb]
@@ -106,8 +97,7 @@ overlap of two vectors can never be larger than the product of their lengths.
     \draw[very thick,ink,->] (2.6,0) -- (2.6,1.8) node[midway,right] {$w$};
     \draw[ink] (2.4,0) -- (2.4,0.2) -- (2.6,0.2);
   \end{tikzpicture}
-  \caption{Proof of Cauchy--Schwarz: $u$ splits into a component along $v$ and an orthogonal remainder $w$.
-  The component cannot be longer than $u$ itself.}
+  \caption{Proof of Cauchy--Schwarz: $u$ splits into a component along $v$ and an orthogonal remainder $w$. The component cannot be longer than $u$ itself.}
   \label{fig:cs}
 \end{figure}
 
@@ -115,14 +105,26 @@ overlap of two vectors can never be larger than the product of their lengths.
   $\norm{u+v}\le\norm u+\norm v$. Hence $\norm{\cdot}$ is a genuine norm.
 \end{corollary}
 \begin{proof}
-  Expanding, $\norm{u+v}^2=\norm u^2+\norm v^2+2\Re\langle u,v\rangle\le\norm u^2+\norm v^2+2\norm u\norm v=(\norm u+\norm v)^2$,
-  using $\Re z\le\abs z$ and Cauchy--Schwarz. This is the same proof as in Theorem~\ref{thm:triangle}.
+  \begin{steps}
+    \item \emph{Expand.} $\norm{u+v}^2=\norm u^2+\norm v^2+2\Re\langle u,v\rangle$.
+    \item \emph{Estimate} with $\Re z\le\abs z$ and Cauchy--Schwarz: $\le\norm u^2+\norm v^2+2\norm u\norm v=(\norm u+\norm v)^2$.
+    \item This is the same proof as Theorem~\ref{thm:triangle}. \qedhere
+  \end{steps}
 \end{proof}
 
-For unit vectors, Cauchy--Schwarz says $0\le\abs{\langle u,v\rangle}\le1$: overlaps of
-normalised states are always legitimate probability amplitudes. In a real space it
-also lets us define the angle $\theta$ between two vectors by
-$\cos\theta=\langle u,v\rangle/(\norm u\norm v)$, since the right-hand side lies in $[-1,1]$.
+For unit vectors, Cauchy--Schwarz says $0\le\abs{\langle u,v\rangle}\le1$: overlaps of normalised states are always legitimate probability amplitudes. In a real space it also lets us define the angle $\theta$ between two vectors by $\cos\theta=\langle u,v\rangle/(\norm u\norm v)$, since the right-hand side lies in $[-1,1]$.
+
+\begin{example}[Cauchy--Schwarz for qubits]\label{ex:cs-qubit}
+  Let $\ket\psi=\frac1{\sqrt3}\bigl(\ket0+(1+\ii)\ket1\bigr)$ and $\ket\varphi=\ket+$. Compute $\abs{\langle\varphi,\psi\rangle}$ and compare with $\norm\varphi\norm\psi$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The overlap.} $\bra+=\tfrac1{\sqrt2}(1\ \ 1)$, so $\braket+\psi=\tfrac1{\sqrt2}\cdot\tfrac1{\sqrt3}\bigl(1+(1+\ii)\bigr)=\tfrac{2+\ii}{\sqrt6}$.
+    \item \emph{Modulus.} $\abs{\braket+\psi}=\tfrac{\sqrt5}{\sqrt6}\approx0.913$.
+    \item \emph{The norms.} $\norm\psi=\norm+=1$.
+    \item \emph{Check.} $0.913\le1$. The square $\tfrac56$ is the probability of a certain measurement outcome, as we will see in Section~\ref{sec:measurement}.
+  \end{steps}
+\end{solution}
 
 \subsection{Dirac notation}
 
@@ -134,67 +136,61 @@ Physicists write vectors in a notation due to Dirac that is compact, a little st
   \item The \term{bracket} $\braket\varphi\psi$ is the inner product $\langle\varphi,\psi\rangle$: the bra $\bra\varphi$ eats the ket $\ket\psi$ and returns a number.
   \item The \term{outer product} $\ket\psi\!\bra\varphi$ is the operator $\ket\chi\mapsto\braket\varphi\chi\,\ket\psi$: a column times a row, a matrix.
 \end{itemize}
-In $\C^n$ this is nothing but matrix multiplication: $\braket\varphi\psi=\varphi^\dagger\psi$ is a row times a column, a $1\times1$ matrix,
-while $\ket\psi\!\bra\varphi=\psi\varphi^\dagger$ is a column times a row, an $n\times n$ matrix. The rules are the ones inherited from
-the inner product: $\overline{\braket\varphi\psi}=\braket\psi\varphi$, the bra of $\lambda\ket\psi$ is $\bar\lambda\bra\psi$, and $\norm{\ket\psi}^2=\braket\psi\psi$.
+In $\C^n$ this is nothing but matrix multiplication: $\braket\varphi\psi=\varphi^\dagger\psi$ is a row times a column, a $1\times1$ matrix, while $\ket\psi\!\bra\varphi=\psi\varphi^\dagger$ is a column times a row, an $n\times n$ matrix. The rules are the ones inherited from the inner product: $\overline{\braket\varphi\psi}=\braket\psi\varphi$, the bra of $\lambda\ket\psi$ is $\bar\lambda\bra\psi$, and $\norm{\ket\psi}^2=\braket\psi\psi$.
 Throughout the book, \emph{a state is a normalised ket}, $\braket\psi\psi=1$.
 
-A bra can be seen as a \emph{linear form}: the map $\ket w\mapsto\braket vw$ is linear, so $\bra v$ belongs to the space $V^*=L(V,\C)$ of
-linear forms on $V$, the \term{dual space}. Every linear form on a finite-dimensional Hilbert space arises this way, and the correspondence
-$\ket v\mapsto\bra v$ is conjugate-linear and one-to-one. That is why bras and kets are two faces of the same information.
+A bra can be seen as a \emph{linear form}: the map $\ket w\mapsto\braket vw$ is linear, so $\bra v$ belongs to the space $V^*=L(V,\C)$ of linear forms on $V$, the \term{dual space}. Every linear form on a finite-dimensional Hilbert space arises this way, a fact known as the Riesz representation theorem, which we prove in Section~\ref{sec:state-evolution} (Theorem~\ref{thm:riesz}).
+The correspondence $\ket v\mapsto\bra v$ is conjugate-linear and one-to-one. That is why bras and kets are two faces of the same information.
 
 \begin{example}\label{ex:kets}
-  Let $\ket\psi=\frac1{\sqrt3}\ket0+\frac{1+\ii}{\sqrt3}\ket1$. Check that it is normalised, write $\bra\psi$, compute $\braket0\psi$,
-  and find the matrix $\ket\psi\!\bra\psi$ with its trace.
+  Let $\ket\psi=\frac1{\sqrt3}\ket0+\frac{1+\ii}{\sqrt3}\ket1$. Check that it is normalised, write $\bra\psi$, compute $\braket0\psi$, and find the matrix $\ket\psi\!\bra\psi$ with its trace.
 \end{example}
 \begin{solution}
-  As a column, $\ket\psi=\frac1{\sqrt3}\begin{pmatrix}1\\1+\ii\end{pmatrix}$, and $\braket\psi\psi=\frac13(1+\abs{1+\ii}^2)=\frac13(1+2)=1$.
-  The bra is the conjugate transpose, $\bra\psi=\frac1{\sqrt3}\begin{pmatrix}1&1-\ii\end{pmatrix}$, and
-  $\braket0\psi=\frac1{\sqrt3}$. The outer product is the column times the row:
-  \[
-    \ket\psi\!\bra\psi=\frac13\begin{pmatrix}1\\1+\ii\end{pmatrix}\begin{pmatrix}1&1-\ii\end{pmatrix}
-    =\frac13\begin{pmatrix}1&1-\ii\\1+\ii&2\end{pmatrix}.
-  \]
-  Its trace is $\tfrac13(1+2)=1$. The matrix is Hermitian, as every $\ket\psi\!\bra\psi$ is.
+  \begin{steps}
+    \item \emph{As a column:} $\ket\psi=\frac1{\sqrt3}\begin{pmatrix}1\\1+\ii\end{pmatrix}$.
+    \item \emph{Normalisation.} $\braket\psi\psi=\frac13(1+\abs{1+\ii}^2)=\frac13(1+2)=1$.
+    \item \emph{The bra} is the conjugate transpose: $\bra\psi=\frac1{\sqrt3}\begin{pmatrix}1&1-\ii\end{pmatrix}$.
+    \item \emph{An overlap.} $\braket0\psi=\frac1{\sqrt3}$ (the first entry).
+    \item \emph{The outer product:} $\ket\psi\!\bra\psi=\frac13\begin{pmatrix}1\\1+\ii\end{pmatrix}\begin{pmatrix}1&1-\ii\end{pmatrix}=\frac13\begin{pmatrix}1&1-\ii\\1+\ii&2\end{pmatrix}$.
+    \item \emph{Trace and symmetry.} Its trace is $\tfrac13(1+2)=1$, and the matrix is Hermitian, as every $\ket\psi\!\bra\psi$ is.
+  \end{steps}
 \end{solution}
 
 \begin{example}\label{ex:diracsimplify}
   Simplify $\braket01$, $\braket+-$, $(\ket0\!\bra1)(\ket1\!\bra0)$, $(\ket0\!\bra1)^2$ and $(\ket+\!\bra+)\ket0$.
 \end{example}
 \begin{solution}
-  $\braket01=0$ and $\braket+-=\tfrac12(\braket0 0-\braket01+\braket10-\braket11)=\tfrac12(1-0+0-1)=0$.
-  Next, bras and kets in the middle combine: $(\ket0\!\bra1)(\ket1\!\bra0)=\ket0\braket11\bra0=\ket0\!\bra0$,
-  while $(\ket0\!\bra1)^2=\ket0\braket10\bra1=0$. Finally $(\ket+\!\bra+)\ket0=\ket+\braket+0=\tfrac1{\sqrt2}\ket+$.
+  \begin{steps}
+    \item \emph{Brackets.} $\braket01=0$, and $\braket+-=\tfrac12(\braket0 0-\braket01+\braket10-\braket11)=\tfrac12(1-0+0-1)=0$.
+    \item \emph{Products of outer products:} bras and kets in the middle combine into numbers. $(\ket0\!\bra1)(\ket1\!\bra0)=\ket0\braket11\bra0=\ket0\!\bra0$.
+    \item \emph{A square.} $(\ket0\!\bra1)^2=\ket0\braket10\bra1=0$.
+    \item \emph{Acting on a ket.} $(\ket+\!\bra+)\ket0=\ket+\braket+0=\tfrac1{\sqrt2}\ket+$.
+  \end{steps}
 \end{solution}
 
 \subsection{Orthonormal bases}
 
 \begin{definition}[Orthogonality]\label{def:ortho}
-  Two vectors $\ket u,\ket v$ are \term{orthogonal} if $\braket uv=0$. A family $\{\ket{e_i}\}$ is
-  \term{orthonormal} if $\braket{e_i}{e_j}=\delta_{ij}$, which means $1$ if $i=j$ and $0$ otherwise.
-  An orthonormal family that is also a basis is an \term{orthonormal basis} (ONB).
+  Two vectors $\ket u,\ket v$ are \term{orthogonal} if $\braket uv=0$. A family $\{\ket{e_i}\}$ is \term{orthonormal} if $\braket{e_i}{e_j}=\delta_{ij}$, which means $1$ if $i=j$ and $0$ otherwise. An orthonormal family that is also a basis is an \term{orthonormal basis} (ONB).
 \end{definition}
 
-Non-zero pairwise orthogonal vectors are automatically independent: if $\sum_i\lambda_i\ket{e_i}=0$, apply $\bra{e_j}$ to get
-$\lambda_j\norm{e_j}^2=0$, so $\lambda_j=0$. Hence $n$ orthonormal vectors in an $n$-dimensional space are an ONB. The point of an ONB
-is that coordinates become trivial to compute.
+Non-zero pairwise orthogonal vectors are automatically independent: if $\sum_i\lambda_i\ket{e_i}=0$, apply $\bra{e_j}$ to get $\lambda_j\norm{e_j}^2=0$, so $\lambda_j=0$. Hence $n$ orthonormal vectors in an $n$-dimensional space are an ONB. The point of an ONB is that coordinates become trivial to compute.
 
 \begin{theorem}[Expansion and Parseval]\label{thm:parseval}
   Let $\{\ket{e_i}\}$ be an ONB of $\Hil$. For every $\ket\psi\in\Hil$,
   \[
-    \ket\psi=\sum_i\braket{e_i}\psi\,\ket{e_i},\qquad
-    \norm{\psi}^2=\sum_i\abs{\braket{e_i}\psi}^2 .
+    \ket\psi=\sum_i\braket{e_i}\psi\,\ket{e_i},\qquad \norm{\psi}^2=\sum_i\abs{\braket{e_i}\psi}^2 .
   \]
 \end{theorem}
 \begin{proof}
-  Write $\ket\psi=\sum_j\lambda_j\ket{e_j}$. Applying $\bra{e_i}$ gives $\braket{e_i}\psi=\sum_j\lambda_j\delta_{ij}=\lambda_i$, which is the first claim.
-  For the second, $\norm\psi^2=\braket\psi\psi=\sum_{i,j}\overline{\lambda_i}\lambda_j\braket{e_i}{e_j}=\sum_i\abs{\lambda_i}^2$.
+  \begin{steps}
+    \item \emph{Expand in the basis.} Write $\ket\psi=\sum_j\lambda_j\ket{e_j}$.
+    \item \emph{Apply $\bra{e_i}$.} $\braket{e_i}\psi=\sum_j\lambda_j\delta_{ij}=\lambda_i$: this is the first claim.
+    \item \emph{The norm.} $\norm\psi^2=\braket\psi\psi=\sum_{i,j}\overline{\lambda_i}\lambda_j\braket{e_i}{e_j}=\sum_i\abs{\lambda_i}^2$. \qedhere
+  \end{steps}
 \end{proof}
 
-No linear system has to be solved: the coordinate along $\ket{e_i}$ is the overlap $\braket{e_i}\psi$. For a normalised state, Parseval
-says that the numbers $\abs{\braket{e_i}\psi}^2$ add up to $1$; when the postulates of Chapter~\ref{ch:postulates} come into play, they will be
-the probabilities of the outcomes of a measurement in that basis. Reading the first formula as $\ket\psi=\bigl(\sum_i\ket{e_i}\!\bra{e_i}\bigr)\ket\psi$ gives the
-\term{completeness relation}
+No linear system has to be solved: the coordinate along $\ket{e_i}$ is the overlap $\braket{e_i}\psi$. For a normalised state, Parseval says that the numbers $\abs{\braket{e_i}\psi}^2$ add up to $1$; when the postulates of Chapter~\ref{ch:postulates} come into play, they will be the probabilities of the outcomes of a measurement in that basis. Reading the first formula as $\ket\psi=\bigl(\sum_i\ket{e_i}\!\bra{e_i}\bigr)\ket\psi$ gives the \term{completeness relation}
 \[
   \sum_i\ket{e_i}\!\bra{e_i}=\Id,
 \]
@@ -208,32 +204,35 @@ so the matrix element $A_{ij}$ is the $i$th coordinate of $A\ket{e_j}$, in agree
   Expand $\ket\psi=\frac1{\sqrt3}\bigl(\ket0+(1+\ii)\ket1\bigr)$ in the ONBs $\{\ket0,\ket1\}$, $\{\ket+,\ket-\}$ and $\{\ket{+\ii},\ket{-\ii}\}$, and check Parseval.
 \end{example}
 \begin{solution}
-  \emph{Computational basis.} $\braket0\psi=\frac1{\sqrt3}$ and $\braket1\psi=\frac{1+\ii}{\sqrt3}$. Squared moduli: $\tfrac13$ and $\tfrac23$, summing to $1$.
-
-  \emph{Basis $\ket\pm$.} The bras are $\bra\pm=\frac1{\sqrt2}\begin{pmatrix}1&\pm1\end{pmatrix}$, so
-  \[
-    \braket+\psi=\frac{1}{\sqrt6}\bigl(1+(1+\ii)\bigr)=\frac{2+\ii}{\sqrt6},\qquad
-    \braket-\psi=\frac{1}{\sqrt6}\bigl(1-(1+\ii)\bigr)=\frac{-\ii}{\sqrt6}.
-  \]
-  Squared moduli: $\tfrac56$ and $\tfrac16$, summing to $1$.
-
-  \emph{Basis $\ket{\pm\ii}$.} Here $\bra{\pm\ii}=\frac1{\sqrt2}\begin{pmatrix}1&\mp\ii\end{pmatrix}$ (the second entry is conjugated), so
-  \[
-    \braket{+\ii}\psi=\frac1{\sqrt6}\bigl(1-\ii(1+\ii)\bigr)=\frac{2-\ii}{\sqrt6},\qquad
-    \braket{-\ii}\psi=\frac1{\sqrt6}\bigl(1+\ii(1+\ii)\bigr)=\frac{\ii}{\sqrt6},
-  \]
-  with squared moduli $\tfrac56$ and $\tfrac16$, again summing to $1$. The same state has three different sets of coordinates, one for each point of view.
+  \begin{steps}
+    \item \emph{Computational basis.} $\braket0\psi=\frac1{\sqrt3}$ and $\braket1\psi=\frac{1+\ii}{\sqrt3}$. Squared moduli: $\tfrac13$ and $\tfrac23$, summing to $1$.
+    \item \emph{Basis $\ket\pm$: the bras are} $\bra\pm=\frac1{\sqrt2}\begin{pmatrix}1&\pm1\end{pmatrix}$, so $\braket+\psi=\frac{1}{\sqrt6}\bigl(1+(1+\ii)\bigr)=\frac{2+\ii}{\sqrt6}$ and $\braket-\psi=\frac{1}{\sqrt6}\bigl(1-(1+\ii)\bigr)=\frac{-\ii}{\sqrt6}$.
+    \item \emph{Squared moduli:} $\tfrac56$ and $\tfrac16$, summing to $1$.
+    \item \emph{Basis $\ket{\pm\ii}$: the bras are} $\bra{\pm\ii}=\frac1{\sqrt2}\begin{pmatrix}1&\mp\ii\end{pmatrix}$ (the second entry is conjugated), so $\braket{+\ii}\psi=\frac1{\sqrt6}\bigl(1-\ii(1+\ii)\bigr)=\frac{2-\ii}{\sqrt6}$ and $\braket{-\ii}\psi=\frac1{\sqrt6}\bigl(1+\ii(1+\ii)\bigr)=\frac{\ii}{\sqrt6}$.
+    \item \emph{Squared moduli:} $\tfrac56$ and $\tfrac16$, again summing to $1$.
+    \item \emph{Reading.} The same state has three different sets of coordinates, one for each point of view.
+  \end{steps}
 \end{solution}
 
 \begin{pitfall}
-  The formulas of Theorem~\ref{thm:parseval} need an \emph{orthonormal} basis. In $\R^2$, for the independent but
-  non-orthogonal basis $(1,0),(1,1)$, the vector $(3,5)$ is $-2(1,0)+5(1,1)$, whereas the overlaps with the basis vectors are $3$ and $8$.
+  The formulas of Theorem~\ref{thm:parseval} need an \emph{orthonormal} basis. In $\R^2$, for the independent but non-orthogonal basis $(1,0),(1,1)$, the vector $(3,5)$ is $-2(1,0)+5(1,1)$, whereas the overlaps with the basis vectors are $3$ and $8$.
 \end{pitfall}
+
+\begin{example}[Matrix elements by inserting the identity]\label{ex:matrix-elements}
+  Compute the matrix of $\sy$ in the basis $\{\ket+,\ket-\}$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The formula.} $A_{ij}=\bra{e_i}A\ket{e_j}$ with $e_1=+$, $e_2=-$.
+    \item \emph{Apply $\sy$ to the basis vectors.} $\sy\ket+=\tfrac1{\sqrt2}\begin{pmatrix}-\ii\\\ii\end{pmatrix}=-\ii\ket-$ and $\sy\ket-=\tfrac1{\sqrt2}\begin{pmatrix}\ii\\\ii\end{pmatrix}=\ii\ket+$.
+    \item \emph{The entries.} $\bra+\sy\ket+=0$, $\bra-\sy\ket+=-\ii$, $\bra+\sy\ket-=\ii$, $\bra-\sy\ket-=0$.
+    \item \emph{The matrix.} $\begin{pmatrix}0&\ii\\-\ii&0\end{pmatrix}=-\sy$ in this basis: the change of basis from $\{\ket0,\ket1\}$ to $\{\ket\pm\}$ turns $\sy$ into $-\sy$ (as $H\sy H=-\sy$).
+  \end{steps}
+\end{solution}
 
 \subsection{Gram--Schmidt}
 
-Do orthonormal bases always exist? Yes, and the proof is a recipe. Given any basis, we make it orthonormal one vector at a time,
-subtracting at each step the components along the vectors already produced (Figure~\ref{fig:gs}).
+Do orthonormal bases always exist? Yes, and the proof is a recipe. Given any basis, we make it orthonormal one vector at a time, subtracting at each step the components along the vectors already produced (Figure~\ref{fig:gs}).
 
 \begin{theorem}[Gram--Schmidt]\label{thm:gs}
   Let $\ket{v_1},\dots,\ket{v_n}$ be a basis of $\Hil$. Define recursively
@@ -243,10 +242,12 @@ subtracting at each step the components along the vectors already produced (Figu
   Then $\{\ket{e_k}\}$ is an orthonormal basis, and $\Span\{e_1,\dots,e_m\}=\Span\{v_1,\dots,v_m\}$ for every $m$.
 \end{theorem}
 \begin{proof}
-  We argue by induction on $k$. Suppose $e_1,\dots,e_{k-1}$ are orthonormal and span the same space as $v_1,\dots,v_{k-1}$.
-  For $i<k$, $\braket{e_i}{u_k}=\braket{e_i}{v_k}-\sum_{j<k}\braket{e_j}{v_k}\delta_{ij}=0$, so $u_k$ is orthogonal to all previous $e_i$.
-  Moreover $u_k\neq0$: otherwise $v_k$ would be a combination of $e_1,\dots,e_{k-1}$, hence of $v_1,\dots,v_{k-1}$, contradicting independence.
-  So $e_k$ is well defined, of norm $1$, and $\Span\{e_1,\dots,e_k\}=\Span\{v_1,\dots,v_k\}$.
+  \begin{steps}
+    \item \emph{Induction hypothesis.} Suppose $e_1,\dots,e_{k-1}$ are orthonormal and span the same space as $v_1,\dots,v_{k-1}$.
+    \item \emph{$u_k$ is orthogonal to the previous vectors.} For $i<k$, $\braket{e_i}{u_k}=\braket{e_i}{v_k}-\sum_{j<k}\braket{e_j}{v_k}\delta_{ij}=0$.
+    \item \emph{$u_k\neq0$.} Otherwise $v_k$ would be a combination of $e_1,\dots,e_{k-1}$, hence of $v_1,\dots,v_{k-1}$, contradicting independence.
+    \item \emph{Conclude.} So $e_k$ is well defined, of norm $1$, and $\Span\{e_1,\dots,e_k\}=\Span\{v_1,\dots,v_k\}$. \qedhere
+  \end{steps}
 \end{proof}
 
 In particular, every finite-dimensional Hilbert space has an orthonormal basis.
@@ -261,8 +262,7 @@ In particular, every finite-dimensional Hilbert space has an orthonormal basis.
     \draw[very thick,figacc,->] (1.6,0) -- (1.6,2.0) node[midway,right] {$u_2$};
     \draw[ink] (1.4,0) -- (1.4,0.2) -- (1.6,0.2);
   \end{tikzpicture}
-  \caption{Gram--Schmidt, second step: removing from $v_2$ its component along $e_1$ leaves $u_2\perp e_1$,
-  which after normalisation is $e_2$.}
+  \caption{Gram--Schmidt, second step: removing from $v_2$ its component along $e_1$ leaves $u_2\perp e_1$, which after normalisation is $e_2$.}
   \label{fig:gs}
 \end{figure}
 
@@ -270,55 +270,51 @@ In particular, every finite-dimensional Hilbert space has an orthonormal basis.
   Apply Gram--Schmidt to $\ket{v_1}=\ket0+\ket1$, $\ket{v_2}=\ket0$ in $\C^2$, and then in the reverse order.
 \end{example}
 \begin{solution}
-  Since $\norm{v_1}=\sqrt2$, $\ket{e_1}=\frac1{\sqrt2}(\ket0+\ket1)=\ket+$. Then $\braket{e_1}{v_2}=\braket+0=\tfrac1{\sqrt2}$, and
-  \[
-    \ket{u_2}=\ket0-\tfrac1{\sqrt2}\ket+=\ket0-\tfrac12(\ket0+\ket1)=\tfrac12(\ket0-\ket1),\qquad
-    \ket{e_2}=\frac{\ket{u_2}}{\norm{u_2}}=\ket-,
-  \]
-  because $\norm{u_2}=\tfrac1{\sqrt2}$. The result is the basis $\{\ket+,\ket-\}$.
-
-  In the reverse order, $\ket{e_1}=\ket0$ and $\ket{u_2}=(\ket0+\ket1)-\braket0{v_1}\ket0=\ket1$, so $\ket{e_2}=\ket1$:
-  now we obtain $\{\ket0,\ket1\}$. \emph{The outcome depends on the order of the input.}
+  \begin{steps}
+    \item \emph{First vector.} $\norm{v_1}=\sqrt2$, so $\ket{e_1}=\frac1{\sqrt2}(\ket0+\ket1)=\ket+$.
+    \item \emph{Remove the component.} $\braket{e_1}{v_2}=\braket+0=\tfrac1{\sqrt2}$, so $\ket{u_2}=\ket0-\tfrac1{\sqrt2}\ket+=\ket0-\tfrac12(\ket0+\ket1)=\tfrac12(\ket0-\ket1)$.
+    \item \emph{Normalise.} $\norm{u_2}=\tfrac1{\sqrt2}$, so $\ket{e_2}=\ket-$. The result is the basis $\{\ket+,\ket-\}$.
+    \item \emph{Reverse order.} Now $\ket{e_1}=\ket0$ and $\ket{u_2}=(\ket0+\ket1)-\braket0{v_1}\ket0=\ket1$, so $\ket{e_2}=\ket1$: we obtain $\{\ket0,\ket1\}$.
+    \item \emph{Moral.} The outcome depends on the order of the input.
+  \end{steps}
 \end{solution}
 
 \begin{example}\label{ex:gs-r3}
   Apply Gram--Schmidt to $v_1=(1,1,0)$, $v_2=(1,0,1)$, $v_3=(0,1,1)$ in $\R^3$.
 \end{example}
 \begin{solution}
-  $e_1=\frac1{\sqrt2}(1,1,0)$. Since $\langle e_1,v_2\rangle=\tfrac1{\sqrt2}$, we get
-  $u_2=v_2-\tfrac1{\sqrt2}e_1=(1,0,1)-(\tfrac12,\tfrac12,0)=(\tfrac12,-\tfrac12,1)$, with $\norm{u_2}^2=\tfrac14+\tfrac14+1=\tfrac32$, so
-  $e_2=\frac1{\sqrt6}(1,-1,2)$.
-  For the third vector, $\langle e_1,v_3\rangle=\tfrac1{\sqrt2}$ and $\langle e_2,v_3\rangle=\tfrac1{\sqrt6}$, hence
-  \[
-    u_3=(0,1,1)-(\tfrac12,\tfrac12,0)-\tfrac16(1,-1,2)=(-\tfrac23,\tfrac23,\tfrac23),\qquad
-    e_3=\tfrac1{\sqrt3}(-1,1,1).
-  \]
-  \emph{Check:} $e_1\cdot e_3=0$, $e_2\cdot e_3=\tfrac1{\sqrt{18}}(-1-1+2)=0$.
+  \begin{steps}
+    \item \emph{$e_1$.} $e_1=\frac1{\sqrt2}(1,1,0)$.
+    \item \emph{$u_2$.} $\langle e_1,v_2\rangle=\tfrac1{\sqrt2}$, so $u_2=v_2-\tfrac1{\sqrt2}e_1=(1,0,1)-(\tfrac12,\tfrac12,0)=(\tfrac12,-\tfrac12,1)$.
+    \item \emph{$e_2$.} $\norm{u_2}^2=\tfrac14+\tfrac14+1=\tfrac32$, so $e_2=\frac1{\sqrt6}(1,-1,2)$.
+    \item \emph{$u_3$.} $\langle e_1,v_3\rangle=\tfrac1{\sqrt2}$ and $\langle e_2,v_3\rangle=\tfrac1{\sqrt6}$, hence $u_3=(0,1,1)-(\tfrac12,\tfrac12,0)-\tfrac16(1,-1,2)=(-\tfrac23,\tfrac23,\tfrac23)$.
+    \item \emph{$e_3$.} $e_3=\tfrac1{\sqrt3}(-1,1,1)$.
+    \item \emph{Check.} $e_1\cdot e_3=0$ and $e_2\cdot e_3=\tfrac1{\sqrt{18}}(-1-1+2)=0$.
+  \end{steps}
 \end{solution}
 
+\begin{lookahead}
+  Orthonormal bases are the ``questions'' we can ask a quantum system: a measurement in the basis $\{\ket{e_i}\}$ will return $i$ with probability $\abs{\braket{e_i}\psi}^2$, which is why Parseval's identity is the statement that probabilities add up to one. Gram--Schmidt is also how one \emph{constructs} measurements and unitary changes of basis in practice, and, in the guise of the QR decomposition, how numerical software orthogonalises vectors.
+\end{lookahead}
+
 \begin{exerciseset}
-  \exercise{1} From axioms (i)--(iii) prove that $\langle\lambda v,w\rangle=\bar\lambda\langle v,w\rangle$, that $\langle v+v',w\rangle=\langle v,w\rangle+\langle v',w\rangle$, that $\langle0,w\rangle=0$,
-  and that if $\langle v,w\rangle=0$ for all $w$ then $v=0$.
+  \exercise{1} From axioms (i)--(iii) prove that $\langle\lambda v,w\rangle=\bar\lambda\langle v,w\rangle$, that $\langle v+v',w\rangle=\langle v,w\rangle+\langle v',w\rangle$, that $\langle0,w\rangle=0$, and that if $\langle v,w\rangle=0$ for all $w$ then $v=0$.
 
   \exercise{1} Decide whether each is an inner product on $\C^2$: $\bar v_1w_1+\bar v_2w_2$; $\bar v_1w_1-\bar v_2w_2$; $\bar v_1w_1$; $\bar v_1w_1+\bar v_2w_2+\bar v_1w_2+\bar v_2w_1$.
 
-  \exercise{2} Let $A\in M_n(\C)$ and $f(v,w)=v^\dagger Aw$. Show that axiom (i) holds iff $A$ is Hermitian, and that $f$ is an inner product iff
-  $A$ is Hermitian and $v^\dagger Av>0$ for all $v\neq0$. For which $c\in\C$ is $A=\begin{pmatrix}1&c\\\bar c&1\end{pmatrix}$ an inner product matrix?
+  \exercise{1} For $u=(1,1,\ii)$ and $v=(\ii,0,2)$ in $\C^3$ compute $\langle u,v\rangle$, $\langle v,u\rangle$, $\norm u$, $\norm v$, and verify Cauchy--Schwarz and the triangle inequality.
 
-  \exercise{2} On $C([0,1],\C)$ let $\langle f,g\rangle=\int_0^1\overline f\,g\dd x$. Check that this is an inner product (where do you use continuity?),
-  compute $\langle1,x\rangle$ and $\norm x$, and show that $\{e^{2\pi\ii nx}\}_{n\in\Z}$ is an orthonormal system.
+  \exercise{2} Let $A\in M_n(\C)$ and $f(v,w)=v^\dagger Aw$. Show that axiom (i) holds iff $A$ is Hermitian, and that $f$ is an inner product iff $A$ is Hermitian and $v^\dagger Av>0$ for all $v\neq0$. For which $c\in\C$ is $A=\begin{pmatrix}1&c\\\bar c&1\end{pmatrix}$ an inner product matrix?
 
-  \exercise{2} On $M_n(\C)$ define $\langle A,B\rangle=\Tr(A^\dagger B)$. Show that it is an inner product with $\norm A^2=\sum_{ij}\abs{A_{ij}}^2$,
-  and that $\{\tfrac1{\sqrt2}\sigma_\mu\}_{\mu=0}^3$ is an orthonormal basis of $M_2(\C)$.
+  \exercise{2} On $C([0,1],\C)$ let $\langle f,g\rangle=\int_0^1\overline f\,g\dd x$. Check that this is an inner product (where do you use continuity?), compute $\langle1,x\rangle$ and $\norm x$, and show that $\{e^{2\pi\ii nx}\}_{n\in\Z}$ is an orthonormal system.
 
-  \exercise{2} Show that $\norm{x}_1=\sum_i\abs{x_i}$ and $\norm x_\infty=\max_i\abs{x_i}$ are norms on $\C^n$, and sketch the unit balls of $\norm\cdot_1$, $\norm\cdot_2$,
-  $\norm\cdot_\infty$ in $\R^2$.
+  \exercise{2} On $M_n(\C)$ define $\langle A,B\rangle=\Tr(A^\dagger B)$. Show that it is an inner product with $\norm A^2=\sum_{ij}\abs{A_{ij}}^2$, and that $\{\tfrac1{\sqrt2}\sigma_\mu\}_{\mu=0}^3$ is an orthonormal basis of $M_2(\C)$.
 
-  \exercise{3} Prove the polarisation identity, $\langle u,v\rangle=\tfrac14\bigl(\norm{u+v}^2-\norm{u-v}^2-\ii\norm{u+\ii v}^2+\ii\norm{u-\ii v}^2\bigr)$, with our convention. Conclude that the norm determines the inner
-  product. Prove also the parallelogram law $\norm{u+v}^2+\norm{u-v}^2=2\norm u^2+2\norm v^2$ and show that $\norm\cdot_1$ and $\norm\cdot_\infty$ on $\R^2$ violate it.
+  \exercise{2} Show that $\norm{x}_1=\sum_i\abs{x_i}$ and $\norm x_\infty=\max_i\abs{x_i}$ are norms on $\C^n$, and sketch the unit balls of $\norm\cdot_1$, $\norm\cdot_2$, $\norm\cdot_\infty$ in $\R^2$.
 
-  \exercise{1} Let $\ket\psi=\frac1{\sqrt3}\ket0+\frac{1+\ii}{\sqrt3}\ket1$ and $\ket\varphi=\frac1{\sqrt2}(\ket0-\ii\ket1)$. Write them as columns and the bras as rows, compute $\braket\psi\psi$, $\braket\varphi\varphi$, $\braket\varphi\psi$,
-  and check $\braket\varphi\psi=\overline{\braket\psi\varphi}$. Compute $\ket\psi\!\bra\varphi$, $\ket\psi\!\bra\psi$ and $\ket\varphi\!\bra\varphi$: which are Hermitian, and what are their ranks and traces?
+  \exercise{3} Prove the polarisation identity, $\langle u,v\rangle=\tfrac14\bigl(\norm{u+v}^2-\norm{u-v}^2-\ii\norm{u+\ii v}^2+\ii\norm{u-\ii v}^2\bigr)$, with our convention. Conclude that the norm determines the inner product. Prove also the parallelogram law $\norm{u+v}^2+\norm{u-v}^2=2\norm u^2+2\norm v^2$ and show that $\norm\cdot_1$ and $\norm\cdot_\infty$ on $\R^2$ violate it.
+
+  \exercise{1} Let $\ket\psi=\frac1{\sqrt3}\ket0+\frac{1+\ii}{\sqrt3}\ket1$ and $\ket\varphi=\frac1{\sqrt2}(\ket0-\ii\ket1)$. Write them as columns and the bras as rows, compute $\braket\psi\psi$, $\braket\varphi\varphi$, $\braket\varphi\psi$, and check $\braket\varphi\psi=\overline{\braket\psi\varphi}$. Compute $\ket\psi\!\bra\varphi$, $\ket\psi\!\bra\psi$ and $\ket\varphi\!\bra\varphi$: which are Hermitian, and what are their ranks and traces?
 
   \exercise{1} Simplify: $\bra0\sx\ket1$, $\bra1\sy\ket0$, $\bra+\sz\ket-$, $(\ket0\!\bra1)(\ket1\!\bra0)$, $(\ket+\!\bra+)\ket0$, $\bra{+\ii}\sy\ket{+\ii}$.
 
@@ -330,8 +326,7 @@ In particular, every finite-dimensional Hilbert space has an orthonormal basis.
 
   \exercise{2} For $\ket\psi=\cos\frac\theta2\ket0+e^{\ii\phi}\sin\frac\theta2\ket1$, compute $\bra\psi\sx\ket\psi$, $\bra\psi\sy\ket\psi$ and $\bra\psi\sz\ket\psi$, and show that the squares add up to $1$.
 
-  \exercise{2} Show that $\ket\psi$ and $e^{\ii\gamma}\ket\psi$ give the same value of $\bra\psi A\ket\psi$ for every operator $A$ and of $\abs{\braket\varphi\psi}^2$ for every $\varphi$. Then show that
-  $\frac1{\sqrt2}(\ket0+\ket1)$ and $\frac1{\sqrt2}(\ket0-\ket1)$ are \emph{not} equivalent in this sense, by finding an operator that tells them apart.
+  \exercise{2} Show that $\ket\psi$ and $e^{\ii\gamma}\ket\psi$ give the same value of $\bra\psi A\ket\psi$ for every operator $A$ and of $\abs{\braket\varphi\psi}^2$ for every $\varphi$. Then show that $\frac1{\sqrt2}(\ket0+\ket1)$ and $\frac1{\sqrt2}(\ket0-\ket1)$ are \emph{not} equivalent in this sense, by finding an operator that tells them apart.
 
   \exercise{1} Which pairs are orthogonal? $\ket0,\ket+$; $\ket+,\ket-$; $\ket{+\ii},\ket{-\ii}$; $(1,\ii)$ and $(\ii,1)$; $(1,\ii)$ and $(1,-\ii)$; $(1,1,\ii)$ and $(1,-1,0)$.
 
@@ -345,8 +340,7 @@ In particular, every finite-dimensional Hilbert space has an orthonormal basis.
 
   \exercise{3} Prove Bessel's inequality: if $\{\ket{e_1},\dots,\ket{e_k}\}$ is orthonormal but not necessarily a basis, then $\sum_{i\le k}\abs{\braket{e_i}\psi}^2\le\norm\psi^2$, with equality iff $\ket\psi\in\Span\{e_i\}$.
 
-  \exercise{3} Two ONBs $\{\ket{e_i}\},\{\ket{f_j}\}$ of $\C^n$ are \emph{mutually unbiased} if $\abs{\braket{e_i}{f_j}}^2=1/n$ for all $i,j$. Show that the eigenbases of $\sx,\sy,\sz$ are pairwise
-  mutually unbiased. Interpret: a state from one basis gives completely random outcomes when measured in another.
+  \exercise{3} Two ONBs $\{\ket{e_i}\},\{\ket{f_j}\}$ of $\C^n$ are \emph{mutually unbiased} if $\abs{\braket{e_i}{f_j}}^2=1/n$ for all $i,j$. Show that the eigenbases of $\sx,\sy,\sz$ are pairwise mutually unbiased. Interpret: a state from one basis gives completely random outcomes when measured in another.
 
   \exercise{2} Let $B=\{(1,0),(1,1)\}\subset\R^2$. Find the dual basis $\{v_1^*,v_2^*\}$ as row vectors (so that $v_i^*(v_j)=\delta_{ij}$) and use it to compute the coordinates of $(3,5)$ in $B$.
 

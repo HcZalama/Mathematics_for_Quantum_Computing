@@ -3,23 +3,18 @@
 %======================================================================
 
 \begin{objectives}
-  You will compute adjoints and recognise Hermitian and unitary operators; find
-  eigenvalues and eigenvectors; diagonalise Hermitian and unitary operators with the
-  spectral theorem; use projectors; and apply functions, such as the exponential,
-  to operators.
+  You will compute adjoints and recognise Hermitian and unitary operators; find eigenvalues and eigenvectors; diagonalise Hermitian and unitary operators with the spectral theorem; use projectors; and apply functions, such as the exponential, to operators.
 \end{objectives}
 
-Operators are the active ingredients of quantum mechanics. Each quantity that we
-can measure will be a Hermitian operator, each reversible change of a quantum
-system will be a unitary one, and in both cases the interesting information is
-carried by eigenvalues and eigenvectors. An \term{operator} on $\Hil$ is just a linear map $A\in L(\Hil)$; in an ONB
-it is a square matrix. From now on $\Hil$ is a finite-dimensional Hilbert space.
+\begin{recall}
+  From Section~\ref{sec:hilbert}: inner products, norms, orthonormal bases, Dirac notation and the completeness relation $\sum_i\ket{e_i}\!\bra{e_i}=\Id$. From Section~\ref{sec:vector-spaces}: matrices of linear maps, the conjugate transpose $M^\dagger$, the trace and the determinant, and the Pauli matrices.
+\end{recall}
+
+Operators are the active ingredients of quantum mechanics. Each quantity that we can measure will be a Hermitian operator, each reversible change of a quantum system will be a unitary one, and in both cases the interesting information is carried by eigenvalues and eigenvectors. An \term{operator} on $\Hil$ is just a linear map $A\in L(\Hil)$; in an ONB it is a square matrix. From now on $\Hil$ is a finite-dimensional Hilbert space.
 
 \subsection{The adjoint}
 
-In Section~\ref{sec:vector-spaces} we defined the adjoint of a matrix by a recipe,
-``transpose and conjugate''. A recipe tells us how to compute but not what the
-object is. The inner product gives a recipe-free definition.
+In Section~\ref{sec:vector-spaces} we defined the adjoint of a matrix by a recipe, ``transpose and conjugate''. A recipe tells us how to compute but not what the object is. The inner product gives a recipe-free definition.
 
 \begin{definition}[Adjoint]\label{def:adjoint}
   The \term{adjoint} of $A\in L(\Hil)$ is the unique operator $A^\dagger\in L(\Hil)$ such that
@@ -28,14 +23,18 @@ object is. The inner product gives a recipe-free definition.
   \]
 \end{definition}
 
-In words: an operator may jump to the other side of the bracket, but it must put on its dagger.
-Uniqueness is easy (if $B$ and $B'$ both work then $\langle(B-B')\varphi,\psi\rangle=0$ for all $\psi$, so $(B-B')\varphi=0$), and existence follows from the next theorem, which also recovers the recipe.
+In words: an operator may jump to the other side of the bracket, but it must put on its dagger. Uniqueness is easy (if $B$ and $B'$ both work then $\langle(B-B')\varphi,\psi\rangle=0$ for all $\psi$, so $(B-B')\varphi=0$), and existence follows from the next theorem, which also recovers the recipe.
 
 \begin{theorem}[Recovering the recipe]\label{thm:adjmatrix}
   Let $\{\ket{e_i}\}$ be an \emph{orthonormal} basis and $A_{ij}=\bra{e_i}A\ket{e_j}$. Then $(A^\dagger)_{ij}=\overline{A_{ji}}$.
 \end{theorem}
 \begin{proof}
-  By definition, $(A^\dagger)_{ij}=\bra{e_i}A^\dagger\ket{e_j}=\overline{\braket{A^\dagger e_j}{e_i}}=\overline{\braket{e_j}{Ae_i}}=\overline{A_{ji}}$.
+  \begin{steps}
+    \item \emph{Definition of the matrix element.} $(A^\dagger)_{ij}=\bra{e_i}A^\dagger\ket{e_j}$.
+    \item \emph{Conjugate symmetry.} $=\overline{\braket{A^\dagger e_j}{e_i}}$.
+    \item \emph{Definition of the adjoint.} $=\overline{\braket{e_j}{Ae_i}}$.
+    \item \emph{Matrix element again.} $=\overline{A_{ji}}$. \qedhere
+  \end{steps}
 \end{proof}
 
 \begin{pitfall}
@@ -46,24 +45,22 @@ Uniqueness is easy (if $B$ and $B'$ both work then $\langle(B-B')\varphi,\psi\ra
   Find the adjoint of $A=\begin{pmatrix}1&\ii\\2&3-\ii\end{pmatrix}$, and of $\ket0\!\bra1+\ii\ket1\!\bra1$.
 \end{example}
 \begin{solution}
-  Transpose and conjugate: the $(1,2)$ entry of $A^\dagger$ is $\overline{A_{21}}=2$, the $(2,1)$ entry is $\overline{A_{12}}=-\ii$, and the diagonal entries are conjugated:
-  \[
-    A^\dagger=\begin{pmatrix}1&2\\-\ii&3+\ii\end{pmatrix}.
-  \]
-  For the second operator use $(\ket\psi\!\bra\varphi)^\dagger=\ket\varphi\!\bra\psi$ and conjugate scalars: $(\ket0\!\bra1+\ii\ket1\!\bra1)^\dagger=\ket1\!\bra0-\ii\ket1\!\bra1$.
+  \begin{steps}
+    \item \emph{Off-diagonal entries.} The $(1,2)$ entry of $A^\dagger$ is $\overline{A_{21}}=2$ and the $(2,1)$ entry is $\overline{A_{12}}=-\ii$.
+    \item \emph{Diagonal entries} are conjugated: $1$ and $\overline{3-\ii}=3+\ii$.
+    \item \emph{Result.} $A^\dagger=\begin{pmatrix}1&2\\-\ii&3+\ii\end{pmatrix}$.
+    \item \emph{Dirac form.} Use $(\ket\psi\!\bra\varphi)^\dagger=\ket\varphi\!\bra\psi$ and conjugate scalars: $(\ket0\!\bra1+\ii\ket1\!\bra1)^\dagger=\ket1\!\bra0-\ii\ket1\!\bra1$.
+  \end{steps}
 \end{solution}
 
 The adjoint obeys a handful of rules, all easy consequences of the definition:
 \[
-  (A^\dagger)^\dagger=A,\quad (A+B)^\dagger=A^\dagger+B^\dagger,\quad (\lambda A)^\dagger=\bar\lambda A^\dagger,\quad
-  (AB)^\dagger=B^\dagger A^\dagger,\quad (A^{-1})^\dagger=(A^\dagger)^{-1}.
+  (A^\dagger)^\dagger=A,\quad (A+B)^\dagger=A^\dagger+B^\dagger,\quad (\lambda A)^\dagger=\bar\lambda A^\dagger,\quad (AB)^\dagger=B^\dagger A^\dagger,\quad (A^{-1})^\dagger=(A^\dagger)^{-1}.
 \]
-For instance, $\braket\varphi{AB\psi}=\braket{A^\dagger\varphi}{B\psi}=\braket{B^\dagger A^\dagger\varphi}{\psi}$ proves the third: \emph{the order flips}.
-In Dirac notation, $(A\ket\psi)^\dagger=\bra\psi A^\dagger$ and $\bra\varphi A\ket\psi=\overline{\bra\psi A^\dagger\ket\varphi}$.
+For instance, $\braket\varphi{AB\psi}=\braket{A^\dagger\varphi}{B\psi}=\braket{B^\dagger A^\dagger\varphi}{\psi}$ proves the fourth: \emph{the order flips}. In Dirac notation, $(A\ket\psi)^\dagger=\bra\psi A^\dagger$ and $\bra\varphi A\ket\psi=\overline{\bra\psi A^\dagger\ket\varphi}$.
 
 \begin{remark}
-  The definition makes sense far beyond matrices. On functions that vanish at infinity, with $\langle f,g\rangle=\int\overline f\,g\dd x$, integration by parts gives
-  $\langle f,g'\rangle=-\langle f',g\rangle$, so $(\frac{d}{dx})^\dagger=-\frac{d}{dx}$ and the momentum operator $\hat p=-\ii\hbar\frac{d}{dx}$ equals its own adjoint, with no matrix in sight.
+  The definition makes sense far beyond matrices. On functions that vanish at infinity, with $\langle f,g\rangle=\int\overline f\,g\dd x$, integration by parts gives $\langle f,g'\rangle=-\langle f',g\rangle$, so $(\frac{d}{dx})^\dagger=-\frac{d}{dx}$ and the momentum operator $\hat p=-\ii\hbar\frac{d}{dx}$ equals its own adjoint, with no matrix in sight.
 \end{remark}
 
 \subsection{Hermitian and unitary operators}
@@ -74,48 +71,58 @@ The adjoint singles out the two families of operators that quantum mechanics is 
   An operator $A$ is \term{Hermitian} (or self-adjoint) if $A^\dagger=A$, and \term{unitary} if $U^\dagger U=UU^\dagger=\Id$.
 \end{definition}
 
-A Hermitian operator is one that moves freely across the bracket, $\braket{\varphi}{A\psi}=\braket{A\varphi}{\psi}$. It follows that its \term{expectation value}
-$\bra\psi A\ket\psi$ is real, since it equals its own conjugate: $\overline{\bra\psi A\ket\psi}=\bra\psi A^\dagger\ket\psi=\bra\psi A\ket\psi$. Real numbers are what an
-instrument displays, so Hermitian operators will be the observables. A unitary operator preserves every inner product,
-$\braket{U\varphi}{U\psi}=\braket\varphi{U^\dagger U\psi}=\braket\varphi\psi$, and in particular every norm: it maps states to states, reversibly, as $U^{-1}=U^\dagger$.
-Unitary operators will be the quantum gates, and the next sections make this precise.
+A Hermitian operator is one that moves freely across the bracket, $\braket{\varphi}{A\psi}=\braket{A\varphi}{\psi}$. It follows that its \term{expectation value} $\bra\psi A\ket\psi$ is real, since it equals its own conjugate: $\overline{\bra\psi A\ket\psi}=\bra\psi A^\dagger\ket\psi=\bra\psi A\ket\psi$. Real numbers are what an instrument displays, so Hermitian operators will be the observables.
+A unitary operator preserves every inner product, $\braket{U\varphi}{U\psi}=\braket\varphi{U^\dagger U\psi}=\braket\varphi\psi$, and in particular every norm: it maps states to states, reversibly, as $U^{-1}=U^\dagger$. Unitary operators will be the quantum gates, and the next chapter makes this precise.
 
 \begin{example}\label{ex:classify}
   Classify as Hermitian and/or unitary: $\sy$, $\ \tfrac1{\sqrt2}\begin{pmatrix}1&1\\-1&1\end{pmatrix}$, $\ \diag(1,\ii)$, $\ \begin{pmatrix}2&\ii\\-\ii&3\end{pmatrix}$.
 \end{example}
 \begin{solution}
-  $\sy$ is both: it equals its adjoint and squares to $\Id$ (Proposition~\ref{prop:pauli}).
-
-  $U=\tfrac1{\sqrt2}\begin{pmatrix}1&1\\-1&1\end{pmatrix}$ has $U^\dagger=\tfrac1{\sqrt2}\begin{pmatrix}1&-1\\1&1\end{pmatrix}$ and $U^\dagger U=\tfrac12\begin{pmatrix}2&0\\0&2\end{pmatrix}=\Id$, so it is unitary (a rotation by $-45^\circ$).
-  It is not Hermitian, as $U^\dagger\neq U$.
-
-  $\diag(1,\ii)$ is unitary, since its adjoint is $\diag(1,-\ii)$ and the product with it is $\Id$, but not Hermitian.
-
-  $M=\begin{pmatrix}2&\ii\\-\ii&3\end{pmatrix}$ is Hermitian, as $M^\dagger=M$. It is not unitary: $M^\dagger M=M^2=\begin{pmatrix}5&5\ii\\-5\ii&10\end{pmatrix}\neq\Id$.
+  \begin{steps}
+    \item \emph{$\sy$} is both: it equals its adjoint and squares to $\Id$ (Proposition~\ref{prop:pauli}).
+    \item \emph{$U=\tfrac1{\sqrt2}\begin{pmatrix}1&1\\-1&1\end{pmatrix}$:} $U^\dagger=\tfrac1{\sqrt2}\begin{pmatrix}1&-1\\1&1\end{pmatrix}$ and $U^\dagger U=\tfrac12\begin{pmatrix}2&0\\0&2\end{pmatrix}=\Id$, so it is unitary (a rotation by $-45^\circ$). It is not Hermitian, as $U^\dagger\neq U$.
+    \item \emph{$\diag(1,\ii)$} is unitary, since its adjoint is $\diag(1,-\ii)$ and the product with it is $\Id$, but not Hermitian.
+    \item \emph{$M=\begin{pmatrix}2&\ii\\-\ii&3\end{pmatrix}$} is Hermitian, as $M^\dagger=M$. It is not unitary: $M^\dagger M=M^2=\begin{pmatrix}5&5\ii\\-5\ii&10\end{pmatrix}\neq\Id$.
+  \end{steps}
 \end{solution}
 
 \subsection{Eigenvalues and eigenvectors}
 
 \begin{definition}[Eigenvalue and eigenvector]\label{def:eigen}
-  Let $A\in L(\Hil)$. A non-zero vector $\ket v$ is an \term{eigenvector} of $A$ with \term{eigenvalue} $\lambda\in\C$ if $A\ket v=\lambda\ket v$, equivalently $(A-\lambda\Id)\ket v=0$.
-  The set of eigenvalues is the \term{spectrum} $\spec(A)$. The eigenvalues are the roots of the \term{characteristic polynomial} $p(\lambda)=\det(A-\lambda\Id)$.
+  Let $A\in L(\Hil)$. A non-zero vector $\ket v$ is an \term{eigenvector} of $A$ with \term{eigenvalue} $\lambda\in\C$ if $A\ket v=\lambda\ket v$, equivalently $(A-\lambda\Id)\ket v=0$. The set of eigenvalues is the \term{spectrum} $\spec(A)$. The eigenvalues are the roots of the \term{characteristic polynomial} $p(\lambda)=\det(A-\lambda\Id)$.
 \end{definition}
 
-An eigenvector is a direction that $A$ does not turn: it only rescales it by $\lambda$. The reason for working over $\C$ is that every non-constant polynomial has a root there, so every operator has at least one eigenvalue; over $\R$ this fails.
+An eigenvector is a direction that $A$ does not turn: it only rescales it by $\lambda$. The reason for working over $\C$ is that every non-constant polynomial has a root there, so every operator has at least one eigenvalue; over $\R$ this fails. The recipe to find eigenvalues and eigenvectors never changes:
+\begin{steps}
+  \item compute $p(\lambda)=\det(A-\lambda\Id)$ and solve $p(\lambda)=0$;
+  \item for each root $\lambda$, solve the linear system $(A-\lambda\Id)v=0$;
+  \item normalise the solutions if an orthonormal basis is wanted.
+\end{steps}
 
 \begin{example}\label{ex:eigen}
   Find the eigenvalues and eigenvectors of $\sx$, of $A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$, and of the rotation $R_\theta=\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{pmatrix}$ for $\theta\notin\pi\Z$.
 \end{example}
 \begin{solution}
-  For $\sx$: $p(\lambda)=\det\begin{pmatrix}-\lambda&1\\1&-\lambda\end{pmatrix}=\lambda^2-1$, so $\lambda=\pm1$. Solving $\sx\ket v=\pm\ket v$ gives
-  $\ket v=(1,\pm1)$, that is, $\ket\pm=\frac{1}{\sqrt2}(\ket0\pm\ket1)$. Thus $\sx\ket\pm=\pm\ket\pm$.
+  \begin{steps}
+    \item \emph{$\sx$: eigenvalues.} $p(\lambda)=\det\begin{pmatrix}-\lambda&1\\1&-\lambda\end{pmatrix}=\lambda^2-1$, so $\lambda=\pm1$.
+    \item \emph{$\sx$: eigenvectors.} Solving $\sx\ket v=\pm\ket v$ gives $\ket v=(1,\pm1)$, that is $\ket\pm=\frac1{\sqrt2}(\ket0\pm\ket1)$. Thus $\sx\ket\pm=\pm\ket\pm$.
+    \item \emph{$A$: eigenvalues.} $p(\lambda)=(2-\lambda)^2-1=(\lambda-1)(\lambda-3)$.
+    \item \emph{$A$: eigenvectors.} For $\lambda=3$, $(A-3\Id)v=0$ gives $v_1=v_2$, so $v=(1,1)$, that is $\ket+$. For $\lambda=1$ we get $v=(1,-1)$, that is $\ket-$. (Indeed $A=2\Id+\sx$.)
+    \item \emph{$R_\theta$: eigenvalues.} $p(\lambda)=\lambda^2-2\cos\theta\,\lambda+1$ with roots $\lambda=\cos\theta\pm\ii\sin\theta=e^{\pm\ii\theta}$, real only if $\theta\in\pi\Z$.
+    \item \emph{$R_\theta$: an eigenvector.} For $\lambda=e^{\ii\theta}$ take $(1,-\ii)$: $R_\theta(1,-\ii)=(\cos\theta+\ii\sin\theta,\ \sin\theta-\ii\cos\theta)=e^{\ii\theta}(1,-\ii)$. A rotation of the plane has no real eigenvector, which is natural, and has two complex ones.
+  \end{steps}
+\end{solution}
 
-  For $A$: $p(\lambda)=(2-\lambda)^2-1=(\lambda-1)(\lambda-3)$. For $\lambda=3$, $(A-3\Id)v=0$ gives $v_1=v_2$, so $v=(1,1)$, that is $\ket+$;
-  for $\lambda=1$ we get $v=(1,-1)$, that is $\ket-$. (Indeed $A=2\Id+\sx$.)
-
-  For $R_\theta$: $p(\lambda)=\lambda^2-2\cos\theta\,\lambda+1$ with roots $\lambda=\cos\theta\pm\ii\sin\theta=e^{\pm\ii\theta}$, which are real only if $\theta\in\pi\Z$.
-  For $\lambda=e^{\ii\theta}$ the vector $(1,-\ii)$ works: $R_\theta(1,-\ii)=(\cos\theta+\ii\sin\theta,\ \sin\theta-\ii\cos\theta)=e^{\ii\theta}(1,-\ii)$.
-  A rotation of the plane has no real eigenvector, which is natural, and has two complex ones.
+\begin{example}[Eigen-decomposition of $\sy$]\label{ex:eigen-y}
+  Find the eigenvalues and an orthonormal eigenbasis of $\sy$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Characteristic polynomial.} $p(\lambda)=\det\begin{pmatrix}-\lambda&-\ii\\\ii&-\lambda\end{pmatrix}=\lambda^2-(-\ii)(\ii)=\lambda^2-1$, so $\lambda=\pm1$.
+    \item \emph{$\lambda=+1$.} $(\sy-\Id)v=0$: $-v_1-\ii v_2=0$, so $v_1=-\ii v_2$; take $v=(1,\ii)$ (indeed $-\ii\cdot\ii=1$). Normalised: $\ket{+\ii}=\frac1{\sqrt2}(\ket0+\ii\ket1)$.
+    \item \emph{$\lambda=-1$.} $(\sy+\Id)v=0$: $v_1=\ii v_2$; take $v=(1,-\ii)$, normalised $\ket{-\ii}=\frac1{\sqrt2}(\ket0-\ii\ket1)$.
+    \item \emph{Orthogonality.} $\braket{+\ii}{-\ii}=\tfrac12(1+(-\ii)(-\ii))=\tfrac12(1-1)=0$, as Theorem~\ref{thm:spectrum} will promise for a Hermitian operator.
+  \end{steps}
 \end{solution}
 
 The two families of the previous subsection have a very constrained spectrum, and this is what makes them physically meaningful.
@@ -127,13 +134,25 @@ The two families of the previous subsection have a very constrained spectrum, an
   \end{enumerate}
 \end{theorem}
 \begin{proof}
-  (a) Let $H\ket v=\lambda\ket v$ with $\norm v=1$. Then $\lambda=\bra vH\ket v$, which is real because $H$ is Hermitian. If also $H\ket w=\mu\ket w$ with $\mu\neq\lambda$, then
-  $\lambda\braket vw=\braket{Hv}{w}=\braket v{Hw}=\mu\braket vw$ (using $\lambda$ real), so $(\lambda-\mu)\braket vw=0$ and $\braket vw=0$.
-
-  (b) Let $U\ket v=\lambda\ket v$ with $\norm v=1$. Since $U$ preserves norms, $1=\braket{Uv}{Uv}=\abs\lambda^2\braket vv=\abs\lambda^2$.
+  \begin{steps}
+    \item (a) \emph{Real eigenvalues.} Let $H\ket v=\lambda\ket v$ with $\norm v=1$. Then $\lambda=\bra vH\ket v$, which is real because $H$ is Hermitian.
+    \item (a) \emph{Orthogonality.} If also $H\ket w=\mu\ket w$ with $\mu\neq\lambda$, then $\lambda\braket vw=\braket{Hv}{w}=\braket v{Hw}=\mu\braket vw$ (using $\lambda$ real). So $(\lambda-\mu)\braket vw=0$ and $\braket vw=0$.
+    \item (b) Let $U\ket v=\lambda\ket v$ with $\norm v=1$. Since $U$ preserves norms, $1=\braket{Uv}{Uv}=\abs\lambda^2\braket vv=\abs\lambda^2$. \qedhere
+  \end{steps}
 \end{proof}
 
 In words: measurement outcomes, which are eigenvalues of Hermitian operators, are real, and distinct outcomes correspond to orthogonal states, which are perfectly distinguishable. Unitary evolution cannot make eigenvalues grow or decay: it can only rotate their phase.
+
+\begin{example}[A unitary with phase eigenvalues]\label{ex:unitary-eig}
+  Find the eigenvalues and eigenvectors of $S=\diag(1,\ii)$ and of $R_{\pi/2}=\begin{pmatrix}0&-1\\1&0\end{pmatrix}$, and check Theorem~\ref{thm:spectrum}(b).
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{$S$.} It is diagonal, so the eigenvalues are $1$ and $\ii=e^{\ii\pi/2}$, with eigenvectors $\ket0,\ket1$.
+    \item \emph{$R_{\pi/2}$.} By Example~\ref{ex:eigen} with $\theta=\pi/2$, the eigenvalues are $e^{\pm\ii\pi/2}=\pm\ii$, with eigenvectors $(1,\mp\ii)$.
+    \item \emph{Check.} All four eigenvalues have modulus $1$. Both operators are unitary: they rotate, one the phase of $\ket1$, the other the plane by a quarter turn.
+  \end{steps}
+\end{solution}
 
 \subsection{The spectral theorem}
 
@@ -142,16 +161,19 @@ We saw in Example~\ref{ex:changebasis} that a good choice of basis can make a ma
 \begin{theorem}[Spectral theorem]\label{thm:spectral}
   Let $H\in L(\Hil)$ be Hermitian. Then $\Hil$ has an orthonormal basis $\{\ket{v_1},\dots,\ket{v_n}\}$ of eigenvectors of $H$, with real eigenvalues $\lambda_1,\dots,\lambda_n$. In matrix form, there is a unitary $U$ with
   \[
-    U^\dagger HU=D=\diag(\lambda_1,\dots,\lambda_n),\qquad
-    H=\sum_{i=1}^n\lambda_i\ket{v_i}\!\bra{v_i}.
+    U^\dagger HU=D=\diag(\lambda_1,\dots,\lambda_n),\qquad H=\sum_{i=1}^n\lambda_i\ket{v_i}\!\bra{v_i}.
   \]
   The same holds for every unitary operator, with eigenvalues $e^{\ii\theta_i}$. More generally it holds for every \emph{normal} operator ($AA^\dagger=A^\dagger A$).
 \end{theorem}
 \begin{proof}
-  We prove it for a Hermitian $H$ by induction on $n=\dim\Hil$. For $n=1$ there is nothing to prove. For $n>1$, the characteristic polynomial has a root $\lambda_1$ over $\C$, so $H$ has a unit eigenvector $\ket{v_1}$.
-  Let $W=\{\ket w:\braket{v_1}w=0\}$ be the orthogonal complement of $v_1$. It is invariant under $H$: if $\ket w\in W$ then $\braket{v_1}{Hw}=\braket{Hv_1}{w}=\lambda_1\braket{v_1}w=0$.
-  The restriction of $H$ to $W$ is Hermitian and $\dim W=n-1$, so by induction $W$ has an ONB of eigenvectors of $H$. Adding $\ket{v_1}$ gives an ONB of $\Hil$.
-  The matrix $U$ whose columns are the $\ket{v_i}$ is unitary, and $U^\dagger HU=D$ because $H\ket{v_j}=\lambda_j\ket{v_j}$. The formula $H=\sum_i\lambda_i\ket{v_i}\!\bra{v_i}$ is the matrix form $D$ read back through the completeness relation.
+  We prove it for a Hermitian $H$ by induction on $n=\dim\Hil$. For $n=1$ there is nothing to prove.
+  \begin{steps}
+    \item \emph{An eigenvector exists.} For $n>1$ the characteristic polynomial has a root $\lambda_1$ over $\C$, so $H$ has a unit eigenvector $\ket{v_1}$.
+    \item \emph{Its orthogonal complement is invariant.} Let $W=\{\ket w:\braket{v_1}w=0\}$. If $\ket w\in W$ then $\braket{v_1}{Hw}=\braket{Hv_1}{w}=\lambda_1\braket{v_1}w=0$, so $H\ket w\in W$.
+    \item \emph{Induct.} The restriction of $H$ to $W$ is Hermitian and $\dim W=n-1$, so by induction $W$ has an ONB of eigenvectors of $H$.
+    \item \emph{Assemble.} Adding $\ket{v_1}$ gives an ONB of $\Hil$. The matrix $U$ whose columns are the $\ket{v_i}$ is unitary, and $U^\dagger HU=D$ because $H\ket{v_j}=\lambda_j\ket{v_j}$.
+    \item \emph{The decomposition.} $H=\sum_i\lambda_i\ket{v_i}\!\bra{v_i}$ is the matrix form $D$ read back through the completeness relation. \qedhere
+  \end{steps}
 \end{proof}
 
 The formula $H=\sum_i\lambda_i\ket{v_i}\!\bra{v_i}$ is called the \term{spectral decomposition} of $H$. It writes $H$ as a combination of rank-one pieces, one for each direction in which $H$ acts by a number. In the right orthonormal basis, a Hermitian operator just rescales each axis independently (Figure~\ref{fig:ellipse}), a unitary one just rotates each by a phase, and a coupled problem of dimension $n$ falls apart into $n$ independent scalar problems.
@@ -173,8 +195,7 @@ The formula $H=\sum_i\lambda_i\ket{v_i}\!\bra{v_i}$ is called the \term{spectral
     \node[ink,font=\small,fill=white,inner sep=1.5pt,anchor=north west] at (0.9,-0.25) {unit circle};
     \node[figacc,font=\small,fill=white,inner sep=1.5pt,anchor=east] at (-0.2,3.0) {image of the circle under $A$};
   \end{tikzpicture}
-  \caption{The operator $A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$ of Example~\ref{ex:eigen} maps the unit circle to an ellipse. Its axes point along the orthonormal
-  eigenvectors $\ket+$ and $\ket-$, and its semi-axes are the eigenvalues, $3$ and $1$.}
+  \caption{The operator $A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$ of Example~\ref{ex:eigen} maps the unit circle to an ellipse. Its axes point along the orthonormal eigenvectors $\ket+$ and $\ket-$, and its semi-axes are the eigenvalues, $3$ and $1$.}
   \label{fig:ellipse}
 \end{figure}
 
@@ -182,15 +203,18 @@ The formula $H=\sum_i\lambda_i\ket{v_i}\!\bra{v_i}$ is called the \term{spectral
   Diagonalise $A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$, and show that $\sx$ is, in the basis $\{\ket+,\ket-\}$, just the matrix $\sz$.
 \end{example}
 \begin{solution}
-  By Example~\ref{ex:eigen}, the orthonormal eigenvectors are $\ket+$ (eigenvalue $3$) and $\ket-$ (eigenvalue $1$). Taking them as columns,
-  $U=\tfrac1{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix}$, and
-  \[
-    U^\dagger AU=\begin{pmatrix}3&0\\0&1\end{pmatrix},\qquad A=3\ket+\!\bra++1\ket-\!\bra- .
-  \]
-  Likewise $\sx\ket\pm=\pm\ket\pm$, so in the basis $\{\ket+,\ket-\}$ the matrix of $\sx$ is $\diag(1,-1)=\sz$. This explains the identity $H\sx H=\sz$ of Example~\ref{ex:hadamard}: the matrix $U$ above is the Hadamard
-  gate, which changes from the computational basis to $\{\ket\pm\}$, and
-  $\sx=H\sz H$. The Pauli matrix $\sx$ that swaps $\ket0$ and $\ket1$ is, along $\ket\pm$, just ``multiply by $\pm1$''.
+  \begin{steps}
+    \item \emph{Eigenvectors.} By Example~\ref{ex:eigen}, the orthonormal eigenvectors are $\ket+$ (eigenvalue $3$) and $\ket-$ (eigenvalue $1$).
+    \item \emph{The unitary.} Taking them as columns, $U=\tfrac1{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix}$.
+    \item \emph{Diagonalise.} $U^\dagger AU=\begin{pmatrix}3&0\\0&1\end{pmatrix}$, so $A=3\ket+\!\bra++1\ket-\!\bra-$.
+    \item \emph{The Pauli matrix.} Likewise $\sx\ket\pm=\pm\ket\pm$, so in the basis $\{\ket+,\ket-\}$ the matrix of $\sx$ is $\diag(1,-1)=\sz$.
+    \item \emph{Interpretation.} This explains the identity $H\sx H=\sz$ of Example~\ref{ex:hadamard}: the matrix $U$ above is the Hadamard gate, which changes from the computational basis to $\{\ket\pm\}$, and $\sx=H\sz H$. The Pauli matrix $\sx$ that swaps $\ket0$ and $\ket1$ is, along $\ket\pm$, just ``multiply by $\pm1$''.
+  \end{steps}
 \end{solution}
+
+\begin{lookahead}
+  The spectral theorem is the mathematical content of a measurement. The eigenvalues of an observable are its possible outcomes, the eigenvectors are the states in which the outcome is certain, and the squared overlaps of a state with the eigenvectors will be the outcome probabilities (Postulate~3). The theorem also tells us that two observables that commute can be measured together, since they share an eigenbasis (Exercise~\ref{ex:commuting-basis}).
+\end{lookahead}
 
 \subsection{Projectors}
 
@@ -200,8 +224,7 @@ Spectral decompositions are made of pieces $\ket v\!\bra v$ which are orthogonal
   An operator $P$ is an \term{orthogonal projector} if $P^2=P$ and $P^\dagger=P$.
 \end{definition}
 
-Let $W=\Ran P$. Then every vector splits uniquely as $\ket\psi=P\ket\psi+(\Id-P)\ket\psi$ with $P\ket\psi\in W$ and $(\Id-P)\ket\psi\in W^\perp$, where
-$W^\perp=\{\ket v:\braket wv=0\ \forall\,w\in W\}$ is the \term{orthogonal complement}, so that $\Hil=W\oplus W^\perp$ (Figure~\ref{fig:proj}). In summary:
+Let $W=\Ran P$. Then every vector splits uniquely as $\ket\psi=P\ket\psi+(\Id-P)\ket\psi$ with $P\ket\psi\in W$ and $(\Id-P)\ket\psi\in W^\perp$, where $W^\perp=\{\ket v:\braket wv=0\ \forall\,w\in W\}$ is the \term{orthogonal complement}, so that $\Hil=W\oplus W^\perp$ (Figure~\ref{fig:proj}). In summary:
 
 \begin{proposition}\label{prop:proj}
   Let $P$ be an orthogonal projector with range $W$.
@@ -213,15 +236,13 @@ $W^\perp=\{\ket v:\braket wv=0\ \forall\,w\in W\}$ is the \term{orthogonal compl
   \end{enumerate}
 \end{proposition}
 \begin{proof}
-  First two facts. $P$ fixes every vector of $W$: if $\ket w=P\ket u$ then $P\ket w=P^2\ket u=\ket w$. And $\Ker P=W^\perp$: if $P\ket v=0$ and $\ket w=P\ket u\in W$, then $\braket wv=\braket{Pu}v=\braket u{Pv}=0$; conversely, if $\ket v\in W^\perp$ then $\norm{Pv}^2=\braket{Pv}{Pv}=\braket v{P^2v}\!=\!\braket v{Pv}=0$ because $P\ket v\in W$.
-
-  (a) $(\Id-P)^2=\Id-2P+P^2=\Id-P$ and $(\Id-P)^\dagger=\Id-P$, so $\Id-P$ is an orthogonal projector. Its range is $\Ker P=W^\perp$: every $(\Id-P)\ket u$ is killed by $P$, and every $\ket v\in\Ker P$ equals $(\Id-P)\ket v$.
-
-  (b) If $P\ket v=\lambda\ket v$, then $\lambda\ket v=P^2\ket v=\lambda^2\ket v$, so $\lambda\in\{0,1\}$; the eigenvectors with $\lambda=1$ are the vectors fixed by $P$, which fill $W$, and those with $\lambda=0$ fill $\Ker P=W^\perp$. The trace is the sum of eigenvalues, that is, $\dim W$.
-
-  (c) Let $Q=\sum_i\ket{e_i}\!\bra{e_i}$. For $\ket w\in W$ the expansion of Theorem~\ref{thm:parseval} gives $Q\ket w=\ket w$, and $Q\ket v=0$ for $\ket v\in W^\perp$; thus $Q$ and $P$ agree on $W$ and on $W^\perp$, hence everywhere.
-
-  (d) Since $\psi-P\psi\in W^\perp$ and $P\psi-w\in W$ are orthogonal, Pythagoras gives $\norm{\psi-w}^2=\norm{\psi-P\psi}^2+\norm{P\psi-w}^2\ge\norm{\psi-P\psi}^2$.
+  First two facts. $P$ fixes every vector of $W$: if $\ket w=P\ket u$ then $P\ket w=P^2\ket u=\ket w$. And $\Ker P=W^\perp$: if $P\ket v=0$ and $\ket w=P\ket u\in W$, then $\braket wv=\braket{Pu}v=\braket u{Pv}=0$; conversely, if $\ket v\in W^\perp$ then $\norm{Pv}^2=\braket{Pv}{Pv}=\braket v{P^2v}=\braket v{Pv}=0$ because $P\ket v\in W$.
+  \begin{steps}
+    \item (a) $(\Id-P)^2=\Id-2P+P^2=\Id-P$ and $(\Id-P)^\dagger=\Id-P$, so $\Id-P$ is an orthogonal projector. Its range is $\Ker P=W^\perp$: every $(\Id-P)\ket u$ is killed by $P$, and every $\ket v\in\Ker P$ equals $(\Id-P)\ket v$.
+    \item (b) If $P\ket v=\lambda\ket v$, then $\lambda\ket v=P^2\ket v=\lambda^2\ket v$, so $\lambda\in\{0,1\}$; the eigenvectors with $\lambda=1$ are the vectors fixed by $P$, which fill $W$, and those with $\lambda=0$ fill $\Ker P=W^\perp$. The trace is the sum of eigenvalues, that is, $\dim W$.
+    \item (c) Let $Q=\sum_i\ket{e_i}\!\bra{e_i}$. For $\ket w\in W$ the expansion of Theorem~\ref{thm:parseval} gives $Q\ket w=\ket w$, and $Q\ket v=0$ for $\ket v\in W^\perp$; thus $Q$ and $P$ agree on $W$ and on $W^\perp$, hence everywhere.
+    \item (d) Since $\psi-P\psi\in W^\perp$ and $P\psi-w\in W$ are orthogonal, Pythagoras gives $\norm{\psi-w}^2=\norm{\psi-P\psi}^2+\norm{P\psi-w}^2\ge\norm{\psi-P\psi}^2$. \qedhere
+  \end{steps}
 \end{proof}
 
 \begin{figure}[htb]
@@ -234,8 +255,7 @@ $W^\perp=\{\ket v:\braket wv=0\ \forall\,w\in W\}$ is the \term{orthogonal compl
     \draw[very thick,ink,->] (0,0) -- (0,2.1) node[left] {$(\Id-P)\ket\psi$};
     \draw[dashed,ink!60] (3.4,0) -- (3.4,2.1) -- (0,2.1);
   \end{tikzpicture}
-  \caption{An orthogonal projector splits every vector into a part in $W$ and a part in $W^\perp$.
-  $P\ket\psi$ is the point of $W$ closest to $\ket\psi$.}
+  \caption{An orthogonal projector splits every vector into a part in $W$ and a part in $W^\perp$. $P\ket\psi$ is the point of $W$ closest to $\ket\psi$.}
   \label{fig:proj}
 \end{figure}
 
@@ -246,33 +266,44 @@ By part (c), every projector is a sum of the rank-one pieces of a spectral decom
 where $P_\lambda$ is the projector onto the eigenspace of $\lambda$. \emph{Every observable is a weighted sum of yes/no questions.}
 
 \begin{xref}
-  This is exactly how measurement will work in Postulate~3 (Section~\ref{sec:measurement}): measuring the observable $H=\sum_\lambda\lambda P_\lambda$ in the state $\ket\psi$ gives the outcome $\lambda$
-  with probability $\bra\psi P_\lambda\ket\psi=\norm{P_\lambda\psi}^2$, and afterwards the state is $P_\lambda\ket\psi/\norm{P_\lambda\psi}$.
+  This is exactly how measurement will work in Postulate~3 (Section~\ref{sec:measurement}): measuring the observable $H=\sum_\lambda\lambda P_\lambda$ in the state $\ket\psi$ gives the outcome $\lambda$ with probability $\bra\psi P_\lambda\ket\psi=\norm{P_\lambda\psi}^2$, and afterwards the state is $P_\lambda\ket\psi/\norm{P_\lambda\psi}$.
 \end{xref}
+
+\begin{example}[A rank-one projector in the plane]\label{ex:proj-line}
+  Find the matrix of the orthogonal projector onto the line spanned by $(1,2)$ in $\R^2$, and project $v=(3,1)$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Normalise the direction.} $e=\frac1{\sqrt5}(1,2)$.
+    \item \emph{The projector} (Proposition~\ref{prop:proj}(c)): $P=\ket e\!\bra e=\tfrac15\begin{pmatrix}1&2\\2&4\end{pmatrix}$.
+    \item \emph{Check.} $P^2=\tfrac1{25}\begin{pmatrix}5&10\\10&20\end{pmatrix}=P$ and $\Tr P=1$.
+    \item \emph{Project.} $Pv=\tfrac15\begin{pmatrix}1&2\\2&4\end{pmatrix}\begin{pmatrix}3\\1\end{pmatrix}=\tfrac15\begin{pmatrix}5\\10\end{pmatrix}=(1,2)$.
+    \item \emph{The remainder} $(\Id-P)v=(2,-1)$ is orthogonal to $(1,2)$.
+  \end{steps}
+\end{solution}
 
 \begin{example}\label{ex:proj-plane}
   Project $v=(1,2,3)$ orthogonally onto the plane $W=\{x+y+z=0\}\subset\R^3$.
 \end{example}
 \begin{solution}
-  The orthogonal complement is the line spanned by the normal $n=\tfrac1{\sqrt3}(1,1,1)$, so the projector onto $W$ is $P=\Id-\ket n\!\bra n$. The component along $n$ is
-  $\langle n,v\rangle n=\tfrac6{\sqrt3}\cdot\tfrac1{\sqrt3}(1,1,1)=(2,2,2)$, hence
-  \[
-    Pv=(1,2,3)-(2,2,2)=(-1,0,1),
-  \]
-  which indeed satisfies $x+y+z=0$.
+  \begin{steps}
+    \item \emph{The complement.} $W^\perp$ is the line spanned by the normal $n=\tfrac1{\sqrt3}(1,1,1)$, so the projector onto $W$ is $P=\Id-\ket n\!\bra n$.
+    \item \emph{The component along $n$:} $\langle n,v\rangle n=\tfrac6{\sqrt3}\cdot\tfrac1{\sqrt3}(1,1,1)=(2,2,2)$.
+    \item \emph{Subtract.} $Pv=(1,2,3)-(2,2,2)=(-1,0,1)$.
+    \item \emph{Check.} It satisfies $x+y+z=0$.
+  \end{steps}
 \end{solution}
 
 \begin{example}\label{ex:measure-preview}
   Let $\ket\psi=\frac1{\sqrt3}\ket0+\sqrt{\tfrac23}\ket1$. Write the spectral decomposition of $\sx$ in terms of projectors and compute $\bra\psi P_\pm\ket\psi$ for $P_\pm=\ket\pm\!\bra\pm$.
 \end{example}
 \begin{solution}
-  From Example~\ref{ex:eigen}, $\sx=P_+-P_-$ with $P_\pm=\ket\pm\!\bra\pm=\tfrac12\begin{pmatrix}1&\pm1\\\pm1&1\end{pmatrix}$.
-  The overlaps are $\braket\pm\psi=\tfrac1{\sqrt2}\bigl(\tfrac1{\sqrt3}\pm\sqrt{\tfrac23}\bigr)=\tfrac{1\pm\sqrt2}{\sqrt6}$, so
-  \[
-    \bra\psi P_+\ket\psi=\frac{(1+\sqrt2)^2}{6}=\frac{3+2\sqrt2}{6}\approx0.971,\qquad
-    \bra\psi P_-\ket\psi=\frac{3-2\sqrt2}{6}\approx0.029 .
-  \]
-  They add up to $1$, as Parseval (and the completeness relation $P_++P_-=\Id$) demand.
+  \begin{steps}
+    \item \emph{Decomposition.} From Example~\ref{ex:eigen}, $\sx=P_+-P_-$ with $P_\pm=\ket\pm\!\bra\pm=\tfrac12\begin{pmatrix}1&\pm1\\\pm1&1\end{pmatrix}$.
+    \item \emph{Overlaps.} $\braket\pm\psi=\tfrac1{\sqrt2}\bigl(\tfrac1{\sqrt3}\pm\sqrt{\tfrac23}\bigr)=\tfrac{1\pm\sqrt2}{\sqrt6}$.
+    \item \emph{Squared moduli.} $\bra\psi P_+\ket\psi=\frac{(1+\sqrt2)^2}{6}=\frac{3+2\sqrt2}{6}\approx0.971$ and $\bra\psi P_-\ket\psi=\frac{3-2\sqrt2}{6}\approx0.029$.
+    \item \emph{Check.} They add up to $1$, as Parseval (and the completeness relation $P_++P_-=\Id$) demand.
+  \end{steps}
 \end{solution}
 
 \subsection{Functions of operators}
@@ -286,15 +317,17 @@ Once an operator is diagonal, applying a function to it is easy: apply the funct
   \]
 \end{definition}
 
-If $f(z)=\sum_nc_nz^n$ is a power series, this agrees with $\sum_nc_nA^n$, because $A^n=\sum_i\lambda_i^n\ket{v_i}\!\bra{v_i}$. In short: \emph{apply $f$ to the eigenvalues, keep the eigenvectors.} The operator $f(A)$ has the same eigenvectors as $A$, $(fg)(A)=f(A)g(A)$, and $f(A)$ is Hermitian when $f$ is real-valued on the spectrum.
-Two cases matter most. The first is the exponential of $\ii$ times a Hermitian operator.
+If $f(z)=\sum_nc_nz^n$ is a power series, this agrees with $\sum_nc_nA^n$, because $A^n=\sum_i\lambda_i^n\ket{v_i}\!\bra{v_i}$. In short: \emph{apply $f$ to the eigenvalues, keep the eigenvectors.} The operator $f(A)$ has the same eigenvectors as $A$, $(fg)(A)=f(A)g(A)$, and $f(A)$ is Hermitian when $f$ is real-valued on the spectrum. Two cases matter most. The first is the exponential of $\ii$ times a Hermitian operator.
 
 \begin{proposition}\label{prop:expunitary}
   If $K$ is Hermitian, then $e^{\ii K}$ is unitary. Conversely, every unitary $U$ can be written $U=e^{\ii K}$ with $K$ Hermitian.
 \end{proposition}
 \begin{proof}
-  Let $K=\sum_j\kappa_jP_j$ with $\kappa_j\in\R$. Then $e^{\ii K}=\sum_je^{\ii\kappa_j}P_j$ and $\bigl(e^{\ii K}\bigr)^\dagger e^{\ii K}=\sum_je^{-\ii\kappa_j}e^{\ii\kappa_j}P_j=\sum_jP_j=\Id$.
-  Conversely, if $U=\sum_je^{\ii\theta_j}P_j$ (Theorem~\ref{thm:spectrum}(b)), take $K=\sum_j\theta_jP_j$.
+  \begin{steps}
+    \item \emph{Diagonalise.} Let $K=\sum_j\kappa_jP_j$ with $\kappa_j\in\R$ and $P_j$ orthogonal projectors; then $e^{\ii K}=\sum_je^{\ii\kappa_j}P_j$.
+    \item \emph{Unitarity.} $\bigl(e^{\ii K}\bigr)^\dagger e^{\ii K}=\sum_je^{-\ii\kappa_j}e^{\ii\kappa_j}P_j=\sum_jP_j=\Id$.
+    \item \emph{The converse.} If $U=\sum_je^{\ii\theta_j}P_j$ (Theorem~\ref{thm:spectrum}(b)), take $K=\sum_j\theta_jP_j$. \qedhere
+  \end{steps}
 \end{proof}
 
 The second case is a projector, for which the spectrum is $\{0,1\}$: $f(P)=f(0)(\Id-P)+f(1)P$.
@@ -303,20 +336,25 @@ The second case is a projector, for which the spectrum is $\{0,1\}$: $f(P)=f(0)(
   (a) Compute $\sqrt A$ for $A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$. (b) Show that $e^{-\ii\theta\sx/2}=\cos\frac\theta2\,\Id-\ii\sin\frac\theta2\,\sx$.
 \end{example}
 \begin{solution}
-  (a) From Example~\ref{ex:diag}, $A=3P_++1P_-$ with $P_\pm=\tfrac12\begin{pmatrix}1&\pm1\\\pm1&1\end{pmatrix}$, so
-  \[
-    \sqrt A=\sqrt3\,P_++P_-=\frac12\begin{pmatrix}\sqrt3+1&\sqrt3-1\\\sqrt3-1&\sqrt3+1\end{pmatrix}.
-  \]
-  \emph{Check:} the diagonal entry of $(\sqrt A)^2$ is $\tfrac14\bigl((\sqrt3+1)^2+(\sqrt3-1)^2\bigr)=2$ and the off-diagonal one is $\tfrac24\cdot2=1$.
+  \begin{steps}
+    \item (a) \emph{Spectral decomposition.} From Example~\ref{ex:diag}, $A=3P_++1P_-$ with $P_\pm=\tfrac12\begin{pmatrix}1&\pm1\\\pm1&1\end{pmatrix}$.
+    \item (a) \emph{Apply $f(x)=\sqrt x$:} $\sqrt A=\sqrt3\,P_++P_-=\frac12\begin{pmatrix}\sqrt3+1&\sqrt3-1\\\sqrt3-1&\sqrt3+1\end{pmatrix}$.
+    \item (a) \emph{Check.} The diagonal entry of $(\sqrt A)^2$ is $\tfrac14\bigl((\sqrt3+1)^2+(\sqrt3-1)^2\bigr)=2$ and the off-diagonal one is $\tfrac24\cdot2=1$.
+    \item (b) \emph{Spectral decomposition of $\sx$:} $\sx=P_+-P_-$ and $P_++P_-=\Id$.
+    \item (b) \emph{Apply the exponential:} $e^{-\ii\theta\sx/2}=e^{-\ii\theta/2}P_++e^{\ii\theta/2}P_-=\cos\tfrac\theta2(P_++P_-)-\ii\sin\tfrac\theta2(P_+-P_-)=\cos\tfrac\theta2\,\Id-\ii\sin\tfrac\theta2\,\sx$.
+    \item (b) \emph{Meaning.} This is a unitary operator by Proposition~\ref{prop:expunitary}, the rotation of a qubit by an angle $\theta$ about the $x$-axis. The same computation with $\sz$ in place of $\sx$ gives $e^{-\ii\theta\sz/2}=\diag(e^{-\ii\theta/2},e^{\ii\theta/2})$. Curiously, for $\theta=2\pi$ it equals $-\Id$: a full turn gives a factor $-1$, a global phase.
+  \end{steps}
+\end{solution}
 
-  (b) Since $\sx=P_+-P_-$ and $P_++P_-=\Id$, we get
-  \[
-    e^{-\ii\theta\sx/2}=e^{-\ii\theta/2}P_++e^{\ii\theta/2}P_-
-    =\cos\tfrac\theta2(P_++P_-)-\ii\sin\tfrac\theta2(P_+-P_-)
-    =\cos\tfrac\theta2\,\Id-\ii\sin\tfrac\theta2\,\sx .
-  \]
-  This is a unitary operator by Proposition~\ref{prop:expunitary}, the rotation of a qubit by an angle $\theta$ about the $x$-axis. The same computation with $\sz$ in place of $\sx$ gives
-  $e^{-\ii\theta\sz/2}=\diag(e^{-\ii\theta/2},e^{\ii\theta/2})$. Curiously, for $\theta=2\pi$ it equals $-\Id$: a full turn gives a factor $-1$, a global phase.
+\begin{example}[A phase gate as an exponential]\label{ex:phase-exp}
+  Show that $S=\diag(1,\ii)$ equals $e^{\ii\pi/4}\,e^{-\ii\frac\pi4\sz}$ and find a Hermitian $K$ with $S=e^{\ii K}$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Exponential of $\sz$.} $e^{-\ii\frac\pi4\sz}=\diag(e^{-\ii\pi/4},e^{\ii\pi/4})$.
+    \item \emph{Multiply by $e^{\ii\pi/4}$:} $\diag(1,e^{\ii\pi/2})=\diag(1,\ii)=S$.
+    \item \emph{A Hermitian logarithm.} $S=e^{\ii K}$ with $K=\diag(0,\tfrac\pi2)=\tfrac\pi4(\Id-\sz)$ (Proposition~\ref{prop:expunitary}; $K$ is determined up to adding multiples of $2\pi$ to the eigenvalues).
+  \end{steps}
 \end{solution}
 
 \begin{pitfall}
@@ -328,6 +366,10 @@ A case that will dominate Chapter~\ref{ch:postulates} is the Hamiltonian $H$ of 
   e^{-\ii Ht/\hbar}=\sum_ie^{-\ii E_it/\hbar}\ket{E_i}\!\bra{E_i}
 \]
 is unitary, and it multiplies each energy eigenstate by a phase. We saw this in Section~\ref{sec:motivation} in the form $\psi=\varphi\,e^{-\ii Et/\hbar}$; it is how Schr\"odinger's equation will become a unitary map.
+
+\begin{lookahead}
+  The functional calculus has one more famous customer. For a density operator $\rho$ (Section~\ref{sec:density}), the operator $\rho\log\rho$ is defined by $f(x)=x\log x$, and $-\Tr(\rho\log\rho)$ is the \emph{von Neumann entropy} of Chapter~\ref{ch:info}, the quantum measure of how much we do not know about a state.
+\end{lookahead}
 
 \subsection{The picture so far}
 
@@ -367,8 +409,7 @@ In one sentence: \emph{a quantum computer prepares a unit vector, rotates it wit
     \node[font=\footnotesize,ink] at (4.3,-0.9) {evolve (reversible, unitary)};
     \node[font=\footnotesize,ink] at (8.5,-0.9) {measure (irreversible)};
   \end{tikzpicture}
-  \caption{The skeleton of every quantum algorithm: prepare a state, apply unitaries, measure with projectors. An algorithm
-  is a choice of $U_1,\dots,U_k$ such that the right answer has probability close to $1$ at the end.}
+  \caption{The skeleton of every quantum algorithm: prepare a state, apply unitaries, measure with projectors. An algorithm is a choice of $U_1,\dots,U_k$ such that the right answer has probability close to $1$ at the end.}
   \label{fig:pipeline}
 \end{figure}
 
@@ -399,13 +440,15 @@ In one sentence: \emph{a quantum computer prepares a unit vector, rotates it wit
 
   \exercise{2} Show that the rotation matrix $R_\theta$ ($\theta\notin\pi\Z$) has no real eigenvector but has complex eigenvalues $e^{\pm\ii\theta}$. Why does this make $\C$ the natural field for spectral theory?
 
-  \exercise{3} An operator $A$ is \emph{positive} ($A\ge0$) if $\bra\psi A\ket\psi\ge0$ for all $\ket\psi$. Show that over $\C$ a positive operator is Hermitian; that a Hermitian $A$ is positive iff its eigenvalues are $\ge0$; and that $B^\dagger B\ge0$ for every $B$ and every projector is positive.
+  \exercise{3} An operator $A$ is \emph{positive} ($A\ge0$) if $\bra\psi A\ket\psi\ge0$ for all $\ket\psi$. Show that over $\C$ a positive operator is Hermitian; that a Hermitian $A$ is positive iff its eigenvalues are $\ge0$; and that $B^\dagger B\ge0$ for every $B$ and every projector is positive. (We return to positive operators in Section~\ref{sec:measurement}.)
 
   \exercise{3} Let $A,B$ be Hermitian with $[A,B]=0$ and suppose $A$ has distinct eigenvalues. Show that every eigenvector of $A$ is an eigenvector of $B$. Check on $A=\sz$ and $B=\Id+2\sz$, and explain why this fails for $A=\sz$, $B=\sx$.
 
   \exercise{1} For $\ket\psi=\ket{+\ii}$ and $\ket\varphi=\cos\frac\theta2\ket0+e^{\ii\phi}\sin\frac\theta2\ket1$, write $P=\ket\varphi\!\bra\varphi$ as a matrix and show $P=\tfrac12(\Id+n\cdot\sigma)$ with $n=(\sin\theta\cos\phi,\sin\theta\sin\phi,\cos\theta)$.
 
   \exercise{2} For a unit vector $\ket\psi$ and $P=\ket\psi\!\bra\psi$ prove $P=P^\dagger$, $P^2=P$, $\Tr P=1$, find its eigenvalues and eigenspaces, and show $\Tr(P\ket\varphi\!\bra\varphi)=\abs{\braket\varphi\psi}^2$.
+
+  \exercise{2} Find the matrix of the orthogonal projector onto the line spanned by $(1,-1,2)$ in $\R^3$, and project $(2,0,1)$ onto it.
 
   \exercise{2} For a subspace $W<\Hil$ prove: $W^\perp$ is a subspace, $W\cap W^\perp=\{0\}$, $\dim W+\dim W^\perp=\dim\Hil$, $(W^\perp)^\perp=W$. Compute $W^\perp$ for $W=\Span\{\ket0+\ii\ket1\}\subset\C^2$ and for $W=\Span\{(1,\ii,0),(0,1,1)\}\subset\C^3$.
 
@@ -415,14 +458,15 @@ In one sentence: \emph{a quantum computer prepares a unit vector, rotates it wit
 
   \exercise{2} For orthogonal projectors $P_1,P_2$ show: $P_1+P_2$ is a projector iff $P_1P_2=0$; $P_1P_2$ is a projector iff $P_1P_2=P_2P_1$; $\Id-P_1$ is the projector onto $(\Ran P_1)^\perp$.
 
-  \exercise{2} Measuring $A=\sum_\lambda\lambda P_\lambda$ on $\ket\psi$ gives $\lambda$ with probability $p(\lambda)=\bra\psi P_\lambda\ket\psi$ and leaves the state $P_\lambda\ket\psi/\sqrt{p(\lambda)}$. Show $\sum_\lambda p(\lambda)=1$,
-  and compute the probabilities and post-measurement states for $A=\sx$ and $\ket\psi=\frac1{\sqrt3}\ket0+\sqrt{\tfrac23}\ket1$.
+  \exercise{2} Measuring $A=\sum_\lambda\lambda P_\lambda$ on $\ket\psi$ gives $\lambda$ with probability $p(\lambda)=\bra\psi P_\lambda\ket\psi$ and leaves the state $P_\lambda\ket\psi/\sqrt{p(\lambda)}$. Show $\sum_\lambda p(\lambda)=1$, and compute the probabilities and post-measurement states for $A=\sx$ and $\ket\psi=\frac1{\sqrt3}\ket0+\sqrt{\tfrac23}\ket1$.
 
   \exercise{2} Find $\sqrt{\begin{pmatrix}2&1\\1&2\end{pmatrix}}$ and $e^{\ii\pi\sx/2}$. Show that for $P$ a projector, $f(P)=f(0)(\Id-P)+f(1)P$, and compute $e^{\ii\theta P}$.
 
   \exercise{2} Show that $e^{-\ii\theta\,n\cdot\sigma/2}=\cos\frac\theta2\Id-\ii\sin\frac\theta2\,n\cdot\sigma$ for a unit vector $n$. Compute the rotations $R_x(\pi)$, $R_y(\pi/2)$ and $R_z(2\pi)$ and show that $R_z(2\pi)=-\Id$.
 
   \exercise{2} Show that every unitary $2\times2$ matrix with determinant $1$ is of the form $\cos\frac\theta2\Id-\ii\sin\frac\theta2\,n\cdot\sigma$, and find $\theta,n$ for $-\ii\sx$ and for $e^{-\ii\pi/4}\diag(1,\ii)$.
+
+  \exercise{2} Write the phase gate $T=\diag(1,e^{\ii\pi/4})$ as $e^{\ii\gamma}e^{-\ii\theta\sz/2}$, finding $\gamma$ and $\theta$.
 
   \exercise{3} Show that $e^{\ii(\alpha\sx+\beta\sz)}\neq e^{\ii\alpha\sx}e^{\ii\beta\sz}$ for generic $\alpha,\beta$, by comparing the traces or the $(1,1)$ entries at second order in $\alpha,\beta$. When is equality true?
 \end{exerciseset}

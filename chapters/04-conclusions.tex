@@ -6,17 +6,18 @@ We began with three experiments that classical physics could not explain, and wi
 equation is linear. Linearity gave us vector spaces; the way probabilities appear gave us inner products and Hilbert spaces; and the questions we can ask of a quantum system gave us operators, their eigenvalues and their spectral decompositions.
 The postulates then packaged all this into four statements. A quantum system is a unit vector. It evolves by a unitary. It is read out by projectors, or more generally by measurement operators. And several systems are combined with the tensor product.
 
-Three ideas deserve to be remembered above the rest.
+Four ideas deserve to be remembered above the rest.
 
 \begin{itemize}
   \item \textbf{States are rays and phases matter relatively.} A global phase cannot be seen; a relative phase can. This is why interference exists, and why quantum algorithms are written as arrangements of phases.
   \item \textbf{Evolution is reversible; measurement is not.} Unitaries preserve information, projectors destroy it. A quantum algorithm is a clever sequence of the first, ending with one of the second.
   \item \textbf{Entanglement is a resource.} It makes the parts of a system less definite than the whole (Section~\ref{sec:density}), it lets one qubit carry two bits (Section~\ref{sec:superdense}), and it cannot be reproduced by any local, realistic theory (Section~\ref{sec:bell}).
+  \item \textbf{Knowledge has a number.} Every measurement outcome is a random variable, and the entropies of Chapter~\ref{ch:info} measure what we do not know: the Shannon entropy of a distribution, the von Neumann entropy of a state, and the relative entropy that tells two of them apart. The same number that measures entanglement is the amount of information a subsystem hides.
 \end{itemize}
 
 \paragraph{What comes next.}
-The tools of this book are the starting point of the rest of the programme. Gates and circuits, the algorithms of Deutsch--Jozsa, Grover and Shor, quantum teleportation and cryptography, and quantum error correction all consist of unitaries, measurements and entangled states. Each of them will feel concrete
-if the material of the last two chapters feels familiar.
+The tools of this book are the starting point of the rest of the programme. Fourier analysis, symmetry and entropy will return in every one of the topics below. Gates and circuits, the algorithms of Deutsch--Jozsa, Grover and Shor, quantum teleportation and cryptography, and quantum error correction all consist of unitaries, measurements and entangled states. Each of them will feel concrete
+if the material of these chapters feels familiar.
 
 \paragraph{Open questions.}
 Some of the questions touched upon here are open, and are worth keeping in mind. Why does measurement collapse the state, and can Postulate~3 be derived from Postulate~2 (Section~\ref{sec:measurement})? What exactly does the violation of Bell's inequality tell us about locality and realism, and which of the two should be given up? And how

@@ -7,6 +7,10 @@
   Schmidt coefficients, and show that every mixed state is a part of a pure state of a larger system.
 \end{objectives}
 
+\begin{recall}
+  The coefficient matrix $C=(c_{ij})$ of a two-qubit state and the product-state criterion (Section~\ref{sec:composite}); reduced density operators and the partial trace (Section~\ref{sec:density}); unitary matrices (Section~\ref{sec:vector-spaces}).
+\end{recall}
+
 The determinant test of Theorem~\ref{thm:entangled-criterion} detects entanglement for two qubits. For larger systems, and for a more refined answer to ``how entangled?'', we need a canonical form for a bipartite pure state. Its proof rests on one tool from matrix analysis,
 which we use without proof (see for example Horn and Johnson~\cite{horn2013}).
 
@@ -23,11 +27,13 @@ which we use without proof (see for example Horn and Johnson~\cite{horn2013}).
   \]
 \end{theorem}
 \begin{proof}
-  Write $\ket\psi=\sum_{jk}c_{jk}\ket j\ket k$ in any orthonormal bases and use the singular value decomposition $C=UDV^\dagger$, that is $c_{jk}=\sum_iU_{ji}\lambda_i\overline{V_{ki}}$. Then
-  \[
-    \ket\psi=\sum_i\lambda_i\Bigl(\sum_jU_{ji}\ket j\Bigr)\Bigl(\sum_k\overline{V_{ki}}\ket k\Bigr)=\sum_i\lambda_i\ket{i_A}\ket{i_B},
-  \]
-  where $\ket{i_A}=\sum_jU_{ji}\ket j$ are the columns of the unitary $U$ and $\ket{i_B}=\sum_k\overline{V_{ki}}\ket k$ the columns of the unitary $\bar V$, so both families are orthonormal. Finally $\sum_i\lambda_i^2=\braket\psi\psi=1$.
+  \begin{steps}
+    \item \emph{Coefficient matrix.} Write $\ket\psi=\sum_{jk}c_{jk}\ket j\ket k$ in any orthonormal bases, with matrix $C=(c_{jk})$.
+    \item \emph{Singular value decomposition.} $C=UDV^\dagger$ with $D=\diag(\lambda_i)$, that is, $c_{jk}=\sum_iU_{ji}\lambda_i\overline{V_{ki}}$.
+    \item \emph{Substitute and regroup.} $\ket\psi=\sum_i\lambda_i\Bigl(\sum_jU_{ji}\ket j\Bigr)\Bigl(\sum_k\overline{V_{ki}}\ket k\Bigr)=\sum_i\lambda_i\ket{i_A}\ket{i_B}$.
+    \item \emph{The bases.} $\ket{i_A}=\sum_jU_{ji}\ket j$ are the columns of the unitary $U$ and $\ket{i_B}=\sum_k\overline{V_{ki}}\ket k$ the columns of the unitary $\bar V$, so both families are orthonormal.
+    \item \emph{Normalisation.} $\sum_i\lambda_i^2=\braket\psi\psi=1$. \qedhere
+  \end{steps}
 \end{proof}
 
 (If $\dim\Hil_A\neq\dim\Hil_B$, the same holds with the number of terms equal to the smaller dimension.) The numbers $\lambda_i$ are the \term{Schmidt coefficients}, and the number of non-zero ones is the \term{Schmidt number}. The bases depend on the state, unlike in the general expansion $\sum c_{jk}\ket{jk}$, which needs a double sum.
@@ -41,7 +47,11 @@ which we use without proof (see for example Horn and Johnson~\cite{horn2013}).
   \end{enumerate}
 \end{corollary}
 \begin{proof}
-  (a) Take $\Tr_B$ of $\sum_{i,i'}\lambda_i\lambda_{i'}\ket{i_A}\!\bra{i'_A}\tp\ket{i_B}\!\bra{i'_B}$ and use $\braket{i'_B}{i_B}=\delta_{ii'}$. (b) A single term $\lambda_1=1$ is $\ket{1_A}\ket{1_B}$; conversely, a product state has $\rho^A$ pure, with one non-zero eigenvalue $1$. (c) is read off from (a).
+  \begin{steps}
+    \item (a) Take $\Tr_B$ of $\ket\psi\!\bra\psi=\sum_{i,i'}\lambda_i\lambda_{i'}\ket{i_A}\!\bra{i'_A}\tp\ket{i_B}\!\bra{i'_B}$. Each term gives $\ket{i_A}\!\bra{i'_A}\braket{i'_B}{i_B}=\delta_{ii'}\ket{i_A}\!\bra{i_A}$, hence $\rho^A=\sum_i\lambda_i^2\ket{i_A}\!\bra{i_A}$. The same for $B$.
+    \item (b) A single term $\lambda_1=1$ is $\ket{1_A}\ket{1_B}$, a product; conversely, a product state has $\rho^A$ pure, with exactly one non-zero eigenvalue $1$, so the Schmidt number is $1$.
+    \item (c) The spectrum $\{\lambda_i^2\}$ equals $\{1/d\}$ iff $\rho^A=\Id/d$, by (a). \qedhere
+  \end{steps}
 \end{proof}
 
 So \emph{the spectrum of the reduced state is a complete invariant of the entanglement of a pure state}: how mixed the parts are tells how entangled the whole is.
@@ -50,13 +60,23 @@ So \emph{the spectrum of the reduced state is a complete invariant of the entang
   Find the Schmidt coefficients of $\bell00$ and of $\ket\psi=\frac1{\sqrt3}(\ket{00}+\ket{01}+\ket{10})$.
 \end{example}
 \begin{solution}
-  For $\bell00=\frac1{\sqrt2}(\ket{00}+\ket{11})$ the decomposition is already in Schmidt form: $\lambda_1=\lambda_2=\tfrac1{\sqrt2}$, with bases $\{\ket0,\ket1\}$ on both sides. It is maximally entangled.
+  \begin{steps}
+    \item \emph{$\bell00$.} $\frac1{\sqrt2}(\ket{00}+\ket{11})$ is already in Schmidt form: $\lambda_1=\lambda_2=\tfrac1{\sqrt2}$, with bases $\{\ket0,\ket1\}$ on both sides. It is maximally entangled.
+    \item \emph{The three-term state: reduced operator.} $\rho^A=\tfrac13\begin{pmatrix}2&1\\1&1\end{pmatrix}$ has eigenvalues $\tfrac{3\pm\sqrt5}{6}$ (Example~\ref{ex:reduced-3term}).
+    \item \emph{Schmidt coefficients} are the square roots (Corollary~\ref{cor:schmidt}(a)): $\lambda_{1,2}=\sqrt{\tfrac{3\pm\sqrt5}{6}}=\frac{\varphi}{\sqrt3},\ \frac1{\varphi\sqrt3}\approx0.934,\ 0.357$, where $\varphi=\frac{1+\sqrt5}{2}$ is the golden ratio ($\varphi^2=\frac{3+\sqrt5}{2}$, $\varphi^{-2}=\frac{3-\sqrt5}2$).
+    \item \emph{Check.} $0.934^2+0.357^2=0.873+0.127=1$. Two non-zero coefficients, so the state is entangled, though less than maximally; the Schmidt bases are the eigenvectors of $\rho^A$ and of $\rho^B$.
+  \end{steps}
+\end{solution}
 
-  For $\ket\psi$, the reduced state $\rho^A=\tfrac13\begin{pmatrix}2&1\\1&1\end{pmatrix}$ has eigenvalues $\tfrac{3\pm\sqrt5}{6}$ (Example~\ref{ex:reduced-3term}), so by Corollary~\ref{cor:schmidt}(a)
-  \[
-    \lambda_{1,2}=\sqrt{\tfrac{3\pm\sqrt5}{6}}=\frac{\varphi}{\sqrt3},\ \frac1{\varphi\sqrt3}\ \approx\ 0.934,\ 0.357,
-  \]
-  where $\varphi=\frac{1+\sqrt5}{2}$ is the golden ratio (indeed $\varphi^2=\frac{3+\sqrt5}{2}$ and $\varphi^{-2}=\frac{3-\sqrt5}2$). \emph{Check:} $0.934^2+0.357^2=0.873+0.127=1$. Two non-zero coefficients, so the state is entangled, though less than maximally: the bases are the eigenvectors of $\rho^A$ and of $\rho^B$.
+\begin{example}[A Schmidt decomposition by hand]\label{ex:schmidt-hand}
+  Find the Schmidt decomposition of $\ket\psi=\frac1{\sqrt2}\bigl(\ket{0}\ket{+}+\ket{1}\ket{-}\bigr)$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Look at its form.} The first factors $\ket0,\ket1$ are orthonormal, and so are the second factors $\ket+,\ket-$.
+    \item \emph{Conclude.} The expression is already a Schmidt decomposition, with $\lambda_1=\lambda_2=\tfrac1{\sqrt2}$, $\ket{1_A}=\ket0$, $\ket{2_A}=\ket1$, $\ket{1_B}=\ket+$, $\ket{2_B}=\ket-$.
+    \item \emph{Consequence.} The state is maximally entangled: $\rho^A=\tfrac12\Id$. Indeed it equals $(\Id\tp H)\bell00$, a local unitary applied to a Bell state, which cannot change the Schmidt coefficients.
+  \end{steps}
 \end{solution}
 
 \subsection{Purification}
@@ -67,7 +87,11 @@ The Schmidt decomposition shows that mixed states and entanglement are two sides
   Let $\rho^A$ be a density operator on $\Hil_A$. Then there exists a pure state $\ket{AR}$ of a composite system $AR$, with $R$ a copy of $A$, such that $\Tr_R\ket{AR}\!\bra{AR}=\rho^A$.
 \end{proposition}
 \begin{proof}
-  Write $\rho^A=\sum_ip_i\ket{i_A}\!\bra{i_A}$ in its eigenbasis and let $\{\ket{i_R}\}$ be an orthonormal basis of $R$. Define $\ket{AR}=\sum_i\sqrt{p_i}\ket{i_A}\ket{i_R}$. This is a unit vector, and by the computation in Corollary~\ref{cor:schmidt}(a), $\Tr_R\ket{AR}\!\bra{AR}=\sum_ip_i\ket{i_A}\!\bra{i_A}=\rho^A$.
+  \begin{steps}
+    \item \emph{Diagonalise.} $\rho^A=\sum_ip_i\ket{i_A}\!\bra{i_A}$ in its eigenbasis, with $p_i\ge0$, $\sum p_i=1$.
+    \item \emph{Define.} Let $\{\ket{i_R}\}$ be an orthonormal basis of $R$, and $\ket{AR}=\sum_i\sqrt{p_i}\ket{i_A}\ket{i_R}$. It is a unit vector: $\sum_ip_i=1$.
+    \item \emph{Trace out $R$.} By the computation in Corollary~\ref{cor:schmidt}(a), $\Tr_R\ket{AR}\!\bra{AR}=\sum_ip_i\ket{i_A}\!\bra{i_A}=\rho^A$. \qedhere
+  \end{steps}
 \end{proof}
 
 The state $\ket{AR}$ is a \term{purification} of $\rho^A$. It is not unique, but any two are related by a unitary acting on $R$ alone (Exercise~\ref{ex:purif-freedom}). The idea of purification is to treat the randomness of a mixed state as ignorance about a larger system, an \emph{environment} $R$ with which $A$ is entangled.
@@ -82,6 +106,10 @@ It lets us study mixed states using only state vectors, and it is the standard w
 
 Purifications also tell how ensembles are generated: if $\{p_i,\ket{\psi_i}\}$ is an ensemble with density operator $\rho$, then $\sum_i\sqrt{p_i}\ket{\psi_i}\ket{i_R}$ is a purification, and measuring $R$ in the basis $\{\ket{i_R}\}$ yields $i$ with probability $p_i$, leaving $A$ in $\ket{\psi_i}$ (Exercise~\ref{ex:ensemble-purif}).
 Different measurements of $R$ generate different ensembles of $A$ with the same $\rho^A$, which is the unitary freedom we met earlier.
+
+\begin{lookahead}
+  The Schmidt coefficients are the natural measure of how entangled a pure state is: the Shannon entropy of the numbers $\lambda_i^2$ is the \emph{entropy of entanglement}, which is $1$ for a Bell state and $0$ for a product state (Theorem~\ref{thm:entanglement-entropy}). Purification, for its part, is the standard way to describe noise: the unitary dynamics acts on system plus environment, and the noise seen by the system is the mixedness of its reduced state.
+\end{lookahead}
 
 \begin{exerciseset}
   \exercise{1} Find the Schmidt decompositions of $\frac1{\sqrt2}(\ket{00}+\ket{11})$, $\ket+\ket0$ and $\frac{1}{\sqrt2}(\ket{01}+\ket{10})$. What are the Schmidt numbers?

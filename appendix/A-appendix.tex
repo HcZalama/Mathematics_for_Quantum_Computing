@@ -1,11 +1,15 @@
 \chapter{Notation and conventions}\label{app:notation}
 
-\begin{center}
-\small
-\begin{tabular}{@{}p{0.2\textwidth}p{0.72\textwidth}@{}}
+{\small
+\begin{longtable}{@{}p{0.2\textwidth}p{0.72\textwidth}@{}}
   \toprule
   Symbol & Meaning\\
   \midrule
+\endfirsthead
+  \toprule
+  Symbol & Meaning\\
+  \midrule
+\endhead
   $\N,\Z,\R,\C$ & natural, integer, real and complex numbers\\
   $\ii$ & imaginary unit, $\ii^2=-1$\\
   $\bar z$, $\abs z$, $\Re z$, $\Im z$ & conjugate, modulus, real part, imaginary part of $z$\\
@@ -38,9 +42,17 @@
   $\rho$, $\rho^A=\Tr_B\rho^{AB}$ & density operator; reduced density operator\\
   $p(m)$ & probability of outcome $m$\\
   $\langle M\rangle$, $\Delta M$ & expectation value and standard deviation of $M$\\
+  $A\ge0$ & $A$ is a positive operator ($\bra\psi A\ket\psi\ge0$ for all $\ket\psi$)\\
+  $U(g)$ & unitary representation of a group element $g$\\
+  \midrule
+  $\PP$, $\EE[X]$, $\Var(X)$ & probability measure; expectation and variance of a random variable\\
+  $\hat f=\FT f$ & Fourier transform, $\hat f(k)=\frac1{\sqrt{2\pi}}\int f(x)e^{-\ii kx}\dd x$\\
+  $F_N$ & discrete Fourier transform matrix, $(F_N)_{jk}=\omega^{jk}/\sqrt N$, $\omega=e^{2\pi\ii/N}$\\
+  $\Hs(X)$, $\Ss(\rho)$ & Shannon entropy $-\sum p\log p$; von Neumann entropy $-\Tr\rho\log\rho$\\
+  $\KL pq$, $\Srel\rho\sigma$ & classical and quantum relative entropy\\
+  $I(X\!:\!Y)$, $I(A\!:\!B)$ & mutual information (classical, quantum)\\
   \bottomrule
-\end{tabular}
-\end{center}
+\end{longtable}}
 
 \paragraph{Conventions.}
 \begin{itemize}
@@ -49,4 +61,6 @@
   \item The columns of the matrix of a linear map are the images of the basis vectors.
   \item For two qubits the basis is ordered $\ket{00},\ket{01},\ket{10},\ket{11}$, and the matrix of $A\tp B$ is the Kronecker product with $B$ varying fastest.
   \item Unless a value is given, $\hbar$ may be set to $1$.
+  \item Logarithms in information-theoretic formulas are in base $2$ (entropy in bits), unless written $\ln$; $0\log0=0$.
+  \item The Fourier transform on $\R$ is normalised to be unitary, with $e^{-\ii kx}$ in the forward transform.
 \end{itemize}

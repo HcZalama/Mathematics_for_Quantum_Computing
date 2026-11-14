@@ -1,0 +1,175 @@
+%======================================================================
+\section{Von Neumann entropy}\label{sec:vonneumann}
+%======================================================================
+
+\begin{objectives}
+  You will define the von Neumann entropy of a density operator through its spectrum and compute it for qubits and for subsystems; prove its basic properties; interpret it as the entropy of entanglement for pure bipartite states; and see how it differs from the classical entropy.
+\end{objectives}
+
+\begin{recall}
+  Density operators, purity and the Bloch ball (Section~\ref{sec:density}); the partial trace (Section~\ref{sec:density}) and the Schmidt decomposition (Section~\ref{sec:schmidt}); the functional calculus $f(\rho)$ (Section~\ref{sec:operators}); the Shannon entropy and its properties (Section~\ref{sec:shannon}).
+\end{recall}
+
+A density operator $\rho$ describes a state of knowledge: how much do we \emph{not} know? Its eigenvalues $\lambda_i$ form a probability distribution (they are non-negative and add to $1$, Theorem~\ref{thm:density-char}), and the natural measure of uncertainty is the Shannon entropy of that distribution. This is the von Neumann entropy.
+
+\subsection{Definition and first examples}
+
+\begin{definition}[Von Neumann entropy]\label{def:vn}
+  The \term{von Neumann entropy} of a density operator $\rho$ on a space of dimension $d$ is
+  \[
+    \Ss(\rho)=-\Tr\bigl(\rho\log\rho\bigr)=-\sum_{i=1}^d\lambda_i\log\lambda_i=\Hs(\lambda_1,\dots,\lambda_d),
+  \]
+  where $\lambda_i$ are the eigenvalues of $\rho$ (with $0\log0=0$), and $\rho\log\rho=f(\rho)$ is defined by the functional calculus (Definition~\ref{def:functional}) with $f(x)=x\log x$.
+\end{definition}
+
+The equality of the three expressions is the functional calculus again: if $\rho=\sum_i\lambda_i\ket{v_i}\!\bra{v_i}$ then $\rho\log\rho=\sum_i\lambda_i\log\lambda_i\ket{v_i}\!\bra{v_i}$, whose trace is $\sum_i\lambda_i\log\lambda_i$. The entropy depends only on the spectrum, not on the eigenvectors.
+
+\begin{example}\label{ex:vn-basic}
+  Compute $\Ss(\rho)$ for (a) a pure state; (b) the maximally mixed state $\Id/d$; (c) $\rho=\tfrac34\ket0\!\bra0+\tfrac14\ket1\!\bra1$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item (a) A pure state has eigenvalues $1,0,\dots,0$, so $\Ss=-1\log1=0$.
+    \item (b) All $d$ eigenvalues equal $\tfrac1d$, so $\Ss=-d\cdot\tfrac1d\log\tfrac1d=\log d$. For a qubit, $1$ bit.
+    \item (c) The eigenvalues are $\tfrac34,\tfrac14$, so $\Ss=h(\tfrac14)=-\tfrac14\log\tfrac14-\tfrac34\log\tfrac34\approx0.5+0.311=0.811$ bits.
+  \end{steps}
+\end{solution}
+
+For a qubit, the Bloch ball of Section~\ref{sec:density} gives a closed formula.
+
+\begin{proposition}\label{prop:qubit-entropy}
+  If $\rho=\tfrac12(\Id+\vec r\cdot\vec\sigma)$ then $\Ss(\rho)=h\!\left(\tfrac{1+\abs{\vec r}}{2}\right)$.
+\end{proposition}
+\begin{proof}
+  The eigenvalues of $\rho$ are $\tfrac12(1\pm\abs{\vec r})$ (Section~\ref{sec:density}), a distribution on two points with probabilities $q$ and $1-q$, $q=\tfrac12(1+\abs{\vec r})$. Its entropy is $h(q)$.
+\end{proof}
+
+So the entropy is a function of the \emph{distance from the centre} of the Bloch ball: $0$ on the surface (pure states), $1$ bit at the centre, and decreasing steadily in between (Figure~\ref{fig:entropy-ball}).
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[width=0.7\linewidth, height=5.4cm, xmin=0, xmax=1, ymin=0, ymax=1.25,
+        xlabel={$\abs{\vec r}$ (distance from the centre of the Bloch ball)}, ylabel={$\Ss(\rho)$ (bits)}, axis lines=left, clip=false,
+        xtick={0,0.25,0.5,0.75,1}, ytick={0,0.5,1},
+        label style={font=\footnotesize}, tick label style={font=\footnotesize}]
+      \addplot[navy, very thick, samples=200, domain=0:0.9995] {-((1+x)/2)*ln((1+x)/2)/ln(2)-((1-x)/2)*ln((1-x)/2)/ln(2)};
+      \addplot[only marks, mark=*, mark size=1.8pt, figacc] coordinates {(0,1) (1,0)};
+      \node[figacc, font=\footnotesize, anchor=south west] at (axis cs:0.03,1.04) {maximally mixed (centre)};
+      \node[figacc, font=\footnotesize, anchor=west] at (axis cs:1.03,0.06) {pure (surface)};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{The entropy of a qubit state as a function of its Bloch vector length: $\Ss=h\bigl(\frac{1+\abs{\vec r}}2\bigr)$.}
+  \label{fig:entropy-ball}
+\end{figure}
+
+\begin{example}\label{ex:vn-mixture}
+  Compute the entropy of the ensemble $\bigl\{\tfrac12,\ket0;\ \tfrac12,\ket+\bigr\}$ of Example~\ref{ex:mixture-bloch}, and compare it with the Shannon entropy of the ensemble probabilities.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The state.} $\rho=\tfrac14\begin{pmatrix}3&1\\1&1\end{pmatrix}$ with $\vec r=(\tfrac12,0,\tfrac12)$ and $\abs{\vec r}=\tfrac1{\sqrt2}$.
+    \item \emph{The eigenvalues.} $\tfrac12\bigl(1\pm\tfrac1{\sqrt2}\bigr)\approx0.854,\ 0.146$.
+    \item \emph{The entropy.} $\Ss(\rho)=h(0.854)\approx0.854\times0.228+0.146\times2.776\approx0.195+0.405=0.601$ bits.
+    \item \emph{Comparison.} The ensemble probabilities are $(\tfrac12,\tfrac12)$, with Shannon entropy $1$ bit. So $\Ss(\rho)=0.601<1$: because $\ket0$ and $\ket+$ are not orthogonal, they overlap, and the mixture is \emph{less} random than a fair coin choosing between two perfectly distinguishable states.
+  \end{steps}
+\end{solution}
+
+\subsection{Properties}
+
+\begin{proposition}[Basic properties]\label{prop:vn-props}
+  Let $\rho,\sigma$ be density operators.
+  \begin{enumerate}
+    \item[(a)] $0\le\Ss(\rho)\le\log d$; $\Ss(\rho)=0$ iff $\rho$ is pure; $\Ss(\rho)=\log d$ iff $\rho=\Id/d$.
+    \item[(b)] \emph{Unitary invariance:} $\Ss(U\rho U^\dagger)=\Ss(\rho)$.
+    \item[(c)] \emph{Additivity:} $\Ss(\rho\otimes\sigma)=\Ss(\rho)+\Ss(\sigma)$.
+    \item[(d)] \emph{Orthogonal mixtures:} if $\rho_i$ have mutually orthogonal supports, $\Ss\bigl(\sum_ip_i\rho_i\bigr)=\Hs(p)+\sum_ip_i\Ss(\rho_i)$.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item (a) $\Ss(\rho)$ is the Shannon entropy of the spectrum, so Proposition~\ref{prop:shannon-props} applies: it is $0$ iff one eigenvalue is $1$, i.e.\ $\rho$ is a pure state (Section~\ref{sec:density}), and equals $\log d$ iff all eigenvalues equal $\tfrac1d$, i.e.\ $\rho=\Id/d$.
+    \item (b) $U\rho U^\dagger$ has the same eigenvalues as $\rho$ (its eigenvectors are $U\ket{v_i}$).
+    \item (c) The eigenvalues of $\rho\otimes\sigma$ are the products $\lambda_i\mu_j$, so $\Ss=-\sum_{i,j}\lambda_i\mu_j(\log\lambda_i+\log\mu_j)=-\sum_i\lambda_i\log\lambda_i\sum_j\mu_j-\sum_j\mu_j\log\mu_j\sum_i\lambda_i$, which is $\Ss(\rho)+\Ss(\sigma)$ because $\sum\lambda_i=\sum\mu_j=1$.
+    \item (d) Diagonalise each $\rho_i=\sum_j\lambda^{(i)}_j\ket{v^{(i)}_j}\!\bra{v^{(i)}_j}$. Orthogonal supports mean all the vectors $\ket{v^{(i)}_j}$ together are orthonormal, so they are the eigenvectors of $\sum_ip_i\rho_i$, with eigenvalues $p_i\lambda^{(i)}_j$. Then
+      \[
+        \Ss=-\sum_{i,j}p_i\lambda^{(i)}_j\bigl(\log p_i+\log\lambda^{(i)}_j\bigr)=-\sum_ip_i\log p_i+\sum_ip_i\Bigl(-\sum_j\lambda^{(i)}_j\log\lambda^{(i)}_j\Bigr). \qedhere
+      \]
+  \end{steps}
+\end{proof}
+
+Two further properties, which we state without proof here and which follow from relative entropy (Section~\ref{sec:relent}), are \emph{concavity}, $\Ss\bigl(\sum_ip_i\rho_i\bigr)\ge\sum_ip_i\Ss(\rho_i)$ (mixing increases entropy), and the general bound $\Ss\bigl(\sum_ip_i\rho_i\bigr)\le\Hs(p)+\sum_ip_i\Ss(\rho_i)$, with equality exactly in the orthogonal case (d).
+
+\subsection{Entropy of entanglement}
+
+Now the most striking application. A pure state of two systems has no uncertainty at all, $\Ss(\rho^{AB})=0$, but its parts can be very uncertain.
+
+\begin{theorem}[Entropy of entanglement]\label{thm:entanglement-entropy}
+  If $\ket\psi$ is a pure state of $AB$, then $\Ss(\rho^A)=\Ss(\rho^B)$. This common value, which we write $E(\ket\psi)$, is the \term{entropy of entanglement} of $\ket\psi$. If $\ket\psi=\sum_i\lambda_i\ket{i_A}\ket{i_B}$ is a Schmidt decomposition, $E(\ket\psi)=\Hs(\lambda_1^2,\dots,\lambda_d^2)$.
+\end{theorem}
+\begin{proof}
+  \begin{steps}
+    \item By Corollary~\ref{cor:schmidt}(a), $\rho^A$ and $\rho^B$ have the same non-zero eigenvalues $\lambda_i^2$.
+    \item The entropy is determined by the non-zero eigenvalues (since $0\log0=0$), so $\Ss(\rho^A)=\Ss(\rho^B)=-\sum_i\lambda_i^2\log\lambda_i^2$. \qedhere
+  \end{steps}
+\end{proof}
+
+By Proposition~\ref{prop:vn-props}(a), $E=0$ exactly for product states, and $E=\log d$ exactly for the maximally entangled states. A state with $E=1$ in two qubits is said to carry one \term{ebit} of entanglement.
+
+\begin{example}\label{ex:ent-entropy}
+  Compute the entanglement entropy of $\ket{\Phi^+}$, of $\ket+\ket0$, and of $\frac1{\sqrt3}(\ket{00}+\ket{01}+\ket{10})$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item $\ket{\Phi^+}$: the reduced state is $\Id/2$ (Example~\ref{ex:reduced-bell}), so $E=\Ss(\Id/2)=1$ ebit: maximal.
+    \item $\ket+\ket0$: a product state, $\rho^A=\ket+\!\bra+$ is pure, so $E=0$.
+    \item The third state: the eigenvalues of $\rho^A$ are $\tfrac{3\pm\sqrt5}{6}\approx0.873,\ 0.127$ (Example~\ref{ex:schmidt}), so $E=h(0.127)\approx0.127\times2.975+0.873\times0.196\approx0.378+0.171=0.550$ ebits.
+  \end{steps}
+  The third state is entangled, but a little over half as much as a Bell state.
+\end{solution}
+
+\subsection{Quantum entropy is not classical entropy}
+
+Compare a Bell state with its classical counterpart, the mixture of $\ket{00}$ and $\ket{11}$.
+
+\begin{example}[Bell state against a classical mixture]\label{ex:bell-vs-mixture}
+  Let $\rho_1=\ket{\Phi^+}\!\bra{\Phi^+}$ and $\rho_2=\tfrac12\ket{00}\!\bra{00}+\tfrac12\ket{11}\!\bra{11}$. Compute $\Ss(AB)$, $\Ss(A)$, $\Ss(B)$ and the mutual information $I(A\!:\!B)=\Ss(A)+\Ss(B)-\Ss(AB)$ for both.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The Bell state.} $\rho_1$ is pure, so $\Ss(AB)=0$. Each qubit alone is maximally mixed, $\Ss(A)=\Ss(B)=1$. Hence $I=1+1-0=2$ bits.
+    \item \emph{The mixture.} $\rho_2$ has eigenvalues $\tfrac12,\tfrac12,0,0$, so $\Ss(AB)=1$. Its reduced states are $\tfrac12\ket0\!\bra0+\tfrac12\ket1\!\bra1=\Id/2$ again, so $\Ss(A)=\Ss(B)=1$. Hence $I=1+1-1=1$ bit.
+  \end{steps}
+  Both states give the same marginals and the same $Z$ correlations, but the Bell state has \emph{twice} the mutual information. And $\Ss(AB)=0<\Ss(A)=1$: the whole is less uncertain than its part. For classical variables this is impossible, since $\Hs(X,Y)\ge\Hs(X)$ always. It is another face of entanglement.
+\end{solution}
+
+The general inequality that remains true is \term{subadditivity}, $\Ss(AB)\le\Ss(A)+\Ss(B)$, which we prove in Section~\ref{sec:relent}; the Araki--Lieb inequality $\abs{\Ss(A)-\Ss(B)}\le\Ss(AB)$ is its companion.
+
+\begin{lookahead}
+  Two operational statements make this concrete. \emph{Compression:} $n$ copies of a state $\rho$ can be stored in about $n\,\Ss(\rho)$ qubits (Schumacher), the exact analogue of Theorem~\ref{thm:source-coding}. \emph{Communication:} by Holevo's theorem, a qubit can carry at most one bit of classical information \emph{if used alone}, whatever ensemble is used, since
+  the accessible information is at most $\Ss(\rho)-\sum_ip_i\Ss(\rho_i)\le\log d$. Superdense coding (Section~\ref{sec:superdense}) does not violate this: it uses the entangled partner Bob already holds, and the Bell state of Example~\ref{ex:bell-vs-mixture} is precisely the $I(A\!:\!B)=2$ that makes two bits per qubit possible.
+\end{lookahead}
+
+\begin{exerciseset}
+  \exercise{1} Compute the von Neumann entropy of $\ket+\!\bra+$, $\tfrac12\Id$, $\tfrac13\ket0\!\bra0+\tfrac23\ket1\!\bra1$ and $\diag(\tfrac12,\tfrac14,\tfrac14)$.
+
+  \exercise{1} A qubit has Bloch vector $\vec r=(0,0,\tfrac35)$. Compute its eigenvalues and its entropy. Repeat for $\abs{\vec r}=0.8$ and $\abs{\vec r}=0.9$ (use Figure~\ref{fig:entropy-ball} as a check).
+
+  \exercise{2} Prove parts (a)--(c) of Proposition~\ref{prop:vn-props} for a $2$-level system, and verify (d) for $\rho_1=\ket0\!\bra0$, $\rho_2=\ket1\!\bra1$, $p=(\tfrac13,\tfrac23)$.
+
+  \exercise{2} Compute the entropy of $\tfrac12\ket0\!\bra0+\tfrac12\ket{+}\!\bra{+}$ and of $\tfrac12\ket0\!\bra0+\tfrac12\ket{1}\!\bra{1}$, and explain why they differ although both mix two states with probabilities $(\tfrac12,\tfrac12)$.
+
+  \exercise{2} Show that rotating a qubit state on the Bloch sphere does not change its entropy. (Hint: Proposition~\ref{prop:vn-props}(b).)
+
+  \exercise{2} Compute the entanglement entropy of $\bell xy$, of $\tfrac1{\sqrt5}(\ket{00}+2\ket{11})$ and of $\frac1{\sqrt2}(\ket{00}+\ket{01})$.
+
+  \exercise{2} For the state $\frac12(\ket{00}+\ket{01}+\ket{10}-\ket{11})$ find the Schmidt coefficients and the entanglement entropy.
+
+  \exercise{3} Show that every pure state of two qubits has $0\le E\le1$, with $E=1$ iff it is maximally entangled, and express $E$ in terms of $\abs{\det C}$ (the concurrence): for a two-qubit state with Schmidt coefficients $\lambda_1,\lambda_2$ one has $2\abs{\det C}=2\lambda_1\lambda_2$.
+
+  \exercise{2} Compute $\Ss(\rho^A)$, $\Ss(\rho^B)$, $\Ss(\rho^{AB})$ and $I(A\!:\!B)$ for $\ket0\ket+$ and for $\bell11$.
+
+  \exercise{3} Prove $\Ss\bigl(\tfrac12(\rho_1+\rho_2)\bigr)\ge\tfrac12\Ss(\rho_1)+\tfrac12\Ss(\rho_2)$ (concavity) for commuting $\rho_1,\rho_2$, using the concavity of the Shannon entropy.
+
+  \exercise{3} A source emits $\ket0$ with probability $\tfrac12$ and $\ket+$ with probability $\tfrac12$. Using Example~\ref{ex:vn-mixture}, how many qubits per symbol are needed to store a long message, asymptotically, according to Schumacher's theorem? Compare with the $1$ bit one would need if the two states were orthogonal.
+\end{exerciseset}

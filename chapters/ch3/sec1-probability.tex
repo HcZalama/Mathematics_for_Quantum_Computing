@@ -1,0 +1,267 @@
+%======================================================================
+\section{Probability measures}\label{sec:prob}
+%======================================================================
+
+\begin{objectives}
+  You will state the axioms of a probability measure and derive its basic properties; work with discrete and continuous distributions, random variables, expectation and variance;
+  use conditioning, independence and Bayes' rule; and see why repeated experiments estimate probabilities.
+\end{objectives}
+
+\begin{recall}
+  Postulate~3 and the outcome probabilities $p(m)$ (Section~\ref{sec:measurement}); orthogonal projectors (Section~\ref{sec:operators}); Bloch vectors (Section~\ref{sec:state-evolution}); Bell states (Section~\ref{sec:composite}).
+\end{recall}
+
+Until now probabilities came from a finite list: a qubit measurement has two outcomes, and $p(0)+p(1)=1$. For a position measurement there are uncountably many outcomes and the probability of any single point is zero, so
+``a list of numbers'' is no longer enough. The right framework is that of \emph{measure theory}, which handles both cases at once. We need only its basic vocabulary.
+
+\subsection{Probability spaces}
+
+A probability model has three ingredients: the set $\Omega$ of all possible outcomes, a family of subsets of $\Omega$ to which we are willing to assign a probability (the \emph{events}), and the assignment itself.
+
+\begin{definition}[$\sigma$-algebra]\label{def:sigma}
+  A \term{$\sigma$-algebra} on a set $\Omega$ is a family $\mathcal F$ of subsets of $\Omega$ such that
+  \begin{steps}
+    \item $\Omega\in\mathcal F$;
+    \item if $A\in\mathcal F$ then its complement $A^c=\Omega\setminus A$ is in $\mathcal F$;
+    \item if $A_1,A_2,\dots\in\mathcal F$ then $\bigcup_iA_i\in\mathcal F$ (closed under countable unions).
+  \end{steps}
+  The elements of $\mathcal F$ are called \term{events}.
+\end{definition}
+
+For a finite or countable $\Omega$ we always take $\mathcal F$ to be \emph{all} subsets. For $\Omega=\R$ we take the \term{Borel $\sigma$-algebra}, the smallest one containing all intervals; it contains every set that one meets in practice, and $\sigma$-algebras exist precisely to exclude pathological sets.
+
+\begin{definition}[Probability measure]\label{def:probmeasure}
+  A \term{probability measure} on $(\Omega,\mathcal F)$ is a function $\PP:\mathcal F\to[0,1]$ such that
+  \begin{steps}
+    \item $\PP(\Omega)=1$;
+    \item \emph{(countable additivity)} if $A_1,A_2,\dots\in\mathcal F$ are pairwise disjoint, then $\PP\bigl(\bigcup_iA_i\bigr)=\sum_i\PP(A_i)$.
+  \end{steps}
+  The triple $(\Omega,\mathcal F,\PP)$ is a \term{probability space}.
+\end{definition}
+
+These two axioms, due to Kolmogorov, are all there is. Everything else is a consequence.
+
+\begin{proposition}[Basic properties]\label{prop:probprops}
+  Let $\PP$ be a probability measure and $A,B,A_1,A_2,\dots$ events. Then
+  \begin{enumerate}
+    \item[(a)] $\PP(\varnothing)=0$;
+    \item[(b)] \emph{finite additivity:} if $A\cap B=\varnothing$ then $\PP(A\cup B)=\PP(A)+\PP(B)$;
+    \item[(c)] $\PP(A^c)=1-\PP(A)$;
+    \item[(d)] \emph{monotonicity:} if $A\subseteq B$ then $\PP(A)\le\PP(B)$;
+    \item[(e)] $\PP(A\cup B)=\PP(A)+\PP(B)-\PP(A\cap B)$;
+    \item[(f)] \emph{union bound:} $\PP\bigl(\bigcup_iA_i\bigr)\le\sum_i\PP(A_i)$;
+    \item[(g)] \emph{continuity:} if $A_1\subseteq A_2\subseteq\cdots$ and $A=\bigcup_nA_n$, then $\PP(A_n)\to\PP(A)$.
+  \end{enumerate}
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item (a) Apply countable additivity to $\varnothing,\varnothing,\dots$: $\PP(\varnothing)=\sum_{i=1}^\infty\PP(\varnothing)$. A number in $[0,1]$ equal to an infinite sum of copies of itself must be $0$.
+    \item (b) Apply additivity to $A,B,\varnothing,\varnothing,\dots$ and use (a).
+    \item (c) $A$ and $A^c$ are disjoint with union $\Omega$, so by (b) $1=\PP(A)+\PP(A^c)$.
+    \item (d) Write $B=A\cup(B\setminus A)$, a disjoint union. By (b), $\PP(B)=\PP(A)+\PP(B\setminus A)\ge\PP(A)$.
+    \item (e) Decompose into disjoint pieces: $A\cup B=A\cup(B\setminus A)$ and $B=(B\setminus A)\cup(A\cap B)$. Then $\PP(A\cup B)=\PP(A)+\PP(B\setminus A)$ and $\PP(B)=\PP(B\setminus A)+\PP(A\cap B)$; subtract.
+    \item (f) For two events, (e) gives $\PP(A\cup B)\le\PP(A)+\PP(B)$; induction gives the finite case. For countably many, define disjoint events $D_1=A_1$, $D_n=A_n\setminus(A_1\cup\dots\cup A_{n-1})$ with the same union and $D_n\subseteq A_n$, and use additivity and (d).
+    \item (g) The sets $D_1=A_1$, $D_n=A_n\setminus A_{n-1}$ are disjoint with union $A$, and $A_n=D_1\cup\dots\cup D_n$. So $\PP(A)=\sum_{i}\PP(D_i)=\lim_n\sum_{i\le n}\PP(D_i)=\lim_n\PP(A_n)$. \qedhere
+  \end{steps}
+\end{proof}
+
+\begin{example}[Every quantum measurement defines a probability measure]\label{ex:qmeasure}
+  Let a projective measurement with projectors $P_m$ ($m\in\Omega$, a finite set of outcomes) be performed on the state $\ket\psi$. Show that $\PP(B)=\bra\psi\bigl(\sum_{m\in B}P_m\bigr)\ket\psi$ is a probability measure on $\Omega$.
+\end{example}
+\begin{solution}
+  We check the two axioms of Definition~\ref{def:probmeasure}, taking $\mathcal F$ to be all subsets of $\Omega$.
+  \begin{steps}
+    \item \emph{Values in $[0,1]$.} The operator $P_B=\sum_{m\in B}P_m$ is a projector, since the $P_m$ are orthogonal projectors ($P_mP_{m'}=\delta_{mm'}P_m$). Hence $\PP(B)=\bra\psi P_B\ket\psi=\norm{P_B\psi}^2\in[0,\norm\psi^2]=[0,1]$.
+    \item \emph{Total mass.} $P_\Omega=\sum_mP_m=\Id$ by completeness, so $\PP(\Omega)=\braket\psi\psi=1$.
+    \item \emph{Additivity.} If $B_1,B_2,\dots$ are disjoint, then $P_{\cup B_i}=\sum_iP_{B_i}$, and taking $\bra\psi\cdot\ket\psi$ gives $\PP(\cup B_i)=\sum_i\PP(B_i)$.
+  \end{steps}
+  By Proposition~\ref{prop:probprops}, we can now say, for instance, that the probability of getting an outcome in the set $B$ is $1$ minus the probability of getting one outside it.
+\end{solution}
+
+\begin{lookahead}
+  This is the Born rule in disguise. For an observable with a \emph{continuous} spectrum, such as position, the sum over $m\in B$ is replaced by a projection $P(B)$ onto the part of the spectrum lying in the set $B$, and $B\mapsto\bra\psi P(B)\ket\psi$ is again a probability measure. This
+  \emph{projection-valued measure} is how the postulates are written in full generality; we do not need it in what follows, but the example shows that nothing in this chapter is foreign to Chapter~\ref{ch:postulates}.
+\end{lookahead}
+
+\subsection{Discrete and continuous distributions}
+
+Two kinds of probability measures account for nearly everything.
+
+\begin{itemize}
+  \item \textbf{Discrete.} $\Omega$ is finite or countable, and $\PP$ is determined by the \term{probability mass function} $p(x)=\PP(\{x\})\ge0$ with $\sum_xp(x)=1$, through $\PP(A)=\sum_{x\in A}p(x)$.
+    The standard examples are \emph{Bernoulli}$(p)$ ($\Omega=\{0,1\}$, $\PP(1)=p$), \emph{uniform} on $n$ points, and \emph{binomial}$(n,p)$: the number of $1$'s in $n$ independent Bernoulli trials,
+    $\PP(k)=\binom nkp^k(1-p)^{n-k}$.
+  \item \textbf{Continuous.} $\Omega=\R$ and $\PP$ is given by a \term{density} $f\ge0$ with $\int_{\R}f(x)\dd x=1$, through $\PP(A)=\int_Af(x)\dd x$.
+    The standard examples are the \emph{uniform} density $\frac1{b-a}$ on $[a,b]$, the \emph{exponential} density $\lambda e^{-\lambda x}$ on $[0,\infty)$, and the \emph{Gaussian} (or normal) density $N(\mu,\sigma^2)$:
+    \[
+      f(x)=\frac{1}{\sigma\sqrt{2\pi}}\,e^{-(x-\mu)^2/(2\sigma^2)} .
+    \]
+\end{itemize}
+Note that for a density every single point has probability $\int_{\{x\}}f=0$: only sets of positive length carry probability.
+
+\begin{example}\label{ex:laplace}
+  Find $c$ such that $f(x)=c\,e^{-\abs x}$ is a probability density on $\R$, and compute $\PP(\abs X\le1)$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Normalise.} By symmetry, $\int_{\R}e^{-\abs x}\dd x=2\int_0^\infty e^{-x}\dd x=2$, so $c=\tfrac12$.
+    \item \emph{Compute the probability.} $\PP(\abs X\le1)=\int_{-1}^1\tfrac12e^{-\abs x}\dd x=\int_0^1e^{-x}\dd x=1-e^{-1}$.
+    \item \emph{Number.} $1-e^{-1}\approx0.632$.
+  \end{steps}
+\end{solution}
+
+\begin{example}[Born rule for a particle in a box]\label{ex:box}
+  A particle in a box $[0,1]$ is in the state with wave function $\psi(x)=\sqrt2\sin(\pi x)$. Its position has density $\abs{\psi(x)}^2$. Check normalisation and find the probability that the particle is found in $[\tfrac14,\tfrac34]$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The density.} $\abs{\psi(x)}^2=2\sin^2(\pi x)=1-\cos(2\pi x)$.
+    \item \emph{Normalisation.} $\int_0^1\bigl(1-\cos2\pi x\bigr)\dd x=1-\bigl[\tfrac{\sin2\pi x}{2\pi}\bigr]_0^1=1$.
+    \item \emph{The probability.} $\int_{1/4}^{3/4}\bigl(1-\cos2\pi x\bigr)\dd x=\tfrac12-\tfrac1{2\pi}\bigl(\sin\tfrac{3\pi}2-\sin\tfrac\pi2\bigr)=\tfrac12+\tfrac1\pi\approx0.818$.
+    \item \emph{Reading.} The middle half of the box carries about $82\%$ of the probability: the particle is most likely found near the centre, where $\abs\psi^2$ is largest.
+  \end{steps}
+\end{solution}
+
+\subsection{Random variables, expectation and variance}
+
+\begin{definition}[Random variable, expectation, variance]\label{def:rv}
+  A \term{random variable} is a function $X:\Omega\to\R$ (measurable, which is automatic in all our examples). Its \term{distribution} is the probability measure $B\mapsto\PP(X\in B)$ on $\R$. Its \term{expectation} and \term{variance} are
+  \[
+    \EE[X]=\sum_xx\,p(x)\ \text{ or }\ \int_{\R}x\,f(x)\dd x,\qquad
+    \Var(X)=\EE\bigl[(X-\EE X)^2\bigr]=\EE[X^2]-\EE[X]^2 ,
+  \]
+  in the discrete, respectively continuous, case. The \term{standard deviation} is $\sqrt{\Var(X)}$.
+\end{definition}
+
+For a function $g$, $\EE[g(X)]=\sum_xg(x)p(x)$ or $\int g(x)f(x)\dd x$. Expectation is linear, $\EE[aX+bY]=a\EE X+b\EE Y$, and $\Var(aX+b)=a^2\Var(X)$.
+
+\begin{example}[Quantum measurement outcomes as random variables]\label{ex:rv-qm}
+  Measure the observable $Z$ on a qubit with Bloch vector $\vec n$. Compute $\EE[X]$ and $\Var(X)$ for the outcome $X\in\{\pm1\}$, and compare with $\langle Z\rangle$ and $\Delta Z$ (Section~\ref{sec:measurement}).
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The distribution.} $\PP(X=+1)=\tfrac12(1+n_z)$ and $\PP(X=-1)=\tfrac12(1-n_z)$ (Proposition~\ref{prop:bloch}).
+    \item \emph{Expectation.} $\EE[X]=\tfrac12(1+n_z)-\tfrac12(1-n_z)=n_z=\langle Z\rangle$.
+    \item \emph{Variance.} $X^2=1$ always, so $\Var(X)=1-n_z^2$, which is $(\Delta Z)^2$.
+  \end{steps}
+  The expectation value and standard deviation of Chapter~\ref{ch:postulates} are nothing but the expectation and standard deviation of the outcome, as a random variable.
+\end{solution}
+
+How concentrated is a random variable around its mean? The variance gives a quantitative answer.
+
+\begin{theorem}[Chebyshev's inequality]\label{thm:chebyshev}
+  For every random variable $X$ with finite variance and every $\varepsilon>0$,
+  \[
+    \PP\bigl(\abs{X-\EE X}\ge\varepsilon\bigr)\le\frac{\Var(X)}{\varepsilon^2}.
+  \]
+\end{theorem}
+\begin{proof}
+  Put $Y=(X-\EE X)^2\ge0$ and let $A$ be the event $\{Y\ge\varepsilon^2\}$.
+  \begin{steps}
+    \item Pointwise, $Y\ge\varepsilon^2\,\mathbf 1_A$, where $\mathbf 1_A$ is $1$ on $A$ and $0$ elsewhere.
+    \item Take expectations: $\EE[Y]\ge\varepsilon^2\PP(A)$.
+    \item Since $\EE[Y]=\Var(X)$ and $A=\{\abs{X-\EE X}\ge\varepsilon\}$, dividing by $\varepsilon^2$ gives the claim. \qedhere
+  \end{steps}
+\end{proof}
+
+\subsection{Conditioning and independence}
+
+\begin{definition}[Conditional probability, independence]\label{def:conditional}
+  If $\PP(B)>0$, the \term{conditional probability} of $A$ given $B$ is $\PP(A\mid B)=\PP(A\cap B)/\PP(B)$. Events $A,B$ are \term{independent} if $\PP(A\cap B)=\PP(A)\PP(B)$, that is, if learning $B$ does not change the probability of $A$.
+\end{definition}
+
+Two consequences are used constantly. If $B_1,\dots,B_n$ partition $\Omega$ with $\PP(B_i)>0$, then:
+\begin{steps}
+  \item \emph{total probability:} $\PP(A)=\sum_i\PP(A\mid B_i)\PP(B_i)$;
+  \item \emph{Bayes' rule:} $\PP(B_j\mid A)=\dfrac{\PP(A\mid B_j)\PP(B_j)}{\sum_i\PP(A\mid B_i)\PP(B_i)}$.
+\end{steps}
+The first follows from $A=\bigcup_i(A\cap B_i)$ and additivity; the second is the definition of conditional probability, $\PP(B_j\mid A)=\PP(A\cap B_j)/\PP(A)$, with the numerator rewritten as $\PP(A\mid B_j)\PP(B_j)$ and the denominator by total probability.
+
+\begin{example}[Bob guesses the state]\label{ex:bayes}
+  Alice sends $\ket0$ or $\ket+$, each with probability $\tfrac12$. Bob measures $Z$. For each outcome, what does he conclude?
+\end{example}
+\begin{solution}
+  Let $S_0,S_+$ be the events ``$\ket0$ was sent'', ``$\ket+$ was sent'', and $O_0,O_1$ the events ``outcome $0$'', ``outcome $1$''.
+  \begin{steps}
+    \item \emph{Likelihoods.} $\PP(O_0\mid S_0)=1$, $\PP(O_1\mid S_0)=0$; $\PP(O_0\mid S_+)=\PP(O_1\mid S_+)=\tfrac12$.
+    \item \emph{Total probability of each outcome.} $\PP(O_0)=1\cdot\tfrac12+\tfrac12\cdot\tfrac12=\tfrac34$, $\PP(O_1)=0+\tfrac12\cdot\tfrac12=\tfrac14$.
+    \item \emph{Bayes for outcome $0$.} $\PP(S_0\mid O_0)=\dfrac{1\cdot\frac12}{3/4}=\tfrac23$ and so $\PP(S_+\mid O_0)=\tfrac13$.
+    \item \emph{Bayes for outcome $1$.} $\PP(S_0\mid O_1)=\dfrac{0\cdot\frac12}{1/4}=0$, so $\PP(S_+\mid O_1)=1$.
+  \end{steps}
+  Outcome $1$ is conclusive: it cannot come from $\ket0$. Outcome $0$ only makes $\ket0$ more likely ($\tfrac23$ against $\tfrac12$). This is the same phenomenon that underlies the ``never wrong, sometimes silent'' measurement of Example~\ref{ex:unambiguous}.
+\end{solution}
+
+\paragraph{Joint distributions and marginals.}
+A pair of random variables $(X,Y)$ has a \term{joint distribution} $p(x,y)$; its \term{marginals} are $p_X(x)=\sum_yp(x,y)$ and $p_Y(y)=\sum_xp(x,y)$, and $X,Y$ are independent iff $p(x,y)=p_X(x)p_Y(y)$ for all $x,y$. The \term{product measure} $\PP_1\otimes\PP_2$ on $\Omega_1\times\Omega_2$ is the joint distribution of two independent variables.
+This is exactly the probabilistic counterpart of Postulate~4: product states produce product measures, and entangled states produce joint distributions that are \emph{not} products.
+
+\begin{example}\label{ex:joint-bell}
+  Measure $Z$ on both qubits of (a) $\ket+\ket+$ and (b) $\ket{\Phi^+}=\frac1{\sqrt2}(\ket{00}+\ket{11})$. Write the joint distribution and decide whether the outcomes are independent.
+\end{example}
+\begin{solution}
+  The joint probability of outcomes $(a,b)$ is $p(a,b)=\abs{\braket{ab}{\psi}}^2$.
+  \begin{steps}
+    \item \emph{(a)} $\ket+\ket+=\tfrac12(\ket{00}+\ket{01}+\ket{10}+\ket{11})$, so $p(a,b)=\tfrac14$ for all four pairs. The marginals are $\tfrac12,\tfrac12$ and $\tfrac14=\tfrac12\cdot\tfrac12$: the outcomes are independent.
+    \item \emph{(b)} $p(0,0)=p(1,1)=\tfrac12$ and $p(0,1)=p(1,0)=0$. The marginals are again $\tfrac12,\tfrac12$, but $p(0,0)=\tfrac12\ne\tfrac14$: the outcomes are perfectly correlated, not independent.
+  \end{steps}
+\end{solution}
+
+\begin{pitfall}
+  The table in part (b) is exactly the one produced by a \emph{classical} mixture: a fair coin decides whether the pair is $\ket{00}$ or $\ket{11}$. Correlations in a single basis cannot prove entanglement. What distinguishes the two is the behaviour in \emph{other} bases, which is the content of Bell's inequality (Section~\ref{sec:bell}).
+\end{pitfall}
+
+\subsection{Repeated experiments: the law of large numbers}
+
+How do we measure a probability in the laboratory? We repeat the experiment $n$ times and count. Let $X_1,\dots,X_n$ be independent Bernoulli$(p)$ variables (the $i$th is $1$ if the outcome of interest occurred in run $i$), and $\hat p=\frac1n\sum_iX_i$ the observed frequency.
+
+\begin{theorem}[Weak law of large numbers, Bernoulli case]\label{thm:wlln}
+  For every $\varepsilon>0$, $\ \PP\bigl(\abs{\hat p-p}\ge\varepsilon\bigr)\le\dfrac{1}{4n\varepsilon^2}$. In particular $\hat p\to p$ in probability as $n\to\infty$.
+\end{theorem}
+\begin{proof}
+  \begin{steps}
+    \item $\EE[\hat p]=\frac1n\sum_i\EE[X_i]=p$, by linearity.
+    \item Independence makes variances add: $\Var(\hat p)=\frac1{n^2}\sum_i\Var(X_i)=\frac{p(1-p)}n$.
+    \item Since $p(1-p)\le\tfrac14$, Chebyshev's inequality gives $\PP(\abs{\hat p-p}\ge\varepsilon)\le\frac{p(1-p)}{n\varepsilon^2}\le\frac1{4n\varepsilon^2}$. \qedhere
+  \end{steps}
+\end{proof}
+
+\begin{example}\label{ex:sample-size}
+  How many runs are enough to estimate an outcome probability within $\pm0.05$ with confidence at least $95\%$?
+\end{example}
+\begin{solution}
+  We need $\frac1{4n\varepsilon^2}\le0.05$ with $\varepsilon=0.05$. Then $n\ge\frac1{4\cdot0.0025\cdot0.05}=2000$. So about two thousand runs suffice (Chebyshev is conservative, so fewer would do in practice).
+\end{solution}
+
+\begin{lookahead}
+  This is how quantum states are reconstructed in practice (\emph{tomography}). To find the Bloch vector of an unknown qubit, we prepare many copies and measure $X$, $Y$ and $Z$ on different batches; the frequencies estimate $n_x,n_y,n_z=\langle\sigma_j\rangle$, and the error shrinks like $1/\sqrt n$. It also explains why a quantum algorithm which gives the right answer with probability $\tfrac23$ can be made reliable by simple repetition.
+\end{lookahead}
+
+\begin{exerciseset}
+  \exercise{1} Show that the power set of a finite set is a $\sigma$-algebra. Show that if $A,B\in\mathcal F$ then $A\cap B$ and $A\setminus B$ are in $\mathcal F$.
+
+  \exercise{1} Prove parts (a)--(e) of Proposition~\ref{prop:probprops} for a probability measure on a finite set, using only finite additivity and $\PP(\Omega)=1$.
+
+  \exercise{2} Prove the inclusion--exclusion formula for three events, $\PP(A\cup B\cup C)=\PP(A)+\PP(B)+\PP(C)-\PP(A\cap B)-\PP(A\cap C)-\PP(B\cap C)+\PP(A\cap B\cap C)$.
+
+  \exercise{2} Show that $B\mapsto\bra\psi P_B\ket\psi$ is a probability measure when $\{P_m\}$ is a complete family of orthogonal projectors (Example~\ref{ex:qmeasure}), and compute it for the measurement of $X$ on $\ket\psi=\frac1{\sqrt3}\ket0+\frac{1+\ii}{\sqrt3}\ket1$.
+
+  \exercise{1} Find $c$ so that $f(x)=cx^2$ is a probability density on $[0,1]$, and compute $\EE[X]$ and $\Var(X)$.
+
+  \exercise{2} Let $X$ be a Gaussian $N(\mu,\sigma^2)$. Show that $\EE[X]=\mu$ and $\Var(X)=\sigma^2$ (use $\int e^{-t^2/2}\dd t=\sqrt{2\pi}$ and integrate by parts).
+
+  \exercise{2} A particle in a box has wave function $\psi(x)=\sqrt2\sin(2\pi x)$ on $[0,1]$. Check normalisation and compute the probability of finding it in $[0,\tfrac14]$ and the expectation of its position.
+
+  \exercise{2} For a projective measurement of $M=\sum_mmP_m$ in the state $\ket\psi$, show that the outcome $X$ satisfies $\EE[X]=\bra\psi M\ket\psi$, $\EE[f(X)]=\bra\psi f(M)\ket\psi$ and $\Var(X)=(\Delta M)^2$.
+
+  \exercise{2} Prove Markov's inequality, $\PP(X\ge a)\le\EE[X]/a$ for $X\ge0$ and $a>0$, and deduce Chebyshev's inequality from it.
+
+  \exercise{2} Let $\ket\psi=\frac1{\sqrt3}\ket0+\sqrt{\tfrac23}\ket1$ be sent with probability $\tfrac13$ and $\ket{-}$ with probability $\tfrac23$. Bob measures $X$. Find the posterior probability of each state given each outcome.
+
+  \exercise{2} Show that $A,B$ independent implies $A,B^c$ independent. Compute the joint distribution of $Z\otimes Z$ outcomes for $\ket{\Phi^+}$, $\bell01$, and for $\ket0\ket+$, and decide independence in each case.
+
+  \exercise{3} A classical mixture $\rho=\tfrac12\ket{00}\!\bra{00}+\tfrac12\ket{11}\!\bra{11}$ and the state $\ket{\Phi^+}$ give the same joint distribution for $Z\otimes Z$. Compute the joint distributions of outcomes of $X\otimes X$ for both, and conclude that $X\otimes X$ distinguishes them.
+
+  \exercise{2} A qubit is measured $n=100$ times in the computational basis and $\ket1$ occurs $37$ times. Estimate $p(1)$ and give a Chebyshev bound on the probability that your estimate is off by more than $0.1$.
+
+  \exercise{3} Show that the sample mean of $n$ independent Bernoulli$(p)$ variables has the binomial law $\PP(\hat p=k/n)=\binom nkp^k(1-p)^{n-k}$, and verify that $\EE[\hat p]=p$ and $\Var(\hat p)=p(1-p)/n$ directly from the binomial sums.
+\end{exerciseset}

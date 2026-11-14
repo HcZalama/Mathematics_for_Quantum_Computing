@@ -2,49 +2,59 @@
 \addcontentsline{toc}{chapter}{Introduction}
 \markboth{Introduction}{Introduction}
 
-This book accompanies two courses, \emph{Mathematics for Quantum Computing I} and \emph{II}, and is accordingly divided into two parts. Part~I is devoted to the first course. Part~II, which is the part
-contained in this volume, covers the mathematics that a student needs in order to read quantum mechanics and quantum computing, and the postulates of quantum mechanics themselves.
+This book covers the mathematics that a student needs in order to read quantum mechanics and quantum computing, together with the postulates of quantum mechanics themselves and the probability and information theory that make them quantitative.
 
-\paragraph{What Part~II contains.}
-It has two chapters. Chapter~\ref{ch:tools}, \emph{Mathematical Tools}, begins with the physical puzzles that forced quantum mechanics upon us and observes that Schr\"odinger's equation is linear.
+\paragraph{What the book contains.}
+It has three chapters. Chapter~\ref{ch:tools}, \emph{Mathematical Tools}, begins with the physical puzzles that forced quantum mechanics upon us and observes that Schr\"odinger's equation is linear.
 It then builds the language in which that observation is made precise: complex numbers, vector spaces and linear maps, inner products and Dirac notation, and operators with their spectra.
-Chapter~\ref{ch:postulates}, \emph{The Postulates of Quantum Mechanics}, states the four postulates (state space, evolution, measurement, composition), draws their consequences, and goes on to
-superdense coding, density operators, the Schmidt decomposition and the argument of Einstein, Podolsky and Rosen together with Bell's reply to it.
+Chapter~\ref{ch:postulates}, \emph{The Postulates of Quantum Mechanics}, states the four postulates (state space, evolution, measurement, composition), draws their consequences, and goes on to superdense coding, density operators, the Schmidt decomposition and the argument of Einstein, Podolsky and Rosen together with Bell's reply to it. Along the way it introduces the Riesz representation theorem, positive operators and unitary representations of groups.
+Chapter~\ref{ch:info}, \emph{Probability and Information}, reviews probability measures and Fourier transforms, and then develops the Shannon entropy, the von Neumann entropy and the relative entropy, which measure what we know and do not know about a state.
 Figure~\ref{fig:roadmap} shows how the sections depend on each other.
 
 \begin{figure}[htb]
   \centering
   \begin{tikzpicture}[>=stealth,
-      b/.style={draw=navy,thick,fill=navy!8,font=\footnotesize,minimum height=0.65cm,inner sep=3pt},
-      c/.style={draw=figacc,thick,fill=figacc!10,font=\footnotesize,minimum height=0.65cm,inner sep=3pt}]
-    \node[b] (m) at (0,2.2) {1.1 Why quantum?};
-    \node[b] (c) at (0,1.1) {1.2 Complex numbers};
-    \node[b] (v) at (0,0) {1.3 Vector spaces};
-    \node[b] (h) at (0,-1.1) {1.4 Hilbert spaces};
-    \node[b] (o) at (0,-2.2) {1.5 Operators};
-    \node[c] (se) at (5,2.2) {2.1 State and evolution};
-    \node[c] (me) at (5,1.1) {2.2 Measurement};
-    \node[c] (co) at (5,0) {2.3 Composite systems};
-    \node[c] (sd) at (8.9,1.1) {2.4 Superdense coding};
-    \node[c] (de) at (8.9,-0.2) {2.5 Density operator};
-    \node[c] (sc) at (8.9,-1.5) {2.6 Schmidt, purification};
-    \node[c] (eb) at (5,-2.2) {2.7 EPR and Bell};
+      b/.style={draw=navy,thick,fill=navy!8,font=\scriptsize,minimum height=0.6cm,minimum width=3.0cm,inner sep=2.5pt},
+      c/.style={draw=figacc,thick,fill=figacc!10,font=\scriptsize,minimum height=0.6cm,minimum width=3.3cm,inner sep=2.5pt},
+      d/.style={draw=ink,thick,fill=ink!10,font=\scriptsize,minimum height=0.6cm,minimum width=3.3cm,inner sep=2.5pt}]
+    % chapter 1
+    \node[b] (m) at (0,2.6) {1.1 Why quantum?};
+    \node[b] (c) at (0,1.5) {1.2 Complex numbers};
+    \node[b] (v) at (0,0.4) {1.3 Vector spaces};
+    \node[b] (h) at (0,-0.7) {1.4 Hilbert spaces};
+    \node[b] (o) at (0,-1.8) {1.5 Operators};
+    % chapter 2
+    \node[c] (se) at (4.8,2.6) {2.1 State and evolution};
+    \node[c] (me) at (4.8,1.5) {2.2 Measurement};
+    \node[c] (co) at (4.8,0.4) {2.3 Composite systems};
+    \node[c] (sd) at (4.8,-0.7) {2.4 Superdense coding};
+    \node[c] (de) at (4.8,-1.8) {2.5 Density operator};
+    \node[c] (sc) at (4.8,-2.9) {2.6 Schmidt, purification};
+    \node[c] (eb) at (4.8,-4.0) {2.7 EPR and Bell};
+    % chapter 3
+    \node[d] (pr) at (9.9,2.6) {3.1 Probability measures};
+    \node[d] (fo) at (9.9,1.5) {3.2 Fourier transforms};
+    \node[d] (sh) at (9.9,0.4) {3.3 Shannon entropy};
+    \node[d] (vn) at (9.9,-0.7) {3.4 Von Neumann entropy};
+    \node[d] (re) at (9.9,-1.8) {3.5 Relative entropy};
+    % chains
     \draw[->] (m)--(c); \draw[->] (c)--(v); \draw[->] (v)--(h); \draw[->] (h)--(o);
-    \draw[->] (o) -- (se.west);
-    \draw[->] (se)--(me); \draw[->] (me)--(co);
-    \draw[->] (co.east) -- (sd.west); \draw[->] (co.east) -- (de.west);
-    \draw[->] (de)--(sc);
-    \draw[->] (co.south) -- (eb.north);
+    \draw[->] (se)--(me); \draw[->] (me)--(co); \draw[->] (co)--(sd); \draw[->] (sd)--(de); \draw[->] (de)--(sc); \draw[->] (sc)--(eb);
+    \draw[->] (pr)--(fo); \draw[->] (fo)--(sh); \draw[->] (sh)--(vn); \draw[->] (vn)--(re);
+    % cross-links between chapters
+    \draw[->] (o.east) -- ++(0.55,0) |- (se.west);
+    \draw[->] (me.east) -- ++(1.3,0) |- (pr.west);
+    \draw[->,dashed,ink] (de.east) -- ++(0.9,0) |- (vn.west);
   \end{tikzpicture}
-  \caption{Dependencies between the sections of Part~II. Chapter~1 (left, navy) is the toolkit; Chapter~2 (right, orange) uses it. Sections 2.4 to 2.7 are applications and can be read in any order after 2.3, except that 2.6 uses 2.5.}
+  \caption{Dependencies between the sections. Chapter~1 (left, navy) is the toolkit; Chapter~2 (centre, orange) builds the postulates with it; Chapter~3 (right, grey) applies probability and information theory to them. Sections 2.4 to 2.7 are applications; the dashed arrow shows that Section~3.4 uses density operators and the Schmidt decomposition (Sections~2.5 and~2.6).}
   \label{fig:roadmap}
 \end{figure}
 
 \paragraph{What you need.}
-A first course in calculus and linear algebra. Chapter~\ref{ch:tools} reviews everything else, but it does so quickly, so if complex numbers or bases are unfamiliar, read it slowly and do the exercises.
+A first course in calculus and linear algebra. Chapter~\ref{ch:tools} reviews everything else, but it does so quickly, so if complex numbers or bases are unfamiliar, read it slowly and do the exercises. Section~\ref{sec:prob} assumes nothing about measure theory beyond what it explains.
 
 \paragraph{How the book is laid out.}
-Each section opens with a short statement of what you will learn, builds the ideas through definitions, results and worked examples, and closes with exercises. The kinds of content have a consistent visual identity, so that you can always tell at a glance what you are looking at.
+Each section opens with a short statement of what you will learn, builds the ideas through definitions, results and worked examples, and closes with exercises. Proofs and solutions are written as short chains of steps, so that each line has a single job. The kinds of content have a consistent visual identity, so that you can always tell at a glance what you are looking at.
 
 \begin{center}
 \small
@@ -54,17 +64,17 @@ Each section opens with a short statement of what you will learn, builds the ide
   \midrule
   \textbf{\sffamily\color{navy}Definition}, \textbf{\sffamily\color{navy}Theorem} & a block with a navy bar on the left; theorems are shaded a little darker\\
   \textbf{\sffamily\color{navy}Postulate} & a heavier navy block; the four postulates of quantum mechanics\\
-  \textit{Proof} & plain text, closed by a filled square $\blacksquare$\\
-  \textbf{\sffamily\color{ink}Example}, \textit{Solution} & a grey bar: the statement is shaded and the solution continues under it, closed by $\square$\\
+  \textit{Proof} & plain text in steps, closed by a filled square $\blacksquare$\\
+  \textbf{\sffamily\color{ink}Example}, \textit{Solution} & a grey bar: the statement is shaded and the solution continues under it, in steps, closed by $\square$\\
   \textbf{\sffamily\color{warncol}Pitfall} & a red-tinted block warning against a classic mistake\\
-  \textbf{\sffamily\color{navy}Cross-reference} & a small note with a thin rule, pointing to related material elsewhere in the book\\
+  \textbf{\sffamily\color{navy}Cross-reference}, \textbf{\sffamily\color{navy}Looking ahead} & small notes with a thin rule: where else a topic appears, and what the mathematics will mean physically\\
   \textbf{Exercises} & at the end of every section, graded by stars: $\star$ routine, $\star\star$ needs an idea, $\star\star\star$ challenging\\
   \bottomrule
 \end{tabular}
 \end{center}
 
 \paragraph{Conventions.}
-Vectors are written as kets $\ket\psi$ (Dirac notation, introduced in Section~\ref{sec:hilbert}). The inner product $\langle\cdot,\cdot\rangle=\braket\cdot\cdot$ is conjugate-linear in its first argument and linear in the second.
-A \emph{state} is always a unit vector. The imaginary unit is $\ii$ and Planck's constant is $\hbar$. Appendix~\ref{app:notation} collects the notation, and Appendix~\ref{app:reference} lists the states, matrices and gates that appear most often.
+Vectors are written as kets $\ket\psi$ (Dirac notation, introduced in Section~\ref{sec:hilbert}). The inner product $\langle\cdot,\cdot\rangle=\braket\cdot\cdot$ is conjugate-linear in its first argument and linear in the second. A \emph{state} is always a unit vector. The imaginary unit is $\ii$ and Planck's constant is $\hbar$. Logarithms in Chapter~\ref{ch:info} are in base $2$ unless written $\ln$.
+Appendix~\ref{app:notation} collects the notation, and Appendix~\ref{app:reference} lists the states, matrices and gates that appear most often.
 
-Part~II is written to be read on its own, with every definition it needs restated, so that students of the second course can start here.
+The book is written to be read on its own, with every definition it needs restated.

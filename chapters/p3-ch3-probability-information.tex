@@ -1,0 +1,31 @@
+\chapter{Probability and Information}\label{ch:info}
+
+Quantum mechanics is a theory of \emph{probabilities}. The only thing Postulate~3 ever promises is that outcome $m$ occurs with probability $p(m)$; it never promises which outcome we will see. To use the theory seriously we must therefore be fluent in probability, and in the two
+ideas that turn probabilities into quantitative statements about knowledge and disorder: Fourier analysis, which connects a wave function to its momentum content and underlies the quantum Fourier transform, and the notion of \emph{entropy}, which measures how much we do not know about a state.
+
+This chapter is a self-contained review of those tools, followed by their quantum versions. The route is the following.
+
+\begin{steps}
+  \item \textbf{Probability measures} (Section~\ref{sec:prob}) give a precise meaning to ``probability'', both for finitely many outcomes (a qubit measurement) and for a continuum (the position of a particle). We see that every quantum measurement defines one.
+  \item \textbf{Fourier transforms} (Section~\ref{sec:fourier}) pass between position and momentum, and between a probability distribution and its characteristic function. Their discrete version is the matrix at the heart of Shor's algorithm.
+  \item \textbf{Shannon entropy} (Section~\ref{sec:shannon}) quantifies the information in a classical random variable, and what is needed to store and send it.
+  \item \textbf{Von Neumann entropy} (Section~\ref{sec:vonneumann}) extends it to density operators, and measures entanglement.
+  \item \textbf{Relative entropy} (Section~\ref{sec:relent}) measures how distinguishable two states are, and gives the cleanest proofs of the basic inequalities.
+\end{steps}
+
+\begin{objectives}[In this chapter]
+  You will use probability measures, random variables, conditioning and independence; compute Fourier series and transforms and the discrete Fourier transform; compute Shannon and von Neumann entropies and relative entropies; and prove
+  their basic properties, including Gibbs' and Klein's inequalities and the subadditivity of the von Neumann entropy.
+\end{objectives}
+
+\begin{whereitsits}
+  Everything here is built on Chapters~\ref{ch:tools} and~\ref{ch:postulates}: the spectral theorem and functions of operators define the von Neumann entropy, density operators and partial traces
+  supply its arguments, and the Schmidt decomposition explains why the entropy of entanglement is well defined. The outcome probabilities of Postulate~3 are the bridge between the two worlds.
+\end{whereitsits}
+
+\input{chapters/ch3/sec1-probability}
+\input{chapters/ch3/sec2-fourier}
+\input{chapters/ch3/sec3-shannon}
+\input{chapters/ch3/sec4-vonneumann}
+\input{chapters/ch3/sec5-relative}
+\input{chapters/ch3/further-reading}
