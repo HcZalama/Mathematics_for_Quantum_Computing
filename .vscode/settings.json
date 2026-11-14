@@ -1,5 +1,7 @@
 {
   "files.exclude": { "build": true },
   "latex-workshop.latex.outDir": "%DIR%",
-  "latex-workshop.latex.autoClean.run": "never"
+  "latex-workshop.latex.autoClean.run": "never",
+  "latex-workshop.view.pdf.spreadMode": 1,
+  "latex-workshop.view.pdf.scrollMode": 0
 }
