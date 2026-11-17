@@ -2,53 +2,219 @@
 \addcontentsline{toc}{chapter}{Introduction}
 \markboth{Introduction}{Introduction}
 
-This book covers the mathematics that a student needs in order to read quantum mechanics and quantum computing, together with the postulates of quantum mechanics themselves and the probability and information theory that make them quantitative.
+Quantum mechanics is the most accurate theory of nature that we have, and quantum computing is the attempt to use it to process information. Both are written in the language of linear algebra. This book teaches that language, states the rules of quantum mechanics in it, and then uses it to understand some of the phenomena that made the theory necessary.
 
-\paragraph{What the book contains.}
-It has three chapters. Chapter~\ref{ch:tools}, \emph{Mathematical Tools}, begins with the physical puzzles that forced quantum mechanics upon us and observes that Schr\"odinger's equation is linear.
-It then builds the language in which that observation is made precise: complex numbers, vector spaces and linear maps, inner products with Dirac notation, the dual space and the Riesz representation theorem, operators with their spectra, and tensor products.
-Chapter~\ref{ch:postulates}, \emph{The Postulates of Quantum Mechanics}, states the four postulates (state space, evolution, measurement, composition), draws their consequences, and goes on to superdense coding, density operators, the Schmidt decomposition and the argument of Einstein, Podolsky and Rosen together with Bell's reply to it. Along the way it introduces positive operators, unitary representations of groups, and the operator version of the Riesz theorem.
-Chapter~\ref{ch:info}, \emph{Probability and Information}, reviews probability measures and Fourier transforms, and then develops the Shannon entropy, the von Neumann entropy and the relative entropy, which measure what we know and do not know about a state.
-Figure~\ref{fig:roadmap} shows how the sections depend on each other.
+This introduction does three things. It describes three experimental puzzles that classical physics could not explain. It states, briefly and without proof, the four rules of quantum mechanics that resolve them. And it shows how the rest of the book is organised to make those rules precise and to put them to work.
+
+\section*{Three puzzles}
+\addcontentsline{toc}{section}{Three puzzles}
+
+Around 1900, physics looked nearly finished. Newton's mechanics described planets and projectiles, Maxwell's equations described light and electricity, and thermodynamics described heat. A handful of experiments refused to fit. We describe three of them; Chapter~\ref{ch:phenomena} returns to each one with the tools of the book and explains it.
+
+\paragraph{The double slit.}
+Send particles, one at a time, towards a wall with two narrow slits, and record where each one lands on a screen. Each particle arrives at a single point, like a bullet. But after many arrivals the points do not form two bumps, one behind each slit, as bullets would: they form alternating bright and dark bands, the \emph{interference fringes} of a wave (Figure~\ref{fig:slit}). And if we find out which slit each particle went through, the fringes disappear. Electrons, photons and even large molecules behave like this.
+
+\begin{figure}[htb]
+  \centering
+  \begin{minipage}[c]{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=0.82]
+      % barrier with two slits at y = +-0.5
+      \draw[ultra thick,ink] (0,-2.3)--(0,-0.6);
+      \draw[ultra thick,ink] (0,-0.4)--(0,0.4);
+      \draw[ultra thick,ink] (0,0.6)--(0,2.3);
+      % source and incoming rays
+      \fill[navy] (-2,0) circle (2.5pt) node[below=3pt,font=\footnotesize] {source};
+      \draw[navy,->] (-2,0)--(-0.1,0.5);
+      \draw[navy,->] (-2,0)--(-0.1,-0.5);
+      % outgoing circular waves from each slit
+      \foreach \r in {0.6,1.1,1.6,2.1,2.6,3.1,3.6}{
+        \draw[navy!45] ($(0,0.5)+(-50:\r)$) arc (-50:50:\r);
+        \draw[navy!45] ($(0,-0.5)+(-50:\r)$) arc (-50:50:\r);
+      }
+      % screen with fringes drawn as shades
+      \foreach \y in {-2.2,-2.15,...,2.15}{
+        \pgfmathsetmacro{\o}{0.5*(1+cos(\y*360/1.1))}
+        \fill[navy,opacity=\o] (4.05,\y) rectangle (4.5,{\y+0.05});
+      }
+      \draw[ultra thick,ink] (4,-2.3)--(4,2.3);
+      \node[font=\footnotesize] at (4.3,-2.65) {screen};
+    \end{tikzpicture}
+  \end{minipage}\hfill
+  \begin{minipage}[c]{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[width=\linewidth, height=5.2cm, xmin=-2.2, xmax=2.2, ymin=0, ymax=4.6,
+          xlabel={position $x$ on the screen}, ylabel={intensity},
+          ytick=\empty, xtick=\empty, axis lines=left, tick style={draw=none},
+          legend style={font=\footnotesize, at={(0.5,1.02)}, anchor=south, draw=none},
+          label style={font=\footnotesize}]
+        \addplot[navy, very thick, samples=200, domain=-2.2:2.2] {2*(1+cos(deg(2*pi*x/1.1)))};
+        \addplot[figacc, very thick, dashed, domain=-2.2:2.2] {2};
+        \legend{waves: $\abs{\psi_1+\psi_2}^2$, bullets: $\abs{\psi_1}^2+\abs{\psi_2}^2$}
+      \end{axis}
+    \end{tikzpicture}
+  \end{minipage}
+  \caption{Left: the double-slit set-up, with the fringes drawn on the screen. Right: the pattern that waves produce (solid) against the pattern that bullets would produce (dashed).}
+  \label{fig:slit}
+\end{figure}
+
+The fringes have a simple description if each route to a point $x$ of the screen is given a complex number, an \emph{amplitude}: $\psi_1(x)=a\,e^{\ii\varphi_1(x)}$ through the first slit and $\psi_2(x)=a\,e^{\ii\varphi_2(x)}$ through the second. Amplitudes add, and the intensity is the squared modulus of the total,
+\[
+  \abs{\psi_1+\psi_2}^2=2a^2\bigl(1+\cos(\varphi_1-\varphi_2)\bigr),
+\]
+which oscillates between $0$ and $4a^2$ as the phase difference changes along the screen. Bullets would give $\abs{\psi_1}^2+\abs{\psi_2}^2=2a^2$, the flat dashed line. Section~\ref{sec:interference} explains both the fringes and their disappearance.
+
+\paragraph{Black-body radiation.}
+A hot object glows, first red, then white. Classical physics predicts that a perfect emitter, a \emph{black body}, radiates more and more energy at higher and higher frequencies, so that its total emitted energy would be infinite: the \emph{ultraviolet catastrophe}. Real bodies do nothing of the sort: their spectrum rises, peaks and falls (Figure~\ref{fig:blackbody}). In 1900 Planck found the correct curve, at the price of a strange hypothesis: light of frequency $\nu$ can only exchange energy with matter in whole units $E=h\nu$.
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[width=0.8\linewidth, height=5.4cm, xmin=0, xmax=8, ymin=0, ymax=3,
+        xlabel={frequency, in units of $k_BT/h$}, ylabel={emitted energy},
+        ytick=\empty, xtick={0,2,4,6,8}, axis lines=left,
+        legend style={font=\footnotesize, at={(0.04,0.96)}, anchor=north west, draw=none},
+        label style={font=\footnotesize}, tick label style={font=\footnotesize}]
+      \addplot[figacc, very thick, dashed, domain=0:1.74, samples=60] {x^2};
+      \addplot[navy, very thick, samples=120, domain=0.01:8] {x^3/(exp(x)-1)};
+      \legend{classical, Planck}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Spectrum of a black body. The classical prediction (dashed, cut off at the plot's top) keeps growing; Planck's formula (solid) peaks and falls. The curves agree at low frequency.}
+  \label{fig:blackbody}
+\end{figure}
+
+Section~\ref{sec:blackbody} derives Planck's curve from the energy levels of light and the principle of maximal entropy.
+
+\paragraph{The stability of atoms.}
+In Rutherford's picture of the hydrogen atom an electron orbits a nucleus. But an orbiting charge radiates, so classically the electron should lose energy and spiral into the nucleus in about $10^{-11}$ seconds: atoms could not exist. Moreover, hydrogen does not glow with a continuous spectrum but with a few sharp lines, which fit the pattern of energy levels $E_n=-13.6\,\mathrm{eV}/n^2$ (Figure~\ref{fig:levels}): only certain energies are allowed, and light is emitted when the electron jumps between them.
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[scale=1.0]
+    % vertical positions are not to scale: n=1 -> -4.6, n=2 -> -1.6, n=3 -> -0.95, n=4 -> -0.55
+    \foreach \n/\E/\y in {1/-13.6/-4.6,2/-3.4/-1.6,3/-1.51/-0.95,4/-0.85/-0.55}{
+      \draw[ink, thick] (0,\y) -- (4.2,\y);
+      \node[left,font=\footnotesize] at (0,\y) {$n=\n$};
+      \node[right,font=\footnotesize] at (4.2,\y) {$\E$\,eV};
+    }
+    \draw[ink, thick, dotted] (0,0) -- (4.2,0);
+    \node[right,font=\footnotesize] at (4.2,0) {$0$};
+    \draw[->,navy,thick] (0.7,-1.6) -- (0.7,-4.6);
+    \draw[->,navy,thick] (1.3,-0.95) -- (1.3,-4.6);
+    \draw[->,navy,thick] (1.9,-0.55) -- (1.9,-4.6);
+    \node[font=\footnotesize,navy,align=center] at (1.3,-5.2) {ultraviolet lines\\(towards $n=1$)};
+    \draw[->,figacc,thick] (2.9,-0.95) -- (2.9,-1.6);
+    \draw[->,figacc,thick] (3.5,-0.55) -- (3.5,-1.6);
+    \node[font=\footnotesize,figacc,align=center] at (3.2,-2.4) {visible lines\\(towards $n=2$)};
+    \node[font=\scriptsize,ink] at (2.1,0.35) {(heights not to scale)};
+  \end{tikzpicture}
+  \caption{Energy levels of hydrogen. Only the energies shown are allowed. Light is emitted when the electron drops from one level to a lower one; the drops towards $n=2$ give the visible lines.}
+  \label{fig:levels}
+\end{figure}
+
+Section~\ref{sec:levels} explains why the energies are discrete and why the atom does not collapse.
+
+The three puzzles share a moral. Behaviour is described by \emph{amplitudes} that add and can cancel; energy comes in discrete \emph{levels}; and what we observe are \emph{probabilities}. A theory with these three features needs complex numbers, vector spaces, and operators with eigenvalues. Here are its rules.
+
+\section*{The rules in four sentences}
+\addcontentsline{toc}{section}{The rules in four sentences}
+
+Quantum mechanics rests on four postulates. We state them now informally, as a map of what is to come; Chapter~\ref{ch:postulates} states them precisely, once the language is in place.
+
+\begin{stepsn}
+  \item \textbf{State.} The state of an isolated system is a unit vector $\ket\psi$ in a complex vector space with an inner product (a \emph{Hilbert space}). Its coordinates are complex numbers, the \emph{amplitudes}.
+  \item \textbf{Evolution.} Left alone, a system evolves linearly and reversibly: $\ket{\psi(t)}=U(t)\ket{\psi(0)}$ with $U(t)$ a \emph{unitary} operator. Equivalently, it obeys Schr\"odinger's equation
+    \[
+      \ii\hbar\,\frac{d}{dt}\ket{\psi(t)}=H\ket{\psi(t)},
+    \]
+    where the \emph{Hamiltonian} $H$ is the operator that represents the energy. The equation is linear, so a sum of solutions is again a solution: this is why amplitudes add.
+  \item \textbf{Measurement.} Every measurable quantity is represented by a \emph{Hermitian} operator $A$. Measuring it returns one of its \emph{eigenvalues} $a$, with probability $\abs{\braket a\psi}^2$, where $\ket a$ is the corresponding unit eigenvector (the \emph{Born rule}); afterwards the system is in the state $\ket a$. Since the possible energies are the eigenvalues of $H$, energy can come in discrete levels.
+  \item \textbf{Composition.} The state space of several systems together is the \emph{tensor product} of their state spaces. It contains states that are not products of states of the parts: \emph{entangled} states.
+\end{stepsn}
+
+Every word in italics is a piece of mathematics, and the book is organised to supply them in order.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.43\textwidth}p{0.47\textwidth}@{}}
+  \toprule
+  In the rules & Where the mathematics is built\\
+  \midrule
+  amplitudes, phases & complex numbers, Section~\ref{sec:complex}\\
+  superpositions, linear evolution & vector spaces and linear maps, Section~\ref{sec:vector-spaces}\\
+  unit vectors, probabilities $\abs{\braket a\psi}^2$ & inner products and Dirac notation, Section~\ref{sec:hilbert}\\
+  Hermitian and unitary operators, eigenvalues, $e^{-\ii Ht/\hbar}$ & operators and their spectra, Section~\ref{sec:operators}\\
+  composite systems, entanglement & tensor products, Section~\ref{sec:tensor}\\
+  outcomes, averages, information & probability and entropy, Chapter~\ref{ch:info}\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\section*{How the book is organised}
+\addcontentsline{toc}{section}{How the book is organised}
+
+The book has four chapters (Figure~\ref{fig:roadmap}).
+
+\begin{itemize}
+  \item Chapter~\ref{ch:tools}, \emph{Mathematical Tools}, builds the language: complex numbers, vector spaces and linear maps, inner products with Dirac notation and the Riesz representation theorem, operators with their spectra, and tensor products.
+  \item Chapter~\ref{ch:postulates}, \emph{The Postulates of Quantum Mechanics}, states the four rules precisely and draws their consequences: qubits and the Bloch sphere, measurements and the uncertainty principle, entanglement, density operators, and the argument of Einstein, Podolsky and Rosen together with Bell's reply to it.
+  \item Chapter~\ref{ch:info}, \emph{Probability and Information}, makes the probabilistic side quantitative: probability measures, Fourier transforms, and the Shannon, von Neumann and relative entropies.
+  \item Chapter~\ref{ch:phenomena}, \emph{Phenomena}, uses all of this to explain physics: the double slit, discrete energy levels and the stability of atoms, the Stern--Gerlach experiment and magnetic resonance, black-body radiation, and the impossibility of cloning together with quantum teleportation.
+\end{itemize}
 
 \begin{figure}[htb]
   \centering
   \begin{tikzpicture}[>=stealth,
-      b/.style={draw=navy,thick,fill=navy!8,font=\scriptsize,minimum height=0.6cm,minimum width=3.0cm,inner sep=2.5pt},
-      c/.style={draw=figacc,thick,fill=figacc!10,font=\scriptsize,minimum height=0.6cm,minimum width=3.3cm,inner sep=2.5pt},
-      d/.style={draw=ink,thick,fill=ink!10,font=\scriptsize,minimum height=0.6cm,minimum width=3.3cm,inner sep=2.5pt}]
+      b/.style={draw=navy,thick,fill=navy!8,font=\scriptsize,minimum height=0.6cm,minimum width=2.9cm,inner sep=2pt},
+      c/.style={draw=figacc,thick,fill=figacc!10,font=\scriptsize,minimum height=0.6cm,minimum width=3.0cm,inner sep=2pt},
+      d/.style={draw=ink,thick,fill=ink!10,font=\scriptsize,minimum height=0.6cm,minimum width=3.0cm,inner sep=2pt},
+      e/.style={draw=navy!60,thick,fill=white,font=\scriptsize,minimum height=0.6cm,minimum width=3.0cm,inner sep=2pt}]
     % chapter 1
-    \node[b] (m) at (0,2.6) {1.1 Why quantum?};
-    \node[b] (c) at (0,1.5) {1.2 Complex numbers};
-    \node[b] (v) at (0,0.4) {1.3 Vector spaces};
-    \node[b] (h) at (0,-0.7) {1.4 Hilbert spaces};
-    \node[b] (o) at (0,-1.8) {1.5 Operators};
-    \node[b] (t) at (0,-2.9) {1.6 Tensor products};
+    \node[font=\scriptsize\bfseries,navy] at (0,3.6) {Chapter 1};
+    \node[b] (c) at (0,2.9) {1.1 Complex numbers};
+    \node[b] (v) at (0,1.8) {1.2 Vector spaces};
+    \node[b] (h) at (0,0.7) {1.3 Hilbert spaces};
+    \node[b] (o) at (0,-0.4) {1.4 Operators};
+    \node[b] (t) at (0,-1.5) {1.5 Tensor products};
     % chapter 2
-    \node[c] (se) at (4.8,2.6) {2.1 State and evolution};
-    \node[c] (me) at (4.8,1.5) {2.2 Measurement};
-    \node[c] (co) at (4.8,0.4) {2.3 Composite systems};
-    \node[c] (sd) at (4.8,-0.7) {2.4 Superdense coding};
-    \node[c] (de) at (4.8,-1.8) {2.5 Density operator};
-    \node[c] (sc) at (4.8,-2.9) {2.6 Schmidt, purification};
-    \node[c] (eb) at (4.8,-4.0) {2.7 EPR and Bell};
+    \node[font=\scriptsize\bfseries,figacc] at (3.7,3.6) {Chapter 2};
+    \node[c] (se) at (3.7,2.9) {2.1 State, evolution};
+    \node[c] (me) at (3.7,1.8) {2.2 Measurement};
+    \node[c] (co) at (3.7,0.7) {2.3 Composite systems};
+    \node[c] (sd) at (3.7,-0.4) {2.4 Superdense coding};
+    \node[c] (de) at (3.7,-1.5) {2.5 Density operator};
+    \node[c] (sc) at (3.7,-2.6) {2.6 Schmidt, purification};
+    \node[c] (eb) at (3.7,-3.7) {2.7 EPR and Bell};
     % chapter 3
-    \node[d] (pr) at (9.9,2.6) {3.1 Probability measures};
-    \node[d] (fo) at (9.9,1.5) {3.2 Fourier transforms};
-    \node[d] (sh) at (9.9,0.4) {3.3 Shannon entropy};
-    \node[d] (vn) at (9.9,-0.7) {3.4 Von Neumann entropy};
-    \node[d] (re) at (9.9,-1.8) {3.5 Relative entropy};
+    \node[font=\scriptsize\bfseries,ink] at (7.5,3.6) {Chapter 3};
+    \node[d] (pr) at (7.5,2.9) {3.1 Probability};
+    \node[d] (fo) at (7.5,1.8) {3.2 Fourier transforms};
+    \node[d] (sh) at (7.5,0.7) {3.3 Shannon entropy};
+    \node[d] (vn) at (7.5,-0.4) {3.4 Von Neumann entropy};
+    \node[d] (re) at (7.5,-1.5) {3.5 Relative entropy};
+    % chapter 4
+    \node[font=\scriptsize\bfseries,navy!70] at (11.3,3.6) {Chapter 4};
+    \node[e] (p1) at (11.3,2.9) {4.1 Interference};
+    \node[e] (p2) at (11.3,1.8) {4.2 Energy levels, atoms};
+    \node[e] (p3) at (11.3,0.7) {4.3 Spin};
+    \node[e] (p4) at (11.3,-0.4) {4.4 Black-body radiation};
+    \node[e] (p5) at (11.3,-1.5) {4.5 Cloning, teleportation};
     % chains
-    \draw[->] (m)--(c); \draw[->] (c)--(v); \draw[->] (v)--(h); \draw[->] (h)--(o); \draw[->] (o)--(t);
+    \draw[->] (c)--(v); \draw[->] (v)--(h); \draw[->] (h)--(o); \draw[->] (o)--(t);
     \draw[->] (se)--(me); \draw[->] (me)--(co); \draw[->] (co)--(sd); \draw[->] (sd)--(de); \draw[->] (de)--(sc); \draw[->] (sc)--(eb);
     \draw[->] (pr)--(fo); \draw[->] (fo)--(sh); \draw[->] (sh)--(vn); \draw[->] (vn)--(re);
-    % cross-links between chapters
-    \draw[->] (o.east) -- ++(0.55,0) |- (se.west);
-    \draw[->] (t.east) -- ++(0.85,0) |- (co.west);
-    \draw[->] (me.east) -- ++(1.3,0) |- (pr.west);
-    \draw[->,dashed,ink] (de.east) -- ++(0.9,0) |- (vn.west);
+    % cross-links
+    \draw[->] (o.east) -- ++(0.2,0) |- (se.west);
+    \draw[->] (t.east) -- ++(0.4,0) |- (co.west);
+    \draw[->] (me.east) -- ++(0.3,0) |- (pr.west);
+    \draw[->,dashed,ink] (de.east) -- ++(0.55,0) |- (vn.west);
+    % chapter 4 uses everything
+    \draw[decorate,decoration={brace,amplitude=5pt,mirror},navy!60,thick] (9.6,3.2) -- (9.6,-1.8);
+    \node[font=\scriptsize,navy!70,align=center,rotate=90] at (9.25,0.7) {uses Chapters 1--3};
   \end{tikzpicture}
-  \caption{Dependencies between the sections. Chapter~1 (left, navy) is the toolkit; Chapter~2 (centre, orange) builds the postulates with it; Chapter~3 (right, grey) applies probability and information theory to them. Sections 2.4 to 2.7 are applications; the dashed arrow shows that Section~3.4 uses density operators and the Schmidt decomposition (Sections~2.5 and~2.6).}
+  \caption{How the sections depend on each other. Chapter~1 (navy) is the toolkit; Chapter~2 (orange) states the postulates with it; Chapter~3 (grey) adds probability and information theory; Chapter~4 uses all three to explain physical phenomena. Sections 2.4 to 2.7 are applications; the dashed arrow shows that Section~3.4 needs density operators and the Schmidt decomposition.}
   \label{fig:roadmap}
 \end{figure}
 
@@ -69,14 +235,14 @@ Each section opens with a short statement of what you will learn, builds the ide
   \textit{Proof} & plain text in steps, closed by a filled square $\blacksquare$\\
   \textbf{\sffamily\color{ink}Example}, \textit{Solution} & a grey bar: the statement is shaded and the solution continues under it, in steps, closed by $\square$\\
   \textbf{\sffamily\color{warncol}Pitfall} & a red-tinted block warning against a classic mistake\\
-  \textbf{\sffamily\color{navy}Cross-reference}, \textbf{\sffamily\color{navy}Looking ahead} & small notes with a thin rule: where else a topic appears, and what the mathematics will mean physically\\
+  \textbf{\sffamily\color{navy}Recall}, \textbf{\sffamily\color{navy}Cross-reference}, \textbf{\sffamily\color{navy}Looking ahead} & small notes with a thin rule: what a section uses from earlier ones, where else a topic appears, and what the mathematics will mean physically\\
   \textbf{Exercises} & at the end of every section, graded by stars: $\star$ routine, $\star\star$ needs an idea, $\star\star\star$ challenging\\
   \bottomrule
 \end{tabular}
 \end{center}
 
 \paragraph{Conventions.}
-Vectors are written as kets $\ket\psi$ (Dirac notation, introduced in Section~\ref{sec:hilbert}). The inner product $\langle\cdot,\cdot\rangle=\braket\cdot\cdot$ is conjugate-linear in its first argument and linear in the second. A \emph{state} is always a unit vector. The imaginary unit is $\ii$ and Planck's constant is $\hbar$. Logarithms in Chapter~\ref{ch:info} are in base $2$ unless written $\ln$.
+Vectors are written as kets $\ket\psi$ (Dirac notation, introduced in Section~\ref{sec:hilbert}). The inner product $\langle\cdot,\cdot\rangle=\braket\cdot\cdot$ is conjugate-linear in its first argument and linear in the second. A \emph{state} is always a unit vector. The imaginary unit is $\ii$ and Planck's constant is $\hbar=h/2\pi$. Logarithms in Chapter~\ref{ch:info} are in base $2$ unless written $\ln$.
 Appendix~\ref{app:notation} collects the notation, and Appendix~\ref{app:reference} lists the states, matrices and gates that appear most often.
 
 The book is written to be read on its own, with every definition it needs restated.

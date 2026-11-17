@@ -1,0 +1,186 @@
+%======================================================================
+\section{Energy levels and the stability of atoms}\label{sec:levels}
+%======================================================================
+
+\begin{objectives}
+  You will see why the energy of a confined particle comes in discrete levels, why a system in a single level does not change while a superposition of levels oscillates at the Bohr frequencies, how this explains sharp spectral lines, and why the uncertainty principle stops the electron of a hydrogen atom from falling into the nucleus.
+\end{objectives}
+
+\begin{recall}
+  The spectral theorem and the functional calculus (Section~\ref{sec:operators}); the Schr\"odinger equation and energy eigenstates (Proposition~\ref{prop:schrodinger}); the uncertainty principle (Theorem~\ref{thm:uncertainty}) and the Gaussian wave packet (Example~\ref{ex:gaussian-uncertainty}); wave functions and the Born rule (Example~\ref{ex:box}).
+\end{recall}
+
+The second and third puzzles of the Introduction are about energy. Hydrogen emits light only at a few sharp frequencies (Figure~\ref{fig:levels}), and the atom does not collapse although classical physics says it must. Both are explained by one fact of the theory: the possible energies of a system are the eigenvalues of its Hamiltonian.
+
+\subsection{Stationary states and Bohr frequencies}
+
+Let $H=\sum_nE_n\ketbra{E_n}{E_n}$ be the spectral decomposition of the Hamiltonian of a system (Theorem~\ref{thm:spectral}), with $E_1<E_2<\cdots$ and, for simplicity, one eigenvector per eigenvalue. We saw after Proposition~\ref{prop:schrodinger} that a system in one energy eigenstate only picks up a global phase, $e^{-\ii Ht/\hbar}\ket{E_n}=e^{-\ii E_nt/\hbar}\ket{E_n}$, so nothing observable about it ever changes: it is a \term{stationary state}. A superposition of levels behaves differently.
+
+\begin{proposition}[Only Bohr frequencies appear]\label{prop:bohr}
+  Let $\ket{\psi(0)}=\sum_nc_n\ket{E_n}$ and let $A$ be any observable, with matrix elements $A_{mn}=\bra{E_m}A\ket{E_n}$. Then
+  \[
+    \langle A\rangle_{\psi(t)}=\sum_{m,n}\overline{c_m}\,c_n\,A_{mn}\,e^{\ii(E_m-E_n)t/\hbar}.
+  \]
+  The average of every observable is a combination of oscillations at the angular frequencies $\omega_{mn}=(E_m-E_n)/\hbar$, the \term{Bohr frequencies}, and of no others.
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item \emph{Evolve} (functional calculus): $\ket{\psi(t)}=e^{-\ii Ht/\hbar}\ket{\psi(0)}=\sum_nc_ne^{-\ii E_nt/\hbar}\ket{E_n}$.
+    \item \emph{The bra} is $\bra{\psi(t)}=\sum_m\overline{c_m}e^{\ii E_mt/\hbar}\bra{E_m}$ (conjugate-linearity).
+    \item \emph{Sandwich $A$:} $\bra{\psi(t)}A\ket{\psi(t)}=\sum_{m,n}\overline{c_m}c_n\,e^{\ii(E_m-E_n)t/\hbar}\bra{E_m}A\ket{E_n}$. \qedhere
+  \end{steps}
+\end{proof}
+
+The diagonal terms $m=n$ are constant; only the cross terms move, and each one moves at the frequency of a \emph{difference} of two levels. This is the relative phase at work again: between two levels it grows like $(E_m-E_n)t/\hbar$, just as the relative phase between the two paths of an interferometer grew with $\varphi$.
+
+\paragraph{Spectral lines.}
+An electron is a charge. If its state is a superposition of two levels, its average position oscillates at a Bohr frequency, and an oscillating charge radiates light of that frequency, just as an antenna does. Hence the atom emits, and absorbs, light only at the frequencies
+\[
+  \nu_{mn}=\frac{\omega_{mn}}{2\pi}=\frac{E_m-E_n}{h},\qquad\text{that is,}\qquad h\nu_{mn}=E_m-E_n .
+\]
+This is Bohr's rule: the energy $h\nu$ of the light emitted equals the energy lost by the atom. A discrete set of levels gives a discrete set of lines. (A full theory of emission treats the light as a quantum system too, and Section~\ref{sec:blackbody} takes a first step in that direction; the frequencies, however, are already fixed by Proposition~\ref{prop:bohr}.)
+
+\begin{example}[The red line of hydrogen]\label{ex:hydrogen-line}
+  The levels of hydrogen are $E_n=-13.6\,\mathrm{eV}/n^2$. Find the energy and the wavelength of the light emitted when the electron drops from $n=3$ to $n=2$, using $E=hc/\lambda$ with $hc\approx1240\ \mathrm{eV\,nm}$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{The levels.} $E_3=-13.6/9\approx-1.51$ eV and $E_2=-13.6/4=-3.40$ eV.
+    \item \emph{The energy of the light.} $h\nu=E_3-E_2\approx1.89$ eV.
+    \item \emph{The wavelength.} $\lambda=hc/(h\nu)\approx1240/1.89\approx656$ nm.
+  \end{steps}
+  This is the bright red line of hydrogen, and the drops from $n=4,5,\dots$ to $n=2$ give the other visible lines. One formula for the levels explains the whole spectrum; what remains is to understand why the levels are discrete at all.
+\end{solution}
+
+\subsection{The particle in a box}
+
+The simplest system with discrete levels is a particle of mass $m$ that moves freely on a segment $[0,L]$ and cannot leave it (a ``box''). Its state is a wave function $\psi(x)$ with $\psi(0)=\psi(L)=0$, and its Hamiltonian is the kinetic energy
+\[
+  H=\frac{\hat p^2}{2m}=-\frac{\hbar^2}{2m}\frac{d^2}{dx^2},\qquad\hat p=-\ii\hbar\frac{d}{dx}
+\]
+(Exercise~\ref{ex:no-xp} introduced $\hat p$). The space of wave functions is infinite-dimensional, which Chapter~\ref{ch:tools} did not cover; but we shall see that $H$ has an orthonormal basis of eigenvectors, exactly as the spectral theorem would lead us to expect, and that is all we need.
+
+\begin{theorem}[Levels of a particle in a box]\label{thm:box}
+  The eigenvalue problem $H\varphi=E\varphi$ with $\varphi(0)=\varphi(L)=0$ and $\varphi\neq0$ has the solutions
+  \[
+    E_n=\frac{n^2\pi^2\hbar^2}{2mL^2},\qquad\varphi_n(x)=\sqrt{\frac2L}\,\sin\frac{n\pi x}{L},\qquad n=1,2,3,\dots,
+  \]
+  and the functions $\varphi_n$ are orthonormal: $\int_0^L\varphi_m\varphi_n\dd x=\delta_{mn}$.
+\end{theorem}
+\begin{proof}
+  \begin{steps}
+    \item \emph{Rewrite the equation.} $H\varphi=E\varphi$ means $\varphi''=-k^2\varphi$ with $k^2=2mE/\hbar^2$.
+    \item \emph{The energy is positive.} Multiply $-\frac{\hbar^2}{2m}\varphi''=E\varphi$ by $\overline\varphi$ and integrate by parts, using $\varphi(0)=\varphi(L)=0$: $E\int_0^L\abs\varphi^2\dd x=\frac{\hbar^2}{2m}\int_0^L\abs{\varphi'}^2\dd x$. The right side is $>0$ (if $\varphi'=0$ then $\varphi$ is constant, hence $0$), so $E>0$ and $k>0$.
+    \item \emph{General solution.} The solutions of $\varphi''=-k^2\varphi$ are $\varphi(x)=a\sin kx+b\cos kx$.
+    \item \emph{Left wall.} $\varphi(0)=b=0$.
+    \item \emph{Right wall.} $\varphi(L)=a\sin kL=0$ with $a\neq0$ forces $kL=n\pi$ for an integer $n\ge1$. Then $E=\hbar^2k^2/2m=n^2\pi^2\hbar^2/2mL^2$.
+    \item \emph{Normalise.} $\int_0^L\sin^2\frac{n\pi x}{L}\dd x=\frac L2$, so $a=\sqrt{2/L}$.
+    \item \emph{Orthogonality.} For $m\neq n$, $2\sin\alpha\sin\beta=\cos(\alpha-\beta)-\cos(\alpha+\beta)$ gives $\int_0^L\varphi_m\varphi_n\dd x=\frac1L\int_0^L\bigl(\cos\frac{(m-n)\pi x}L-\cos\frac{(m+n)\pi x}L\bigr)\dd x=0$. \qedhere
+  \end{steps}
+\end{proof}
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[width=0.62\linewidth, height=6.2cm, xmin=-0.08, xmax=1.08, ymin=-0.3, ymax=10.6,
+        axis lines=none, clip=false]
+      \draw[ink, very thick] (axis cs:0,-0.2) -- (axis cs:0,10.4);
+      \draw[ink, very thick] (axis cs:1,-0.2) -- (axis cs:1,10.4);
+      \draw[ink!60, dashed] (axis cs:0,1) -- (axis cs:1,1);
+      \draw[ink!60, dashed] (axis cs:0,4) -- (axis cs:1,4);
+      \draw[ink!60, dashed] (axis cs:0,9) -- (axis cs:1,9);
+      \node[anchor=west,font=\footnotesize] at (axis cs:1.03,1) {$E_1$};
+      \node[anchor=west,font=\footnotesize] at (axis cs:1.03,4) {$E_2=4E_1$};
+      \node[anchor=west,font=\footnotesize] at (axis cs:1.03,9) {$E_3=9E_1$};
+      \addplot[navy, thick, samples=80, domain=0:1] {1+0.9*sin(deg(pi*x))};
+      \addplot[navy, thick, samples=80, domain=0:1] {4+0.9*sin(deg(2*pi*x))};
+      \addplot[navy, thick, samples=80, domain=0:1] {9+0.9*sin(deg(3*pi*x))};
+      \node[font=\footnotesize,anchor=north] at (axis cs:0,-0.25) {$0$};
+      \node[font=\footnotesize,anchor=north] at (axis cs:1,-0.25) {$L$};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{The three lowest levels of a particle in a box. Each eigenfunction $\varphi_n$ is drawn at the height of its energy: it fits $n$ half-wavelengths between the walls, and the energies grow like $n^2$.}
+  \label{fig:box}
+\end{figure}
+
+The discreteness comes from the boundary conditions. A wave that must vanish at both walls has to fit a whole number of half-wavelengths into the box, as the vibrations of a guitar string do (Figure~\ref{fig:box}); each allowed wavelength $2L/n$ gives one allowed momentum $\hbar k=n\pi\hbar/L$ and one allowed energy. A free particle, with no walls, has no such restriction, and its energies form a continuum (Example~\ref{ex:gaussian-uncertainty} used such free wave functions).
+
+Two further features deserve comment.
+\begin{steps}
+  \item \emph{The lowest energy is not zero.} $E_1=\pi^2\hbar^2/2mL^2>0$: a confined particle can never be at rest. This \term{zero-point energy} is forced by the uncertainty principle. Confinement to $[0,L]$ makes $\Delta x$ at most of order $L$, so $\Delta p\ge\hbar/2\Delta x$ is at least of order $\hbar/L$, and the average kinetic energy $\langle\hat p^2\rangle/2m\ge(\Delta p)^2/2m$ is at least of order $\hbar^2/mL^2$.
+  \item \emph{Smaller boxes have more widely spaced levels.} The levels scale like $1/L^2$.
+\end{steps}
+
+\begin{example}[An electron in a nanometre box]\label{ex:nano-box}
+  An electron ($m\approx9.11\times10^{-31}$ kg) is confined to a box of length $L=1$ nm. Find $E_1$, the energy of the transition $2\to1$, and the wavelength of the corresponding light. Use $\hbar\approx1.055\times10^{-34}$ J\,s and $1\ \mathrm{eV}\approx1.602\times10^{-19}$ J.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Ground level.} $E_1=\dfrac{\pi^2\hbar^2}{2mL^2}=\dfrac{(3.31\times10^{-34})^2}{2\cdot9.11\times10^{-31}\cdot10^{-18}}\approx6.0\times10^{-20}\ \mathrm J\approx0.38\ \mathrm{eV}$.
+    \item \emph{Transition.} $E_2-E_1=(4-1)E_1=3E_1\approx1.13$ eV.
+    \item \emph{Wavelength.} $\lambda\approx1240/1.13\approx1100$ nm, in the near infrared.
+  \end{steps}
+  Energies of an electronvolt for sizes of a nanometre: this is the scale of atoms and of chemistry. Nanocrystals called \emph{quantum dots} are boxes of this kind, and their colour is set by their size: smaller dots have more widely spaced levels and glow bluer.
+\end{solution}
+
+\begin{example}[A superposition in the box moves]\label{ex:box-moves}
+  Let $\ket{\psi(0)}=\tfrac1{\sqrt2}(\varphi_1+\varphi_2)$. Show that the average position oscillates about the centre of the box at the Bohr frequency $\omega_{21}=(E_2-E_1)/\hbar$, and find the amplitude of the oscillation, given that $\int_0^Lx\,\varphi_1\varphi_2\dd x=-\tfrac{16L}{9\pi^2}$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Diagonal terms.} $\int_0^Lx\,\varphi_n^2\dd x=\tfrac L2$ for every $n$, because $\varphi_n^2$ is symmetric about $x=\tfrac L2$.
+    \item \emph{Apply Proposition~\ref{prop:bohr}} with $A=\hat x$, $c_1=c_2=\tfrac1{\sqrt2}$, and $x_{12}=x_{21}=-\tfrac{16L}{9\pi^2}$ (the eigenfunctions are real):
+      \[
+        \langle\hat x\rangle(t)=\tfrac12\cdot\tfrac L2+\tfrac12\cdot\tfrac L2+\tfrac12x_{12}\bigl(e^{-\ii\omega_{21}t}+e^{\ii\omega_{21}t}\bigr)=\tfrac L2-\tfrac{16L}{9\pi^2}\cos\omega_{21}t .
+      \]
+    \item \emph{Amplitude.} $\tfrac{16}{9\pi^2}\approx0.18$: the particle sloshes from side to side with an amplitude of about $18\%$ of the box.
+  \end{steps}
+  A charged particle doing this radiates at frequency $\omega_{21}/2\pi$, which is the mechanism behind the spectral lines described above. Each stationary state alone gives a constant $\langle\hat x\rangle=L/2$.
+\end{solution}
+
+\subsection{Why atoms do not collapse}
+
+The hydrogen atom has the Hamiltonian
+\[
+  H=\frac{\hat p^2}{2m}-\frac{ke^2}{r},\qquad k=\frac1{4\pi\varepsilon_0},
+\]
+kinetic energy plus the Coulomb attraction to the nucleus at distance $r$. Classically the electron can lower its energy without limit by falling inwards, since $-ke^2/r\to-\infty$. Quantum mechanically, falling inwards means confining the electron to a smaller region, and confinement costs kinetic energy, as we have just seen. The two effects balance at a definite size.
+
+\begin{example}[Size and energy of the hydrogen atom]\label{ex:hydrogen-estimate}
+  Suppose that the electron is spread over a region of radius $r$ around the nucleus. Estimate its energy as a function of $r$, find the radius that minimises it, and evaluate the radius and the energy numerically.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Kinetic energy.} Confinement to size $r$ gives $\Delta x\sim r$, hence $\Delta p\sim\hbar/r$ by the uncertainty principle, and a kinetic energy of order $\hbar^2/2mr^2$ (we drop factors of order one).
+    \item \emph{Potential energy.} Of order $-ke^2/r$.
+    \item \emph{Total.} $E(r)\approx\dfrac{\hbar^2}{2mr^2}-\dfrac{ke^2}{r}$. The first term wins at small $r$ and the second at large $r$, so $E(r)$ has a minimum.
+    \item \emph{Minimise.} $E'(r)=-\dfrac{\hbar^2}{mr^3}+\dfrac{ke^2}{r^2}=0$ gives
+      \[
+        r=a_0=\frac{\hbar^2}{mke^2},\qquad E(a_0)=\frac{ke^2}{2a_0}-\frac{ke^2}{a_0}=-\frac{ke^2}{2a_0}.
+      \]
+    \item \emph{Numbers.} With $ke^2\approx2.31\times10^{-28}$ J\,m, $a_0\approx5.3\times10^{-11}$ m, about half an \aa ngstr\"om, and $E(a_0)\approx-2.18\times10^{-18}$ J $\approx-13.6$ eV.
+  \end{steps}
+  The estimate produces the size of the atom and, by a lucky choice of the factors we dropped, exactly the ground level $E_1=-13.6$ eV of Figure~\ref{fig:levels}. The exact solution of the eigenvalue problem for $H$ gives all the levels $E_n=-13.6\,\mathrm{eV}/n^2$; it is a longer computation, done in every textbook of quantum mechanics~\cite{griffiths2018}.
+\end{solution}
+
+So the atom is stable because its Hamiltonian is bounded below: there is a lowest eigenvalue, the ground level, and an atom in its ground state is in a stationary state that has nowhere lower to go. The uncertainty principle, which in Chapter~\ref{ch:postulates} looked like a limitation on what we can know, is here what keeps matter from collapsing.
+
+\begin{lookahead}
+  A qubit is, physically, two levels of some system, chosen so that they are well separated from all the others: two levels of an ion, of an atom, or of a superconducting circuit that behaves like an artificial atom. The Bohr frequency between them is the frequency of the light or microwaves used to control them, as the next section shows.
+\end{lookahead}
+
+\begin{exerciseset}
+  \exercise{1} Find the energy and the wavelength of the light emitted in the transition $n=4\to n=2$ of hydrogen. Is it visible (roughly $400$--$700$ nm)?
+
+  \exercise{1} Verify directly that $\varphi_2(x)=\sqrt{2/L}\,\sin(2\pi x/L)$ satisfies $H\varphi_2=E_2\varphi_2$ and the boundary conditions, and that $\int_0^L\varphi_1\varphi_2\dd x=0$.
+
+  \exercise{2} For the ground state $\varphi_1$ of the box, compute $\langle\hat x\rangle$, $\Delta x$, $\langle\hat p\rangle$ and $\Delta p$. Show that $\Delta x\,\Delta p=\hbar\sqrt{\pi^2/12-1/2}\approx0.57\hbar$, and compare with Theorem~\ref{thm:uncertainty}.
+
+  \exercise{2} Compute $\int_0^Lx\,\varphi_1\varphi_2\dd x=-\tfrac{16L}{9\pi^2}$, the value used in Example~\ref{ex:box-moves}.
+
+  \exercise{2} Estimate the length of a box in which an electron emits red light ($650$ nm) in the transition $2\to1$.
+
+  \exercise{2} Repeat the estimate of Example~\ref{ex:hydrogen-estimate} for an electron bound to a nucleus of charge $Ze$. Show that the radius scales like $1/Z$ and the energy like $Z^2$, and estimate the ground energy of the ion He$^+$ ($Z=2$).
+
+  \exercise{3} Let the spectrum of $H$ be non-degenerate and $\ket{\psi(0)}=\sum_nc_n\ket{E_n}$. Show that the time average $\lim_{T\to\infty}\frac1T\int_0^T\langle A\rangle_{\psi(t)}\dd t$ equals $\sum_n\abs{c_n}^2A_{nn}$, so that over long times only the populations of the levels matter. (Assume the sum is finite.)
+\end{exerciseset}

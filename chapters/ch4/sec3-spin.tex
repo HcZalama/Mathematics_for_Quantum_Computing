@@ -1,0 +1,208 @@
+%======================================================================
+\section{Spin: Stern--Gerlach, precession and resonance}\label{sec:spin}
+%======================================================================
+
+\begin{objectives}
+  You will describe the Stern--Gerlach experiment and its sequential versions with a qubit, show that a spin in a magnetic field precesses, derive the Rabi formula for magnetic resonance (the way qubits are actually flipped in the laboratory), and see how frequent measurements can freeze the evolution of a system.
+\end{objectives}
+
+\begin{recall}
+  The Pauli matrices and their products (Proposition~\ref{prop:pauli}); the Bloch sphere and the overlap formula (Proposition~\ref{prop:bloch}); the Schr\"odinger equation and Examples~\ref{ex:H-eq-X} and~\ref{ex:precession} (Section~\ref{sec:state-evolution}); projective measurements (Section~\ref{sec:measurement}).
+\end{recall}
+
+\subsection{The Stern--Gerlach experiment}
+
+In 1922 Stern and Gerlach~\cite{gerlach1922} sent a beam of silver atoms through a magnetic field that was stronger near one pole of the magnet than near the other. Each atom behaves as a tiny magnet, and in such a field a magnet is pushed up or down according to how it is oriented. Classically the atoms come out of the oven oriented at random, so the beam should be smeared into a continuous band. Instead it split into exactly \emph{two} spots.
+
+The quantity that is measured is the \term{spin} of the atom (in silver it is the spin of one unpaired electron) along the direction of the field. The experiment shows that it has only two possible values, which are $\pm\hbar/2$. This is the textbook example of a qubit.
+
+\paragraph{The model.}
+\begin{steps}
+  \item The spin state is a qubit, $\ket\psi\in\C^2$; $\ket0$ is ``spin up along $z$'' and $\ket1$ is ``spin down along $z$''.
+  \item The spin along a unit vector $\vec n\in\R^3$ is the observable $S_{\vec n}=\tfrac\hbar2\,\vec n\cdot\vec\sigma$. Its eigenvalues are $\pm\tfrac\hbar2$ (Exercise~\ref{ex:spin-eig}), with unit eigenvectors $\ket{\pm\vec n}$, the states whose Bloch vectors are $\pm\vec n$.
+  \item A Stern--Gerlach apparatus oriented along $\vec n$ (we write SG$_{\vec n}$) measures $S_{\vec n}$: it sends the atom to the upper spot with probability $\abs{\braket{+\vec n}\psi}^2$, and the atom leaves in the state $\ket{+\vec n}$; similarly for the lower spot.
+\end{steps}
+By Proposition~\ref{prop:bloch}, if the atom has Bloch vector $\vec r$, the probability of the upper spot is
+\begin{equation}\label{eq:sg-prob}
+  p_+=\abs{\braket{+\vec n}\psi}^2=\tfrac12\bigl(1+\vec n\cdot\vec r\bigr).
+\end{equation}
+Atoms from an oven are in the maximally mixed state $\rho=\tfrac12\Id$, and give $p_+=\tfrac12$ along every direction: two spots of equal intensity, whatever the orientation of the magnet.
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[>=stealth,
+      sg/.style={draw=navy,thick,fill=navy!8,minimum width=1.3cm,minimum height=0.9cm,font=\small},
+      lab/.style={font=\footnotesize}]
+    \node[draw=ink,thick,fill=ink!10,minimum width=1cm,minimum height=0.7cm,font=\footnotesize] (oven) at (0,0) {oven};
+    \node[sg] (A) at (2.4,0) {SG$_z$};
+    \node[sg] (B) at (5.4,0.45) {SG$_x$};
+    \node[sg] (C) at (8.4,0.9) {SG$_z$};
+    \draw[->,thick] (oven) -- (A);
+    \draw[->,thick] (A.east) ++(0,0.2) -- node[lab,above] {$+$} (B.west);
+    \draw[thick] (A.east) ++(0,-0.2) -- ++(0.6,-0.35) node[lab,right] {$-$, blocked};
+    \draw[->,thick] (B.east) ++(0,0.2) -- node[lab,above] {$+$} (C.west);
+    \draw[thick] (B.east) ++(0,-0.2) -- ++(0.6,-0.35) node[lab,right] {$-$, blocked};
+    \draw[->,thick] (C.east) ++(0,0.2) -- ++(0.8,0.3) node[lab,right] {$+$: $\tfrac12$};
+    \draw[->,thick] (C.east) ++(0,-0.2) -- ++(0.8,-0.3) node[lab,right] {$-$: $\tfrac12$};
+  \end{tikzpicture}
+  \caption{Three Stern--Gerlach apparatuses in a row. The first one selects spin up along $z$, the second one selects spin up along $x$, and the third one measures the spin along $z$ again: both results reappear, with probability $\tfrac12$ each.}
+  \label{fig:sg}
+\end{figure}
+
+\begin{example}[Measurements in a row]\label{ex:sg-sequence}
+  Atoms pass through the three apparatuses of Figure~\ref{fig:sg}. Of the atoms that leave the oven, what fraction reaches each final spot? What happens if the middle apparatus is removed?
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{First SG$_z$.} From $\rho=\tfrac12\Id$, half of the atoms go up; they leave in $\ket0$, Bloch vector $(0,0,1)$.
+    \item \emph{SG$_x$.} By \eqref{eq:sg-prob} with $\vec n=(1,0,0)$, $p_+=\tfrac12(1+0)=\tfrac12$. The selected atoms leave in $\ket+$, Bloch vector $(1,0,0)$.
+    \item \emph{Last SG$_z$.} Now $p_\pm=\tfrac12(1\pm0)=\tfrac12$.
+    \item \emph{Fractions.} $\tfrac12\cdot\tfrac12\cdot\tfrac12=\tfrac18$ of the atoms reaches each final spot.
+    \item \emph{Without the middle apparatus,} the atoms reach the last SG$_z$ in $\ket0$, and all of them go up: the fractions are $\tfrac12$ and $0$.
+  \end{steps}
+  The atoms selected as ``up along $z$'' are found ``down along $z$'' after an $x$ measurement. The measurement of $S_x$ has not revealed a property that was there; it has changed the state, from $\ket0$ to $\ket+$ (Postulate~\ref{post:measurement}), and erased the information about $S_z$. This is the content of the non-commutativity $\comm{\sx}{\sz}\neq0$, and of the uncertainty relation $\Delta S_x\,\Delta S_z\ge\tfrac12\abs{\langle\comm{S_x}{S_z}\rangle}$.
+\end{solution}
+
+\subsection{Precession in a magnetic field}
+
+A spin in a constant magnetic field $\vec B$ has energy proportional to its component along the field. With the field along $z$ the Hamiltonian is
+\[
+  H=\frac{\hbar\omega_0}2\,\sz,
+\]
+where $\omega_0$, the \term{Larmor frequency}, is proportional to $\abs{\vec B}$. The two levels are $\ket0$ and $\ket1$, with energies $\pm\hbar\omega_0/2$, and their Bohr frequency is $\omega_0$. To see what the spin does, we follow the averages $\langle\sigma_j\rangle$, which form its Bloch vector (Proposition~\ref{prop:bloch}).
+
+\begin{lemma}[Evolution of averages]\label{lem:heisenberg}
+  If $\ket{\psi(t)}$ obeys the Schr\"odinger equation with Hamiltonian $H$ and $A$ is a fixed operator, then
+  \[
+    \frac{d}{dt}\langle A\rangle_{\psi(t)}=\frac\ii\hbar\,\bigl\langle\comm HA\bigr\rangle_{\psi(t)} .
+  \]
+\end{lemma}
+\begin{proof}
+  \begin{steps}
+    \item \emph{The equation and its adjoint.} $\frac{d}{dt}\ket\psi=-\frac\ii\hbar H\ket\psi$, and taking adjoints, $\frac{d}{dt}\bra\psi=\frac\ii\hbar\bra\psi H$ (because $H=H^\dagger$).
+    \item \emph{Product rule.} $\frac{d}{dt}\bra\psi A\ket\psi=\frac\ii\hbar\bra\psi HA\ket\psi-\frac\ii\hbar\bra\psi AH\ket\psi=\frac\ii\hbar\bra\psi\comm HA\ket\psi$. \qedhere
+  \end{steps}
+\end{proof}
+
+In particular an observable that commutes with $H$ has a constant average: the energy itself is conserved.
+
+\begin{proposition}[Larmor precession]\label{prop:larmor}
+  For $H=\tfrac{\hbar\omega_0}2\sz$, the Bloch vector $\vec r(t)$ of the state rotates about the $z$-axis at angular velocity $\omega_0$:
+  \[
+    \begin{aligned}
+      r_x(t)&=r_x(0)\cos\omega_0t-r_y(0)\sin\omega_0t,\\
+      r_y(t)&=r_x(0)\sin\omega_0t+r_y(0)\cos\omega_0t,\\
+      r_z(t)&=r_z(0).
+    \end{aligned}
+  \]
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item \emph{The commutators} (Proposition~\ref{prop:pauli}): $\comm\sz\sx=\sz\sx-\sx\sz=2\ii\sy$, $\comm\sz\sy=-2\ii\sx$, and $\comm\sz\sz=0$.
+    \item \emph{Apply Lemma~\ref{lem:heisenberg}} to $A=\sigma_j$, with $\tfrac\ii\hbar\cdot\tfrac{\hbar\omega_0}{2}=\tfrac{\ii\omega_0}2$:
+      \[
+        \dot r_x=\tfrac{\ii\omega_0}2\cdot2\ii\,r_y=-\omega_0r_y,\qquad\dot r_y=\tfrac{\ii\omega_0}2\cdot(-2\ii)\,r_x=\omega_0r_x,\qquad\dot r_z=0 .
+      \]
+    \item \emph{Solve.} The functions in the statement satisfy these equations and the initial conditions, and the solution of a linear system of differential equations with given initial values is unique. \qedhere
+  \end{steps}
+\end{proof}
+
+This is Example~\ref{ex:precession} again, now for every initial state: the spin turns around the field like a spinning top, at the Bohr frequency of its two levels. Nothing in the argument depends on the field being along $z$: for $H=\tfrac{\hbar\omega_0}2\,\vec n\cdot\vec\sigma$ the Bloch vector rotates about $\vec n$ (Exercise~\ref{ex:precess-n}).
+
+\subsection{Magnetic resonance and Rabi oscillations}
+
+How does one turn $\ket0$ into $\ket1$, that is, apply the gate $X$? Precession about $z$ cannot do it: it never changes $r_z$. The answer, discovered by Rabi in the 1930s for atomic beams and used today in magnetic resonance imaging and in quantum computers, is to add a weak field that rotates in the $xy$-plane at a frequency $\omega$ close to the Larmor frequency $\omega_0$:
+\[
+  H(t)=\frac{\hbar\omega_0}2\,\sz+\frac{\hbar\Omega}2\bigl(\cos(\omega t)\,\sx+\sin(\omega t)\,\sy\bigr),
+\]
+where the \term{Rabi frequency} $\Omega>0$ measures the strength of the rotating field and $\Delta=\omega_0-\omega$ is the \term{detuning}.
+
+\begin{theorem}[Rabi formula]\label{thm:rabi}
+  A spin that starts in $\ket0$ and evolves with $H(t)$ is found in $\ket1$ at time $t$ with probability
+  \[
+    p_1(t)=\frac{\Omega^2}{\Omega^2+\Delta^2}\,\sin^2\Bigl(\frac{\sqrt{\Omega^2+\Delta^2}}{2}\,t\Bigr).
+  \]
+\end{theorem}
+\begin{proof}
+  The trick is to look at the spin from a frame that rotates with the field.
+  \begin{steps}
+    \item \emph{Write the field as a rotated $\sx$.} Let $R(t)=e^{-\ii\omega t\sz/2}$. A direct computation with the matrices gives $R(t)\,\sx\,R(t)^\dagger=\cos(\omega t)\sx+\sin(\omega t)\sy$ (Exercise~\ref{ex:rotate-x}), and $R(t)$ commutes with $\sz$. Hence $H(t)=R(t)H_1R(t)^\dagger$ with the \emph{constant} operator $H_1=\tfrac{\hbar\omega_0}2\sz+\tfrac{\hbar\Omega}2\sx$.
+    \item \emph{Change variables.} Put $\ket{\phi(t)}=R(t)^\dagger\ket{\psi(t)}$. Using $\frac{d}{dt}R^\dagger=\tfrac{\ii\omega}2\sz R^\dagger$ and the Schr\"odinger equation for $\ket\psi$,
+      \[
+        \ii\hbar\frac{d}{dt}\ket\phi=-\tfrac{\hbar\omega}2\sz\ket\phi+R^\dagger H\ket\psi=\Bigl(-\tfrac{\hbar\omega}2\sz+H_1\Bigr)\ket\phi=\tfrac\hbar2\bigl(\Delta\,\sz+\Omega\,\sx\bigr)\ket\phi .
+      \]
+      In the rotating frame the Hamiltonian $H'=\tfrac\hbar2(\Delta\sz+\Omega\sx)$ does not depend on time.
+    \item \emph{Write $H'$ as a field along a unit vector.} With $\Omega_R=\sqrt{\Omega^2+\Delta^2}$ and $\vec m=(\Omega,0,\Delta)/\Omega_R$, $H'=\tfrac{\hbar\Omega_R}2\,\vec m\cdot\vec\sigma$. Since $(\vec m\cdot\vec\sigma)^2=\Id$, the exponential is $e^{-\ii H't/\hbar}=\cos\tfrac{\Omega_Rt}2\,\Id-\ii\sin\tfrac{\Omega_Rt}2\,\vec m\cdot\vec\sigma$ (Exercise~\ref{ex:rotation-formula}).
+    \item \emph{The amplitude of $\ket1$.} $\ket{\phi(0)}=\ket0$, and $\bra1\vec m\cdot\vec\sigma\ket0=m_x\bra1\sx\ket0+m_z\bra1\sz\ket0=m_x$. So $\braket1{\phi(t)}=-\ii\,\tfrac{\Omega}{\Omega_R}\sin\tfrac{\Omega_Rt}2$.
+    \item \emph{Back to the laboratory.} $R(t)$ is diagonal, so it changes the amplitude of $\ket1$ only by a phase: $\abs{\braket1{\psi(t)}}=\abs{\braket1{\phi(t)}}$. Squaring gives the formula. \qedhere
+  \end{steps}
+\end{proof}
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[width=0.8\linewidth, height=5cm, xmin=0, xmax=12.566, ymin=0, ymax=1.15,
+        xlabel={time, in units of $1/\Omega$}, ylabel={$p_1(t)$},
+        xtick={0,3.1416,6.2832,9.4248,12.566}, xticklabels={$0$,$\pi$,$2\pi$,$3\pi$,$4\pi$},
+        ytick={0,0.5,1}, axis lines=left,
+        legend style={font=\footnotesize, at={(0.5,1.0)}, anchor=south, draw=none, legend columns=2},
+        label style={font=\footnotesize}, tick label style={font=\footnotesize}]
+      \addplot[navy, very thick, samples=200, domain=0:12.566] {sin(deg(x/2))^2};
+      \addplot[figacc, very thick, dashed, samples=200, domain=0:12.566] {0.5*sin(deg(sqrt(2)*x/2))^2};
+      \legend{on resonance ($\Delta=0$), detuned ($\Delta=\Omega$)}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Rabi oscillations. On resonance the spin is flipped completely at $t=\pi/\Omega$; away from resonance the oscillation is faster but incomplete.}
+  \label{fig:rabi}
+\end{figure}
+
+Two features stand out (Figure~\ref{fig:rabi}).
+\begin{steps}
+  \item \emph{Resonance.} The largest probability of a flip, $\Omega^2/(\Omega^2+\Delta^2)$, equals $1$ only when $\omega=\omega_0$, and falls off quickly once $\abs\Delta$ exceeds $\Omega$. A weak field has a large effect only at the Bohr frequency of the two levels. Scanning $\omega$ and watching for flips is therefore a very precise way of measuring $\omega_0$, which depends on the local magnetic field and on the chemical surroundings of the spin: this is the principle of nuclear magnetic resonance and of MRI scanners.
+  \item \emph{Pulses are gates.} On resonance, $H'=\tfrac{\hbar\Omega}2\sx$, so a pulse of duration $t$ applies, in the rotating frame, the rotation $e^{-\ii\Omega t\sx/2}$ about the $x$-axis by the angle $\Omega t$. A ``$\pi$-pulse'' ($\Omega t=\pi$) gives $-\ii\sx$, the gate $X$ up to a global phase; a ``$\pi/2$-pulse'' sends $\ket0$ to $\tfrac1{\sqrt2}(\ket0-\ii\ket1)$, an equal superposition.
+\end{steps}
+
+\begin{example}[Designing a $\pi$-pulse]\label{ex:pi-pulse}
+  A qubit has Larmor frequency $\omega_0/2\pi=5$ GHz, and the control field gives a Rabi frequency $\Omega/2\pi=10$ MHz. How long must the field be applied, on resonance, to flip $\ket0$ to $\ket1$? What is the largest flip probability if the field is instead tuned to $5.01$ GHz?
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Duration.} We need $\Omega t=\pi$, so $t=\pi/\Omega=\pi/(2\pi\cdot10^7\ \mathrm{s}^{-1})=50$ ns.
+    \item \emph{Detuning.} $\Delta/2\pi=5\ \mathrm{GHz}-5.01\ \mathrm{GHz}=-10$ MHz, so $\abs\Delta=\Omega$.
+    \item \emph{Largest flip probability.} $\Omega^2/(\Omega^2+\Delta^2)=\tfrac12$: a mistuning of $0.2\%$ in frequency makes a perfect flip impossible.
+  \end{steps}
+  Numbers of this kind (gigahertz levels, nanosecond pulses) are typical of superconducting qubits.
+\end{solution}
+
+\subsection{The quantum Zeno effect}
+
+Measurements change states, and frequent measurements can stop a state from changing at all. Take the Hamiltonian $H=\hbar\omega\sx$ of Example~\ref{ex:H-eq-X}: starting from $\ket0$, the state is $\cos(\omega t)\ket0-\ii\sin(\omega t)\ket1$, and after the time $T=\pi/2\omega$ it is $\ket1$ (up to a phase) with certainty. Now measure in the basis $\ket0,\ket1$ at the times $T/N,2T/N,\dots,T$.
+
+\begin{proposition}[Quantum Zeno effect]\label{prop:zeno}
+  The probability that all $N$ measurements give $\ket0$ is $\cos^{2N}(\omega T/N)$, which tends to $1$ as $N\to\infty$.
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item \emph{One interval.} Starting from $\ket0$, after time $T/N$ the probability of $\ket0$ is $\cos^2(\omega T/N)$, and if the outcome is $\ket0$ the state is reset to $\ket0$ (Postulate~\ref{post:measurement}).
+    \item \emph{All intervals.} Each interval starts again from $\ket0$, so the probabilities multiply: $\cos^{2N}(\omega T/N)$.
+    \item \emph{Limit.} With $x=\omega T/N$, $\cos^2x=1-\sin^2x\ge1-x^2$, so $\cos^{2N}(\omega T/N)\ge\bigl(1-\omega^2T^2/N^2\bigr)^N\ge1-\omega^2T^2/N$ by Bernoulli's inequality $(1-a)^N\ge1-Na$. The bound tends to $1$. \qedhere
+  \end{steps}
+\end{proof}
+
+With $\omega T=\pi/2$, ten measurements already keep the state in $\ket0$ with probability $\cos^{20}(\pi/20)\approx0.78$, and a hundred with probability $0.98$, whereas without measurements the state would certainly have left $\ket0$. The reason is that for short times a state leaves its initial value only quadratically, $1-\cos^2(\omega t)\approx\omega^2t^2$, and each measurement resets the clock. The effect has been observed with trapped ions, and it is one reason why an unintended ``measurement'' by the environment, the decoherence of Section~\ref{sec:interference}, can freeze or spoil a quantum computation.
+
+\begin{exerciseset}
+  \exercise{1}\label{ex:spin-eig} Show that for a unit vector $\vec n$, $(\vec n\cdot\vec\sigma)^2=\Id$ (use Proposition~\ref{prop:pauli}), and deduce that the eigenvalues of $\vec n\cdot\vec\sigma$ are $\pm1$. Find the eigenvectors for $\vec n=(1,0,0)$ and $\vec n=(0,1,0)$.
+
+  \exercise{1} In Figure~\ref{fig:sg}, replace the middle SG$_x$ by an apparatus oriented at angle $\theta$ from the $z$-axis in the $xz$-plane. Show that the fraction of atoms that reaches the lower final spot is $\tfrac12\cos^2\tfrac\theta2\sin^2\tfrac\theta2$, and find the angle that maximises it.
+
+  \exercise{2}\label{ex:rotate-x} Let $R(t)=e^{-\ii\omega t\sz/2}=\diag(e^{-\ii\omega t/2},e^{\ii\omega t/2})$. Compute $R(t)\,\sx\,R(t)^\dagger$ as a matrix and show that it equals $\cos(\omega t)\sx+\sin(\omega t)\sy$.
+
+  \exercise{2}\label{ex:precess-n} For $H=\tfrac{\hbar\omega_0}2\,\vec n\cdot\vec\sigma$ with $\abs{\vec n}=1$, show using Lemma~\ref{lem:heisenberg} and $\comm{\sigma_j}{\sigma_k}=2\ii\sum_l\varepsilon_{jkl}\sigma_l$ that the Bloch vector obeys $\dot{\vec r}=\omega_0\,\vec n\times\vec r$. Deduce that $\vec n\cdot\vec r$ and $\abs{\vec r}$ are constant.
+
+  \exercise{2} On resonance, find the duration of a $\pi/2$-pulse for the qubit of Example~\ref{ex:pi-pulse}, and the state, in the rotating frame, after two successive $\pi/2$-pulses.
+
+  \exercise{2} In the Zeno set-up, how many measurements are needed for the probability of staying in $\ket0$ to exceed $0.99$? (Use the bound in the proof, then check numerically.)
+
+  \exercise{3} Show that the Rabi formula is consistent with Lemma~\ref{lem:heisenberg}: in the rotating frame, compute $\tfrac{d}{dt}\langle\sz\rangle$ at $t=0$ and $\tfrac{d^2}{dt^2}\langle\sz\rangle$ at $t=0$, and compare with the Taylor expansion of $1-2p_1(t)$.
+\end{exerciseset}

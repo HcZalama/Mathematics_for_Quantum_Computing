@@ -1,0 +1,154 @@
+%======================================================================
+\section{Interference and which-path information}\label{sec:interference}
+%======================================================================
+
+\begin{objectives}
+  You will model a two-path interferometer with a qubit, compute its interference fringes, see why ``bullets'' would show none, and show that recording which path the particle took destroys the fringes, by an amount fixed by an inner product.
+\end{objectives}
+
+\begin{recall}
+  Relative phases and Example~\ref{ex:relative-phase} (Section~\ref{sec:complex}); the Hadamard gate (Section~\ref{sec:state-evolution}); measurement probabilities (Section~\ref{sec:measurement}); tensor products (Section~\ref{sec:tensor}); density operators and the partial trace (Section~\ref{sec:density}).
+\end{recall}
+
+The double slit of the Introduction (Figure~\ref{fig:slit}) has a continuum of points on its screen. Its essential mechanism, however, involves just two alternatives, the two slits, and a phase difference between them that changes along the screen. We therefore study the cleanest version of it: an interferometer with two paths and a phase that we control.
+
+\subsection{The Mach--Zehnder interferometer}
+
+A particle (a photon, say) enters a beam splitter, which sends it into a superposition of two paths, the upper one and the lower one. A phase shifter on the upper path adds a phase $\varphi$. The paths are recombined at a second beam splitter, and two detectors $D_0$ and $D_1$ record where the particle leaves (Figure~\ref{fig:mz}).
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[>=stealth,scale=1.15]
+    % paths
+    \draw[navy,thick] (-1.6,0) -- (0,0);
+    \draw[navy,thick] (0,0) -- (3.5,0) -- (3.5,2.2);
+    \draw[navy,thick] (0,0) -- (0,2.2) -- (3.5,2.2);
+    \draw[navy,thick,->] (3.5,2.2) -- (5,2.2);
+    \draw[navy,thick,->] (3.5,2.2) -- (3.5,3.6);
+    % beam splitters
+    \draw[ink,very thick] (-0.3,-0.3) -- (0.3,0.3);
+    \draw[ink,very thick] (3.2,1.9) -- (3.8,2.5);
+    % mirrors
+    \draw[ink,line width=2.5pt] (-0.3,1.9) -- (0.3,2.5);
+    \draw[ink,line width=2.5pt] (3.2,-0.3) -- (3.8,0.3);
+    % phase shifter
+    \draw[fill=figacc!25,draw=figacc] (1.45,1.95) rectangle (2.05,2.45);
+    \node[figacc,font=\small] at (1.75,2.75) {$\varphi$};
+    % labels
+    \node[font=\footnotesize,anchor=east] at (-1.6,0) {source};
+    \node[font=\footnotesize,anchor=north] at (0,-0.35) {BS$_1$};
+    \node[font=\footnotesize,anchor=west] at (3.85,1.9) {BS$_2$};
+    \fill[ink] (5.1,2.0) rectangle (5.4,2.4); \node[font=\footnotesize,anchor=west] at (5.45,2.2) {$D_0$};
+    \fill[ink] (3.3,3.65) rectangle (3.7,3.95); \node[font=\footnotesize,anchor=south] at (3.5,3.95) {$D_1$};
+    \node[font=\footnotesize,navy] at (1.75,-0.3) {lower path $\ket1$};
+    \node[font=\footnotesize,navy,anchor=east] at (-0.1,1.1) {upper path $\ket0$};
+  \end{tikzpicture}
+  \caption{A Mach--Zehnder interferometer. The first beam splitter (BS$_1$) creates a superposition of the two paths, a phase shifter adds the phase $\varphi$ to one of them, and the second beam splitter (BS$_2$) recombines them in front of the detectors $D_0$, $D_1$.}
+  \label{fig:mz}
+\end{figure}
+
+\paragraph{The model.}
+The only thing that matters about the particle here is which path it is on, so its state is a qubit:
+\begin{steps}
+  \item $\ket0$ means ``upper path'' and $\ket1$ means ``lower path'';
+  \item each beam splitter acts as the Hadamard gate $H$, sending $\ket0\mapsto\ket+$ and $\ket1\mapsto\ket-$ (a real beam splitter differs from $H$ by phases that do not change any result below);
+  \item the phase shifter acts as $P_\varphi=\diag(1,e^{\ii\varphi})$ (it multiplies the amplitude of the upper path by $1$ and of the lower one by $e^{\ii\varphi}$; only the \emph{relative} phase matters);
+  \item detector $D_0$ clicks when the final state is found in $\ket0$, and $D_1$ when it is found in $\ket1$: a measurement in the computational basis.
+\end{steps}
+
+\begin{proposition}[Interference fringes]\label{prop:mz}
+  A particle entering in the state $\ket0$ reaches $D_0$ with probability $\cos^2(\varphi/2)$ and $D_1$ with probability $\sin^2(\varphi/2)$.
+\end{proposition}
+\begin{proof}
+  \begin{steps}
+    \item \emph{First beam splitter.} $H\ket0=\tfrac1{\sqrt2}(\ket0+\ket1)$: equal amplitudes for both paths.
+    \item \emph{Phase shifter.} $P_\varphi$ gives $\tfrac1{\sqrt2}(\ket0+e^{\ii\varphi}\ket1)$.
+    \item \emph{Second beam splitter.} Using $H\ket0=\ket+$ and $H\ket1=\ket-$, we get $\tfrac1{\sqrt2}(\ket++e^{\ii\varphi}\ket-)=\tfrac12\bigl((1+e^{\ii\varphi})\ket0+(1-e^{\ii\varphi})\ket1\bigr)$.
+    \item \emph{Born rule.} $p(D_0)=\tfrac14\abs{1+e^{\ii\varphi}}^2=\tfrac14(2+2\cos\varphi)=\cos^2\tfrac\varphi2$, and similarly $p(D_1)=\tfrac14\abs{1-e^{\ii\varphi}}^2=\sin^2\tfrac\varphi2$. \qedhere
+  \end{steps}
+\end{proof}
+
+As $\varphi$ varies, the probability of $D_0$ swings between $1$ and $0$. This is interference: each detector receives the \emph{sum} of the amplitudes of the two paths, $\tfrac12$ and $\tfrac12e^{\ii\varphi}$ for $D_0$, and these add constructively or cancel depending on their relative phase. It is the computation of Example~\ref{ex:relative-phase} in a laboratory. In the double slit, the role of $\varphi$ is played by the path difference, which changes from point to point of the screen; the bright and dark bands are the points where $\varphi$ is a multiple of $2\pi$ or an odd multiple of $\pi$.
+
+\begin{example}[One particle at a time]\label{ex:mz-counts}
+  Ten thousand particles are sent, one at a time, with $\varphi=\pi/3$. How many clicks of each detector do we expect, and what does a single particle do?
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Probabilities.} $\cos^2(\pi/6)=\tfrac34$ and $\sin^2(\pi/6)=\tfrac14$.
+    \item \emph{Counts.} About $7500$ clicks in $D_0$ and $2500$ in $D_1$; by the law of large numbers (Theorem~\ref{thm:wlln}) the fractions approach $\tfrac34,\tfrac14$ as the number of particles grows.
+    \item \emph{A single particle} triggers exactly one detector, at random. The fringes are a statement about probabilities: they appear in the statistics of many particles, each of which interferes only with itself.
+  \end{steps}
+\end{solution}
+
+\subsection{Why bullets show no fringes}
+
+Suppose instead that each particle took a definite path, upper or lower with probability $\tfrac12$ each, as a bullet would. Then after the first beam splitter the path would not be in the superposition $\ket+$ but in the \emph{mixture} of $\ket0$ and $\ket1$, with density operator $\rho=\tfrac12\ket0\!\bra0+\tfrac12\ket1\!\bra1=\tfrac12\Id$.
+
+\begin{example}[The classical mixture]\label{ex:mz-mixture}
+  Compute the detection probabilities for the mixture $\rho=\tfrac12\Id$ entering the phase shifter.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Evolve} (Proposition~\ref{prop:postulates-rho}): $\rho\mapsto HP_\varphi\,\rho\,P_\varphi^\dagger H^\dagger=\tfrac12HP_\varphi P_\varphi^\dagger H^\dagger=\tfrac12\Id$, because the unitaries cancel against each other.
+    \item \emph{Probabilities.} $p(D_0)=\bra0\tfrac12\Id\ket0=\tfrac12$ and $p(D_1)=\tfrac12$, for every $\varphi$.
+  \end{steps}
+  No fringes: probabilities add, not amplitudes. The superposition $\ket+$ and the mixture $\tfrac12\Id$ give the same statistics for each path separately, but only the superposition carries the relative phase between them (Example~\ref{ex:mixed-vs-superposition}).
+\end{solution}
+
+\subsection{Which-path information destroys interference}
+
+The most striking feature of the double slit is that the fringes disappear if we find out which slit each particle went through. We can model this precisely. Put a second system, a \emph{marker} $M$, next to the upper and lower paths, so that it records the path: if the particle passes along path $j$, the marker goes to a state $\ket{m_j}$. Starting from the particle in $\ket+$ (after the first beam splitter) and the phase shifter, the joint state is
+\[
+  \ket\Psi=\tfrac1{\sqrt2}\bigl(\ket0\ket{m_0}+e^{\ii\varphi}\ket1\ket{m_1}\bigr).
+\]
+The marker could be anything: a photon scattered off the particle, an atom in a slit, a detector. The question is what happens at $D_0$ and $D_1$ when we do not look at the marker.
+
+\begin{theorem}[Fringe visibility]\label{thm:visibility}
+  Let $\gamma=\braket{m_0}{m_1}$. After the second beam splitter, $p(D_0)=\tfrac12\bigl(1+\abs\gamma\cos(\varphi+\arg\gamma)\bigr)$. The fringes therefore have visibility $\abs\gamma$: they are perfect when the marker states coincide, and absent when they are orthogonal.
+\end{theorem}
+\begin{proof}
+  \begin{steps}
+    \item \emph{Reduce to the particle.} Only the particle reaches the detectors, so its statistics are given by its reduced density operator $\rho=\Tr_M\ket\Psi\!\bra\Psi$ (Proposition~\ref{prop:reduced}).
+    \item \emph{Compute it.} $\ket\Psi\!\bra\Psi$ has four terms. By the definition of the partial trace, $\Tr_M\bigl(\ket a\!\bra b\otimes\ket{m}\!\bra{m'}\bigr)=\braket{m'}{m}\ket a\!\bra b$, so
+      \[
+        \rho=\tfrac12\Bigl(\ket0\!\bra0+\ket1\!\bra1+e^{-\ii\varphi}\,\overline{\gamma}\,\ket0\!\bra1+e^{\ii\varphi}\gamma\,\ket1\!\bra0\Bigr).
+      \]
+    \item \emph{Second beam splitter and detection.} $p(D_0)=\bra0H\rho H\ket0=\bra+\rho\ket+=\tfrac12(\rho_{00}+\rho_{11}+\rho_{01}+\rho_{10})$.
+    \item \emph{Substitute.} $\rho_{00}+\rho_{11}=1$ and $\rho_{01}+\rho_{10}=\tfrac12\bigl(e^{-\ii\varphi}\bar\gamma+e^{\ii\varphi}\gamma\bigr)=\Re(e^{\ii\varphi}\gamma)=\abs\gamma\cos(\varphi+\arg\gamma)$. \qedhere
+  \end{steps}
+\end{proof}
+
+Two extreme cases make the meaning clear.
+\begin{steps}
+  \item If the marker does not record anything, $\ket{m_0}=\ket{m_1}$, then $\gamma=1$ and we recover Proposition~\ref{prop:mz}: full fringes.
+  \item If the marker records the path perfectly, $\ket{m_0}\perp\ket{m_1}$, then $\gamma=0$, $\rho=\tfrac12\Id$, and $p(D_0)=\tfrac12$ for every $\varphi$: no fringes at all, exactly as for bullets. The entanglement with the marker has turned the superposition into a mixture.
+\end{steps}
+In between, the marker states are only partly distinguishable (Theorem~\ref{thm:no-distinguish}), and the fringes are only partly visible. Nothing in the argument requires anybody to \emph{read} the marker: it is enough that the information exists somewhere.
+
+\begin{example}[Partial which-path information]\label{ex:partial-whichpath}
+  Let $\ket{m_0}=\ket0$ and $\ket{m_1}=\cos\theta\ket0+\sin\theta\ket1$. Find the visibility of the fringes and the maximum of $p(D_0)$ as $\varphi$ varies, for $\theta=\pi/4$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Overlap.} $\gamma=\braket{m_0}{m_1}=\cos\theta$, real and non-negative, so $\arg\gamma=0$.
+    \item \emph{Visibility.} $\abs\gamma=\cos\tfrac\pi4=\tfrac1{\sqrt2}\approx0.71$.
+    \item \emph{Range of $p(D_0)$.} By Theorem~\ref{thm:visibility}, $p(D_0)=\tfrac12\bigl(1+0.71\cos\varphi\bigr)$, which oscillates between $\tfrac12(1-0.71)\approx0.15$ and $\tfrac12(1+0.71)\approx0.85$, instead of between $0$ and $1$.
+  \end{steps}
+\end{solution}
+
+\begin{lookahead}
+  This is \emph{decoherence}. In a real experiment the role of the marker is played by the environment: stray photons, air molecules, the thermal vibrations of the apparatus. Each interaction leaves a little record of the path, makes $\abs\gamma$ smaller, and fades the fringes. It is why large objects never show interference in everyday life, and it is the main enemy of quantum computers, whose qubits must keep their relative phases for as long as a computation lasts.
+\end{lookahead}
+
+\begin{exerciseset}
+  \exercise{1} Compute the detection probabilities of the interferometer for $\varphi=0,\ \pi/2,\ \pi$, and check them against Proposition~\ref{prop:mz}.
+
+  \exercise{2} Replace both beam splitters by the symmetric beam splitter $B=\tfrac1{\sqrt2}\begin{pmatrix}1&\ii\\\ii&1\end{pmatrix}$. Show that $B$ is unitary and that the detection probabilities are still a constant plus a multiple of $\cos\varphi$. Which detector receives the particle when $\varphi=0$?
+
+  \exercise{2} Block the lower path just after the first beam splitter (the particle is absorbed if it takes it). With what probability does a particle reach $D_0$, and does this depend on $\varphi$? Describe the state of the particle that is not absorbed.
+
+  \exercise{2} Show that if the marker states are $\ket{m_0}=\ket0$ and $\ket{m_1}=e^{\ii\alpha}\ket0$, the fringes are fully visible but shifted. By how much?
+
+  \exercise{3} The \emph{distinguishability} of the marker states is $D=\sqrt{1-\abs\gamma^2}$ (it is the largest difference between the probabilities that any measurement assigns to the two states). With the visibility $V=\abs\gamma$ of Theorem~\ref{thm:visibility}, show that $V^2+D^2=1$, and interpret: the more which-path information exists, the weaker the fringes.
+\end{exerciseset}

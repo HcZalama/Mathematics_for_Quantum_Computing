@@ -1,0 +1,165 @@
+%======================================================================
+\section{No cloning, and teleportation}\label{sec:teleportation}
+%======================================================================
+
+\begin{objectives}
+  You will prove that no physical process can copy an unknown quantum state, and see how an unknown state can nevertheless be transferred from one place to another, destroying the original, with one shared entangled pair and two classical bits.
+\end{objectives}
+
+\begin{recall}
+  Unitaries preserve inner products (Section~\ref{sec:operators}); non-orthogonal states cannot be distinguished (Theorem~\ref{thm:no-distinguish}); the Bell states, the controlled-NOT and superdense coding (Sections~\ref{sec:composite} and~\ref{sec:superdense}); the reduced state of half a Bell pair (Example~\ref{ex:reduced-bell}).
+\end{recall}
+
+The last two phenomena are not old puzzles but consequences of the postulates that were noticed only in the 1980s and 1990s. They are at the heart of quantum information: the first one makes quantum cryptography possible, and the second one shows that entanglement is a resource that can be spent.
+
+\subsection{Unknown states cannot be copied}
+
+Classical information can be copied at will. A copying machine for qubits would take a qubit in an unknown state $\ket\psi$ and a second qubit in a fixed ``blank'' state $\ket e$, and produce two copies of $\ket\psi$. By the postulates it would act by a unitary on the pair. Wootters and Zurek~\cite{wootters1982}, and independently Dieks~\cite{dieks1982}, showed that no such machine exists.
+
+\begin{theorem}[No-cloning, Wootters--Zurek and Dieks, 1982]\label{thm:no-cloning}
+  Let $U$ be a unitary on $\Hil\tp\Hil$ and $\ket e\in\Hil$ a unit vector. If $U\bigl(\ket\psi\ket e\bigr)=\ket\psi\ket\psi$ and $U\bigl(\ket\varphi\ket e\bigr)=\ket\varphi\ket\varphi$ for two states $\ket\psi,\ket\varphi$, then either $\braket\varphi\psi=0$ or $\ket\varphi=\ket\psi$ up to a phase. In particular, no unitary copies every state.
+\end{theorem}
+\begin{proof}
+  \begin{steps}
+    \item \emph{Inner product before.} $\bigl(\bra\varphi\bra e\bigr)\bigl(\ket\psi\ket e\bigr)=\braket\varphi\psi\braket ee=\braket\varphi\psi$ (Proposition~\ref{prop:tensor-inner}).
+    \item \emph{Inner product after.} $\bigl(\bra\varphi\bra\varphi\bigr)\bigl(\ket\psi\ket\psi\bigr)=\braket\varphi\psi^2$.
+    \item \emph{Unitaries preserve inner products,} so $s=\braket\varphi\psi$ satisfies $s=s^2$.
+    \item \emph{Solve.} $s=0$ or $s=1$. In the second case $\abs{\braket\varphi\psi}=1$, which is the equality case of Cauchy--Schwarz (Theorem~\ref{thm:cs}): $\ket\varphi$ is a multiple of $\ket\psi$, and the multiple has modulus $1$. \qedhere
+  \end{steps}
+\end{proof}
+
+A machine can therefore copy the states of one orthonormal basis, and no others. The controlled-NOT does exactly that.
+
+\begin{example}[The CNOT copies bits but not qubits]\label{ex:cnot-clone}
+  Compute $\CNOT\bigl(\ket x\ket0\bigr)$ for $x=0,1$, and $\CNOT\bigl(\ket+\ket0\bigr)$. Is the latter $\ket+\ket+$?
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Basis states.} $\CNOT\ket0\ket0=\ket0\ket0$ and $\CNOT\ket1\ket0=\ket1\ket1$: both are copied.
+    \item \emph{The superposition.} By linearity, $\CNOT\ket+\ket0=\tfrac1{\sqrt2}\bigl(\ket{00}+\ket{11}\bigr)=\ket{\Phi^+}$.
+    \item \emph{Compare.} $\ket+\ket+=\tfrac12\bigl(\ket{00}+\ket{01}+\ket{10}+\ket{11}\bigr)\neq\ket{\Phi^+}$; indeed $\ket{\Phi^+}$ is entangled, so it is not of the form $\ket a\ket b$ at all.
+  \end{steps}
+  Linearity forces the copy of a superposition to be the superposition of the copies, and that is an entangled state, not two copies.
+\end{solution}
+
+The argument does not depend on the copier being a unitary on two qubits only: it may use an auxiliary system of any size, which ends in a state that depends on $\ket\psi$ (Exercise~\ref{ex:clone-ancilla}). Nor can a measurement do the job, since the statistics of one measurement on one copy do not determine $\ket\psi$. No-cloning is consistent with everything else we know.
+\begin{steps}
+  \item If cloning were possible, we could make many copies of a state that is either $\ket0$ or $\ket+$, measure them, and decide which state it was with as small an error as we like, contradicting Theorem~\ref{thm:no-distinguish}.
+  \item If cloning were possible, Bob could copy his half of a singlet many times and learn which measurement Alice had made on her half, and Alice could signal to him faster than light, which Exercise~\ref{ex:no-signalling} forbids.
+\end{steps}
+
+\begin{lookahead}
+  No-cloning is the reason why quantum key distribution is secure: an eavesdropper cannot copy the qubits sent between Alice and Bob in order to measure the copies later, and any measurement she makes on the originals disturbs them in a way that Alice and Bob can detect. It is also why quantum error correction cannot simply keep backup copies of qubits, and must instead spread their information over entangled states of several qubits.
+\end{lookahead}
+
+\subsection{Teleportation}
+
+Alice holds a qubit $C$ in a state $\ket\psi=a\ket0+b\ket1$ that she does not know, and she wants Bob, far away, to have it. She cannot measure $\ket\psi$ and send a description of it, since one measurement does not determine $a$ and $b$; she cannot copy it; and perhaps she cannot send the qubit itself. If, however, Alice and Bob share in advance a Bell pair $\bell00$, of which Alice holds qubit $A$ and Bob qubit $B$, then two classical bits are enough. The protocol is due to Bennett, Brassard, Cr\'epeau, Jozsa, Peres and Wootters~\cite{bennett1993}.
+
+\paragraph{The protocol.}
+\begin{stepsn}
+  \item Alice measures her two qubits $C$ and $A$ in the Bell basis $\{\bell xy\}$, and obtains two bits $x,y$.
+  \item She sends $x,y$ to Bob over an ordinary classical channel.
+  \item Bob applies $Z^xX^y$ to his qubit $B$. It is now in the state $\ket\psi$.
+\end{stepsn}
+
+\begin{figure}[htb]
+  \centering
+  \begin{tikzpicture}[>=stealth,
+      box/.style={draw=navy,thick,fill=navy!8,minimum height=0.8cm,font=\small},
+      cl/.style={draw=figacc,thick,fill=figacc!10,minimum height=0.8cm,font=\small}]
+    \node[font=\small,anchor=east] at (-0.1,1.2) {$C$: $\ket\psi$};
+    \node[draw=ink,thick,fill=ink!8,minimum width=1.6cm,minimum height=1.6cm,font=\small,align=center] (src) at (1.2,-0.6) {$\bell00$};
+    \node[font=\footnotesize,ink,anchor=north] at (1.2,-1.45) {shared pair};
+    \node[cl,minimum width=2.2cm,minimum height=2.0cm,align=center] (bm) at (5.0,0.6) {Bell\\measurement};
+    \node[font=\footnotesize,ink] at (5.0,1.95) {Alice};
+    \node[box,minimum width=1.4cm] (bob) at (9.2,-1.0) {$Z^xX^y$};
+    \node[font=\footnotesize,ink] at (9.2,-1.75) {Bob};
+    \draw[thick] (0,1.2) -- (bm.west|-0,1.2);
+    \draw[thick] (src.east|-0,0) -- node[above,font=\footnotesize] {$A$} (bm.west|-0,0);
+    \draw[thick] (src.east|-0,-1.0) -- node[above,font=\footnotesize] {$B$} (bob.west);
+    \draw[->,thick] (bob.east) -- ++(1.0,0) node[right,font=\small] {$\ket\psi$};
+    \draw[figacc,double,thick,->] (bm.east) -- ++(1.6,0) -| node[pos=0.75,right,font=\footnotesize] {bits $x,y$} (bob.north);
+  \end{tikzpicture}
+  \caption{Teleportation. Alice performs a Bell measurement on the unknown qubit $C$ and her half $A$ of a shared Bell pair, and sends the two resulting bits (double line) to Bob, whose correction $Z^xX^y$ turns his half $B$ into $\ket\psi$.}
+  \label{fig:teleport}
+\end{figure}
+
+Everything rests on one identity, which rewrites the initial state of the three qubits in the Bell basis of Alice's two.
+
+\begin{lemma}\label{lem:teleport-identity}
+  With the qubits in the order $C,A,B$,
+  \[
+    \ket\psi_C\,\bell00_{AB}=\frac12\sum_{x,y\in\{0,1\}}\bell xy_{CA}\;X^yZ^x\ket\psi_B .
+  \]
+\end{lemma}
+\begin{proof}
+  \begin{steps}
+    \item \emph{Expand.} $\ket\psi\bell00=\tfrac1{\sqrt2}\bigl(a\ket{00}\ket0+a\ket{01}\ket1+b\ket{10}\ket0+b\ket{11}\ket1\bigr)$, where the two-qubit kets refer to $C,A$ and the last one to $B$.
+    \item \emph{Invert the Bell states.} From the definitions of Section~\ref{sec:composite}, $\ket{00}=\tfrac1{\sqrt2}(\bell00+\bell10)$, $\ket{11}=\tfrac1{\sqrt2}(\bell00-\bell10)$, $\ket{01}=\tfrac1{\sqrt2}(\bell01+\bell11)$ and $\ket{10}=\tfrac1{\sqrt2}(\bell01-\bell11)$.
+    \item \emph{Substitute and collect} the terms of each Bell state:
+      \[
+        \begin{aligned}
+          \ket\psi\bell00=\tfrac12\Bigl(&\bell00\bigl(a\ket0+b\ket1\bigr)+\bell10\bigl(a\ket0-b\ket1\bigr)\\
+          &+\bell01\bigl(b\ket0+a\ket1\bigr)+\bell11\bigl(-b\ket0+a\ket1\bigr)\Bigr).
+        \end{aligned}
+      \]
+    \item \emph{Recognise Bob's states.} $a\ket0-b\ket1=Z\ket\psi$, $b\ket0+a\ket1=X\ket\psi$, and $-b\ket0+a\ket1=X(a\ket0-b\ket1)=XZ\ket\psi$. \qedhere
+  \end{steps}
+\end{proof}
+
+\begin{theorem}[Teleportation]\label{thm:teleportation}
+  In the protocol above, each pair of bits $x,y$ occurs with probability $\tfrac14$, and after Bob's correction his qubit is in the state $\ket\psi$, whatever $\ket\psi$ was.
+\end{theorem}
+\begin{proof}
+  \begin{steps}
+    \item \emph{Alice's measurement} has the projectors $\ketbra{\beta_{xy}}{\beta_{xy}}\tp\Id_B$, since the Bell states are an orthonormal basis of $C\tp A$.
+    \item \emph{Probabilities.} By Lemma~\ref{lem:teleport-identity}, the component of the state along $\bell xy$ is $\tfrac12\bell xy\,X^yZ^x\ket\psi$, of squared norm $\tfrac14$, since $X^yZ^x$ is unitary.
+    \item \emph{Post-measurement state.} After outcome $x,y$ the three qubits are in $\bell xy_{CA}\,X^yZ^x\ket\psi_B$ (Postulate~\ref{post:measurement}): Bob's qubit is in $X^yZ^x\ket\psi$.
+    \item \emph{Correction.} $Z^xX^y\cdot X^yZ^x=Z^x\,(X^y)^2\,Z^x=\Id$, because $X^2=Z^2=\Id$. So Bob ends with $\ket\psi$. \qedhere
+  \end{steps}
+\end{proof}
+
+The protocol obeys every rule we have met.
+\begin{steps}
+  \item \emph{No cloning.} Alice's qubit $C$ ends in a Bell state with $A$, so no trace of $\ket\psi$ is left with her: the state has been moved, not copied.
+  \item \emph{No faster-than-light signalling.} Until the two bits arrive, Bob does not know which correction to apply, and his qubit carries no information about $\ket\psi$ (Example~\ref{ex:bob-before}). The bits travel no faster than light.
+  \item \emph{An exchange rate.} One shared Bell pair and two classical bits transmit one qubit. Superdense coding (Section~\ref{sec:superdense}) is the reverse exchange: one shared Bell pair and one qubit transmit two classical bits. Neither protocol works without the shared entanglement, which is consumed in the process.
+  \item \emph{Nothing is learnt.} The bits $x,y$ are uniformly random whatever $\ket\psi$ is, so they reveal nothing about $a$ and $b$. All the information about $\ket\psi$ reaches Bob through the entanglement.
+\end{steps}
+
+\begin{example}[Bob's qubit before the bits arrive]\label{ex:bob-before}
+  Show that, after Alice's measurement but before Bob learns its outcome, Bob's qubit is in the state $\tfrac12\Id$, whatever $\ket\psi$ is.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Bob's description.} Not knowing $x,y$, Bob describes his qubit by the ensemble of the four states $X^yZ^x\ket\psi$ with probabilities $\tfrac14$ (Section~\ref{sec:density}):
+      \[
+        \rho_B=\tfrac14\sum_{x,y}X^yZ^x\ketbra\psi\psi Z^xX^y .
+      \]
+    \item \emph{Use the Bloch form.} $\ketbra\psi\psi=\tfrac12(\Id+r_x\sx+r_y\sy+r_z\sz)$ (Proposition~\ref{prop:bloch}).
+    \item \emph{Average over $x$.} Conjugating by $Z$ keeps $\Id$ and $\sz$ and changes the signs of $\sx,\sy$ (they anticommute with $\sz$). The average over $x=0,1$ kills the $\sx$ and $\sy$ terms, and leaves $\tfrac12(\Id+r_z\sz)$.
+    \item \emph{Average over $y$.} Conjugating by $X$ changes the sign of $\sz$, and the average over $y$ leaves $\tfrac12\Id$.
+  \end{steps}
+  This is also clear from Section~\ref{sec:density}: Alice's operations act on her qubits only, so they cannot change Bob's reduced state, which was $\tfrac12\Id$ from the start (Example~\ref{ex:reduced-bell}).
+\end{solution}
+
+\begin{lookahead}
+  Teleportation was first realised with photons in 1997, and has since been performed between islands and between the ground and a satellite more than a thousand kilometres away. In quantum computing it is a working tool: qubits are teleported between distant parts of a processor or of a network, and gates can be teleported too, which is a key idea in fault-tolerant quantum computation.
+\end{lookahead}
+
+\begin{exerciseset}
+  \exercise{1} Verify Lemma~\ref{lem:teleport-identity} for $\ket\psi=\ket1$ by expanding both sides in the computational basis.
+
+  \exercise{1} Run the protocol for $\ket\psi=\ket+$ and the outcome $x=1$, $y=0$: write the state of Bob's qubit before and after his correction.
+
+  \exercise{2}\label{ex:clone-ancilla} Suppose a cloner uses an auxiliary system, $U\bigl(\ket\psi\ket e\ket m\bigr)=\ket\psi\ket\psi\ket{m_\psi}$, where the final auxiliary state $\ket{m_\psi}$ may depend on $\ket\psi$. Show that $\abs{\braket\varphi\psi}\le\abs{\braket\varphi\psi}^2$ for any two states it clones, and conclude as in Theorem~\ref{thm:no-cloning}.
+
+  \exercise{2} Alice and Bob share $\bell11$ instead of $\bell00$. Rewrite Lemma~\ref{lem:teleport-identity} for this case, and find the correction Bob must apply for each outcome $x,y$.
+
+  \exercise{2} Show that a cloner of the two states $\ket0$ and $\ket+$ would allow us to distinguish them with error probability as small as we like, and explain why this contradicts Theorem~\ref{thm:no-distinguish}.
+
+  \exercise{3} \emph{Entanglement swapping.} Alice and Bob share a Bell pair $\bell00_{AB}$, and Bob and Charlie share another, $\bell00_{B'C}$. Bob teleports his qubit $B$ to Charlie using the second pair. Show that afterwards Alice's qubit and Charlie's qubit are in a Bell state (which one, after Charlie's correction?), although they have never interacted.
+
+  \exercise{3} An imperfect copier sends $\ket0\ket e\mapsto\ket0\ket0$ and $\ket1\ket e\mapsto\ket1\ket1$ (the CNOT of Example~\ref{ex:cnot-clone}). Show that for $\ket\psi=\cos\tfrac\theta2\ket0+e^{\ii\phi}\sin\tfrac\theta2\ket1$ the reduced state of each output qubit is $\cos^2\tfrac\theta2\ketbra00+\sin^2\tfrac\theta2\ketbra11$, and that its fidelity $\bra\psi\rho\ket\psi$ with $\ket\psi$ is $\tfrac12(1+\cos^2\theta)$. Which input states are copied worst?
+\end{exerciseset}

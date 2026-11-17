@@ -1,0 +1,134 @@
+%======================================================================
+\section{Thermal states and black-body radiation}\label{sec:blackbody}
+%======================================================================
+
+\begin{objectives}
+  You will show that the state of largest entropy at a given average energy is the thermal (Gibbs) state $e^{-\beta H}/Z$, compute the average energy of a mode of light whose levels are spaced by $h\nu$, and derive Planck's law, which resolves the ultraviolet catastrophe of the Introduction.
+\end{objectives}
+
+\begin{recall}
+  The von Neumann entropy (Section~\ref{sec:vonneumann}); the quantum relative entropy and Klein's inequality (Section~\ref{sec:relent}); the functional calculus (Section~\ref{sec:operators}); energy levels (Section~\ref{sec:levels}).
+\end{recall}
+
+The black-body spectrum of Figure~\ref{fig:blackbody} is a statement about light in thermal equilibrium with matter at a temperature $T$. To explain it we need two things: the state of a system in thermal equilibrium, which is a question about entropy, and the energy levels of light, which is where Planck's hypothesis $E=h\nu$ enters. Throughout this section entropies are measured with the natural logarithm, $\Ss(\rho)=-\Tr(\rho\ln\rho)$; this only multiplies the entropies of Chapter~\ref{ch:info} by the constant $\ln2$, and changes none of their properties.
+
+\subsection{The state of largest entropy}
+
+A system in contact with a large body at temperature $T$, such as the walls of an oven, exchanges energy with it until it reaches equilibrium. It is a basic principle of statistical physics that the equilibrium state is the one that is \emph{least informative}, that is, of largest entropy, among the states compatible with what is fixed, here the average energy. The relative entropy identifies that state.
+
+\begin{theorem}[Maximum entropy at fixed energy]\label{thm:maxent}
+  Let $H$ be a Hamiltonian on a finite-dimensional space, $\beta\in\R$, and
+  \[
+    \rho_\beta=\frac{e^{-\beta H}}{Z},\qquad Z=\Tr e^{-\beta H}.
+  \]
+  If $\rho$ is any density operator with the same average energy, $\Tr(\rho H)=\Tr(\rho_\beta H)$, then $\Ss(\rho)\le\Ss(\rho_\beta)$, with equality only if $\rho=\rho_\beta$.
+\end{theorem}
+\begin{proof}
+  \begin{steps}
+    \item \emph{$\rho_\beta$ is a state.} If $H=\sum_nE_n\ketbra{E_n}{E_n}$, then $e^{-\beta H}=\sum_ne^{-\beta E_n}\ketbra{E_n}{E_n}$ is positive with trace $Z$, so $\rho_\beta$ is positive with trace $1$. It is invertible, so $\supp\rho\subseteq\supp\rho_\beta$ for every $\rho$.
+    \item \emph{Its logarithm.} By the functional calculus, $\ln\rho_\beta=-\beta H-(\ln Z)\Id$.
+    \item \emph{Relative entropy with respect to $\rho_\beta$.} For any $\rho$,
+      \[
+        \Srel\rho{\rho_\beta}=\Tr(\rho\ln\rho)-\Tr(\rho\ln\rho_\beta)=-\Ss(\rho)+\beta\Tr(\rho H)+\ln Z .
+      \]
+    \item \emph{The same formula for $\rho=\rho_\beta$} gives $0=-\Ss(\rho_\beta)+\beta\Tr(\rho_\beta H)+\ln Z$.
+    \item \emph{Subtract,} using $\Tr(\rho H)=\Tr(\rho_\beta H)$: $\Ss(\rho_\beta)-\Ss(\rho)=\Srel\rho{\rho_\beta}$.
+    \item \emph{Klein's inequality} (Theorem~\ref{thm:klein}) says that the right side is $\ge0$, with equality only if $\rho=\rho_\beta$. \qedhere
+  \end{steps}
+\end{proof}
+
+The state $\rho_\beta$ is the \term{thermal state}, or Gibbs state, and $Z$ is the \term{partition function}. Thermodynamics identifies the parameter with the temperature, $\beta=1/k_BT$, where $k_B\approx1.381\times10^{-23}$ J/K is Boltzmann's constant; we take this as the definition of temperature. Three remarks:
+\begin{steps}
+  \item $\rho_\beta$ is diagonal in the energy basis, and the level $E_n$ has probability $e^{-\beta E_n}/Z$: higher levels are exponentially less likely, the more so the colder the system.
+  \item At infinite temperature ($\beta=0$) the thermal state is $\Id/d$, of maximal entropy $\ln d$ (Proposition~\ref{prop:vn-props}); as $T\to0$ it concentrates on the ground level.
+  \item The average energy is a logarithmic derivative of $Z$: since $\frac{d}{d\beta}Z=-\sum_nE_ne^{-\beta E_n}$,
+    \begin{equation}\label{eq:mean-energy}
+      \langle H\rangle_\beta=\Tr(\rho_\beta H)=\frac{\sum_nE_ne^{-\beta E_n}}{\sum_ne^{-\beta E_n}}=-\frac{d}{d\beta}\ln Z .
+    \end{equation}
+\end{steps}
+
+\begin{example}[A thermal qubit]\label{ex:thermal-qubit}
+  A qubit has levels $0$ and $\epsilon>0$. Find its thermal state and its average energy, and their limits as $T\to0$ and $T\to\infty$.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Partition function.} $Z=1+e^{-\beta\epsilon}$.
+    \item \emph{Thermal state.} $\rho_\beta=\diag\bigl(1,e^{-\beta\epsilon}\bigr)/(1+e^{-\beta\epsilon})$ in the energy basis.
+    \item \emph{Average energy.} By \eqref{eq:mean-energy}, $\langle H\rangle_\beta=\dfrac{\epsilon\,e^{-\beta\epsilon}}{1+e^{-\beta\epsilon}}=\dfrac{\epsilon}{e^{\beta\epsilon}+1}$.
+    \item \emph{Cold.} As $T\to0$ ($\beta\to\infty$), $e^{-\beta\epsilon}\to0$, so $\rho_\beta\to\ketbra00$, the ground state, and $\langle H\rangle_\beta\to0$.
+    \item \emph{Hot.} As $T\to\infty$ ($\beta\to0$), $e^{-\beta\epsilon}\to1$, so $\rho_\beta\to\tfrac12\Id$ and $\langle H\rangle_\beta\to\epsilon/2$: the two levels become equally likely, and no temperature makes the excited level the more likely one.
+  \end{steps}
+\end{solution}
+
+\subsection{A mode of light}
+
+Light in a cavity, such as the inside of an oven, is a superposition of standing waves, the \term{modes} of the cavity, each with its own frequency $\nu$. Classically each mode behaves as an oscillator and can hold any amount of energy. Quantum mechanically a mode of frequency $\nu$ is a system with the levels
+\[
+  E_n=nh\nu,\qquad n=0,1,2,\dots,
+\]
+and the state of energy $E_n$ is said to contain $n$ \emph{photons} of frequency $\nu$. This is Planck's hypothesis, and it is a theorem of quantum mechanics: the levels of a harmonic oscillator of frequency $\nu$ are $(n+\tfrac12)h\nu$, equally spaced as for no other system, and the constant shift $\tfrac12h\nu$ does not affect anything below.
+
+The space of a mode is infinite-dimensional, but the thermal state is diagonal in the basis of levels, so everything we need is a statement about the probabilities $p_n=e^{-\beta E_n}/Z$, and the sums that appear converge.
+
+\begin{proposition}[Average energy of a mode]\label{prop:planck-mode}
+  In the thermal state at temperature $T$, a mode of frequency $\nu$ has average energy and average number of photons
+  \[
+    \langle E\rangle=\frac{h\nu}{e^{h\nu/k_BT}-1},\qquad\bar n=\frac{\langle E\rangle}{h\nu}=\frac1{e^{h\nu/k_BT}-1}.
+  \]
+\end{proposition}
+\begin{proof}
+  Write $x=\beta h\nu$.
+  \begin{steps}
+    \item \emph{Partition function} (a geometric series, since $e^{-x}<1$): $Z=\sum_{n\ge0}e^{-nx}=\dfrac1{1-e^{-x}}$.
+    \item \emph{Logarithm.} $\ln Z=-\ln\bigl(1-e^{-\beta h\nu}\bigr)$.
+    \item \emph{Differentiate} as in \eqref{eq:mean-energy}: $\langle E\rangle=-\dfrac{d}{d\beta}\ln Z=\dfrac{h\nu\,e^{-\beta h\nu}}{1-e^{-\beta h\nu}}=\dfrac{h\nu}{e^{\beta h\nu}-1}$. \qedhere
+  \end{steps}
+\end{proof}
+
+Compare with the classical answer, $\langle E\rangle=k_BT$ for every mode (the ``equipartition of energy'').
+\begin{steps}
+  \item \emph{Low frequency,} $h\nu\ll k_BT$: $e^x-1\approx x$, so $\langle E\rangle\approx h\nu/x=k_BT$. Many photons are present, the discreteness of the levels is invisible, and the classical answer is recovered.
+  \item \emph{High frequency,} $h\nu\gg k_BT$: $\langle E\rangle\approx h\nu\,e^{-h\nu/k_BT}\to0$. The first excited level costs far more than the typical thermal energy $k_BT$, so it is almost never occupied: the mode is \emph{frozen}.
+\end{steps}
+It is this freezing of the high-frequency modes that saves the total energy from being infinite.
+
+\subsection{Planck's law}
+
+The number of modes of a cavity of volume $V$ with frequencies between $\nu$ and $\nu+d\nu$ is $8\pi V\nu^2d\nu/c^3$, where $c$ is the speed of light (this is a count of standing waves, Exercise~\ref{ex:mode-count}). Multiplying by the energy per mode, the energy per unit volume and unit frequency is
+\[
+  u(\nu)=\frac{8\pi\nu^2}{c^3}\,\langle E\rangle=\frac{8\pi h\nu^3}{c^3}\,\frac1{e^{h\nu/k_BT}-1}\qquad\text{(Planck)},
+\]
+against $u_{\mathrm{cl}}(\nu)=8\pi\nu^2k_BT/c^3$ with the classical $\langle E\rangle=k_BT$ (Rayleigh--Jeans). In the variable $x=h\nu/k_BT$ the two are proportional to $x^3/(e^x-1)$ and $x^2$, the two curves of Figure~\ref{fig:blackbody}. The classical one grows without bound and its integral over all frequencies diverges: the ultraviolet catastrophe. Planck's law agrees with it at low frequencies, where $x^3/(e^x-1)=x^2(1+O(x))$, and falls exponentially at high ones. Planck found this formula in 1900~\cite{planck1901} by fitting measurements; we have derived it from the discreteness of the levels of a mode and the principle of maximal entropy.
+
+\begin{example}[The peak of the spectrum and the cosmic background]\label{ex:wien}
+  Show that $x^3/(e^x-1)$ has its maximum where $3(1-e^{-x})=x$, at $x_*\approx2.82$. Deduce that the peak frequency of a black body is proportional to its temperature, and compute it for the cosmic microwave background, the radiation left over from the early universe, whose temperature is $T\approx2.725$ K. Use $h\approx6.626\times10^{-34}$ J\,s.
+\end{example}
+\begin{solution}
+  \begin{steps}
+    \item \emph{Differentiate.} $\dfrac{d}{dx}\dfrac{x^3}{e^x-1}=\dfrac{3x^2(e^x-1)-x^3e^x}{(e^x-1)^2}$, which vanishes for $x>0$ when $3(e^x-1)=xe^x$, that is, $3(1-e^{-x})=x$.
+    \item \emph{Solve numerically.} The function $g(x)=3(1-e^{-x})-x$ has $g(2.8)\approx0.018>0$ and $g(2.85)\approx-0.024<0$; bisection gives $x_*\approx2.821$.
+    \item \emph{Wien's law.} The peak is at $h\nu_{\max}=x_*k_BT$, so $\nu_{\max}=2.82\,k_BT/h$ is proportional to $T$: hotter bodies glow at higher frequencies, from red to white.
+    \item \emph{The cosmic background.} $\nu_{\max}\approx2.82\cdot1.381\times10^{-23}\cdot2.725/6.626\times10^{-34}\approx1.60\times10^{11}$ Hz, that is, $160$ GHz, in the microwave range.
+  \end{steps}
+  The cosmic microwave background is the most perfect black body ever measured: its spectrum follows Planck's law to better than one part in ten thousand.
+\end{solution}
+
+\begin{lookahead}
+  Thermal states are the natural noise of the physical world. A qubit at temperature $T$ is in the state of Example~\ref{ex:thermal-qubit}, partly excited, unless its level spacing $\epsilon$ is much larger than $k_BT$. For superconducting qubits, with $\epsilon/h\approx5$ GHz, this requires temperatures of about $10$ mK, which is why they are operated in dilution refrigerators.
+\end{lookahead}
+
+\begin{exerciseset}
+  \exercise{1} Compute the thermal state and the average energy of a qubit with $\epsilon/h=5$ GHz at $T=20$ mK and at $T=300$ K. (Use $h/k_B\approx4.8\times10^{-11}$ K\,s.)
+
+  \exercise{1} Check that $\rho_\beta$ commutes with $H$, and deduce that the thermal state is stationary: $e^{-\ii Ht/\hbar}\rho_\beta e^{\ii Ht/\hbar}=\rho_\beta$.
+
+  \exercise{2} Show that the entropy of the thermal state of a mode, in terms of the average number of photons $\bar n$, is $\Ss=(\bar n+1)\ln(\bar n+1)-\bar n\ln\bar n$. (Hint: $p_n=\bar n^n/(\bar n+1)^{n+1}$.)
+
+  \exercise{2} Show that $\Var(E)=\dfrac{d^2}{d\beta^2}\ln Z$ for a thermal state, and compute it for a mode. Deduce $\Var(n)=\bar n^2+\bar n$, which is larger than for a Poisson distribution with the same mean.
+
+  \exercise{2} Using $\int_0^\infty\frac{x^3}{e^x-1}\dd x=\frac{\pi^4}{15}$, show that the total energy per unit volume of black-body radiation is proportional to $T^4$ (the Stefan--Boltzmann law). Why is the classical answer infinite?
+
+  \exercise{3}\label{ex:mode-count} The standing waves in a cubic cavity of side $L$ have wave vectors $\vec k=\tfrac\pi L(j_1,j_2,j_3)$ with positive integers $j_i$, frequency $\nu=c\abs{\vec k}/2\pi$, and two polarisations each. Show that the number of modes with frequency below $\nu$ is approximately $\frac{8\pi}{3}\frac{L^3\nu^3}{c^3}$ for large $\nu$, by counting points of the integer lattice in an eighth of a ball, and deduce the mode density $8\pi V\nu^2/c^3$.
+
+  \exercise{3} Theorem~\ref{thm:maxent} fixes the average energy. Show in the same way that, if nothing is fixed, the state of largest entropy is $\Id/d$, and that, if the average of each of several commuting observables $A_1,\dots,A_k$ is fixed, the maximiser has the form $e^{-\sum_j\beta_jA_j}/Z$ whenever a state of that form with the right averages exists.
+\end{exerciseset}
