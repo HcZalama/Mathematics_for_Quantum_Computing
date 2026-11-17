@@ -166,6 +166,14 @@
 \newenvironment{remark}{\par\addvspace{0.3em}\noindent\textit{Remark.}\ }%
   {\par\addvspace{0.3em}}
 
+% ---------- Further reading at the end of a chapter: kept on one page ----------
+%  The list is short; set in a box it moves as a whole, with its heading, instead
+%  of leaving a single item alone on the last page of the chapter.
+\newenvironment{furtherreading}{%
+  \section*{Further reading}%
+  \noindent\begin{minipage}{\linewidth}\setlength{\parskip}{0.68em}\begin{itemize}%
+}{\end{itemize}\end{minipage}\par}
+
 % ---------- Exercises (no solutions), graded by stars ----------
 \newcommand{\stars}[1]{\textcolor{starcol}{%
   \ifcase#1\or$\star$\or$\star\star$\or$\star\star\star$\fi}}

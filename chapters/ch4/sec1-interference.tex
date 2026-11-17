@@ -14,7 +14,7 @@ The double slit of the Introduction (Figure~\ref{fig:slit}) has a continuum of p
 
 \subsection{The Mach--Zehnder interferometer}
 
-A particle (a photon, say) enters a beam splitter, which sends it into a superposition of two paths, the upper one and the lower one. A phase shifter on the upper path adds a phase $\varphi$. The paths are recombined at a second beam splitter, and two detectors $D_0$ and $D_1$ record where the particle leaves (Figure~\ref{fig:mz}).
+A particle (a photon, say) enters a beam splitter, which sends it into a superposition of two paths, the upper one and the lower one. A phase shifter on the lower path adds a phase $\varphi$, which we can adjust. The paths are recombined at a second beam splitter, and two detectors $D_0$ and $D_1$ record where the particle leaves (Figure~\ref{fig:mz}).
 
 \begin{figure}[htb]
   \centering
@@ -32,15 +32,15 @@ A particle (a photon, say) enters a beam splitter, which sends it into a superpo
     \draw[ink,line width=2.5pt] (-0.3,1.9) -- (0.3,2.5);
     \draw[ink,line width=2.5pt] (3.2,-0.3) -- (3.8,0.3);
     % phase shifter
-    \draw[fill=figacc!25,draw=figacc] (1.45,1.95) rectangle (2.05,2.45);
-    \node[figacc,font=\small] at (1.75,2.75) {$\varphi$};
+    \draw[fill=figacc!25,draw=figacc] (1.45,-0.25) rectangle (2.05,0.25);
+    \node[figacc,font=\small] at (1.75,0.55) {$\varphi$};
     % labels
     \node[font=\footnotesize,anchor=east] at (-1.6,0) {source};
     \node[font=\footnotesize,anchor=north] at (0,-0.35) {BS$_1$};
     \node[font=\footnotesize,anchor=west] at (3.85,1.9) {BS$_2$};
     \fill[ink] (5.1,2.0) rectangle (5.4,2.4); \node[font=\footnotesize,anchor=west] at (5.45,2.2) {$D_0$};
     \fill[ink] (3.3,3.65) rectangle (3.7,3.95); \node[font=\footnotesize,anchor=south] at (3.5,3.95) {$D_1$};
-    \node[font=\footnotesize,navy] at (1.75,-0.3) {lower path $\ket1$};
+    \node[font=\footnotesize,navy,anchor=north] at (1.75,-0.35) {lower path $\ket1$};
     \node[font=\footnotesize,navy,anchor=east] at (-0.1,1.1) {upper path $\ket0$};
   \end{tikzpicture}
   \caption{A Mach--Zehnder interferometer. The first beam splitter (BS$_1$) creates a superposition of the two paths, a phase shifter adds the phase $\varphi$ to one of them, and the second beam splitter (BS$_2$) recombines them in front of the detectors $D_0$, $D_1$.}
@@ -52,7 +52,7 @@ The only thing that matters about the particle here is which path it is on, so i
 \begin{steps}
   \item $\ket0$ means ``upper path'' and $\ket1$ means ``lower path'';
   \item each beam splitter acts as the Hadamard gate $H$, sending $\ket0\mapsto\ket+$ and $\ket1\mapsto\ket-$ (a real beam splitter differs from $H$ by phases that do not change any result below);
-  \item the phase shifter acts as $P_\varphi=\diag(1,e^{\ii\varphi})$ (it multiplies the amplitude of the upper path by $1$ and of the lower one by $e^{\ii\varphi}$; only the \emph{relative} phase matters);
+  \item the phase shifter acts as $P_\varphi=\diag(1,e^{\ii\varphi})$: it leaves the amplitude of the upper path alone and multiplies that of the lower one by $e^{\ii\varphi}$ (a shifter on the upper path would give the same results, since only the \emph{relative} phase matters);
   \item detector $D_0$ clicks when the final state is found in $\ket0$, and $D_1$ when it is found in $\ket1$: a measurement in the computational basis.
 \end{steps}
 

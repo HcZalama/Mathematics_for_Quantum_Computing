@@ -224,17 +224,15 @@ This is a remarkable fact. The two qubits together are in a \emph{pure} state, w
 \end{solution}
 
 \begin{exerciseset}
-  \exercise{1} Compute the density matrices of the ensembles $\bigl\{\tfrac12,\ket0;\tfrac12,\ket1\bigr\}$, $\bigl\{\tfrac12,\ket+;\tfrac12,\ket-\bigr\}$ and $\bigl\{\tfrac12,\ket{+\ii};\tfrac12,\ket{-\ii}\bigr\}$. Is there a measurement that tells them apart?
+  \exercise{1} Compute the density matrices of the ensembles $\bigl\{\tfrac12,\ket{+\ii};\tfrac12,\ket{-\ii}\bigr\}$ and $\bigl\{\tfrac13,\ket0;\ \tfrac13,\ket{\psi_1};\ \tfrac13,\ket{\psi_2}\bigr\}$, where $\ket{\psi_{1,2}}=-\tfrac12\ket0\pm\tfrac{\sqrt3}2\ket1$. Is there a measurement that tells them apart from the ensembles of Example~\ref{ex:mixed-vs-superposition}? Draw the Bloch vectors of the members of each ensemble.
 
   \exercise{1} A source emits $\ket0$ with probability $\tfrac23$ and $\ket{-}$ with probability $\tfrac13$. Find $\rho$, its eigenvalues, and the probability of the outcome $+1$ for $Z$ and for $X$.
 
-  \exercise{2} Show that the density operator of an ensemble transforms as $\rho\mapsto U\rho U^\dagger$ and, under a measurement, $\rho\mapsto M_m\rho M_m^\dagger/p(m)$ with $p(m)=\Tr(M_m^\dagger M_m\rho)$ (Proposition~\ref{prop:postulates-rho}).
+  \exercise{2}\label{ex:positive-hermitian-sec} Show that $\rho=\begin{pmatrix}a&b\\\bar b&1-a\end{pmatrix}$ is a density matrix if and only if $0\le a\le1$ and $\abs b^2\le a(1-a)$, and that it is pure exactly when $\abs b^2=a(1-a)$. Interpret the condition with the Bloch vector.
 
-  \exercise{2}\label{ex:positive-hermitian-sec} Show that a positive operator is Hermitian. (Hint: write $A=B+\ii C$ with $B,C$ Hermitian and use $\bra\psi A\ket\psi\in\R$.)
+  \exercise{2} Show that for a qubit $\Tr\rho^2=\tfrac12(1+\abs{\vec r}^2)$, and that the purity of a $d$-dimensional state satisfies $\tfrac1d\le\Tr\rho^2\le1$. Which state attains the lower bound?
 
-  \exercise{2} Prove the purity test: $\Tr\rho^2\le1$ with equality iff $\rho$ is pure. Show that for a qubit $\Tr\rho^2=\tfrac12(1+\abs{\vec r}^2)$.
-
-  \exercise{2} Find the density matrix, Bloch vector and purity of $\bigl\{\tfrac13,\ket0;\ \tfrac23,\ket1\bigr\}$ and of $\bigl\{\tfrac12,\ket0;\ \tfrac12,\ket+\bigr\}$ (compare Example~\ref{ex:mixture-bloch}).
+  \exercise{2} Find the density matrix, Bloch vector and purity of $\bigl\{\tfrac13,\ket0;\ \tfrac23,\ket1\bigr\}$ and of $\bigl\{\tfrac12,\ket0;\ \tfrac12,\ket{+\ii}\bigr\}$ (compare Example~\ref{ex:mixture-bloch}).
 
   \exercise{3} Show that a state $\rho=\tfrac12(\Id+\vec r\cdot\vec\sigma)$ evolves under $U=e^{-\ii\theta\vec n\cdot\vec\sigma/2}$ to the state whose Bloch vector is $\vec r$ rotated by $\theta$ about $\vec n$. (Hint: it suffices to check for $\vec n=\hat z$.)
 
@@ -246,13 +244,13 @@ This is a remarkable fact. The two qubits together are in a \emph{pure} state, w
 
   \exercise{3} Show that a linear functional $\omega$ with $\omega(\Id)=1$ that is \emph{not} positive can give a ``negative expectation value''. Construct one: $\omega(A)=\Tr(\rho A)$ with $\rho=\diag(\tfrac32,-\tfrac12)$, and find a positive $A$ with $\omega(A)<0$.
 
-  \exercise{2} Let $\ket\psi=\ket a\ket b$ be a product state. Show $\rho^A=\ket a\!\bra a$. Compute the reduced density operators of each qubit for $\ket{+}\ket{0}$, the four Bell states, and $\frac1{\sqrt2}(\ket{00}+\ket{01})$.
+  \exercise{2} Compute the reduced density operators of each qubit for $\cos\theta\ket{00}+\sin\theta\ket{11}$, for $\frac12(\ket{00}+\ket{01}+\ket{10}-\ket{11})$ and for $\frac1{\sqrt2}(\ket{00}+\ket{01})$. Which of the three states are entangled?
 
   \exercise{2} Prove $\rho^A=CC^\dagger$ for $\ket\psi=\sum c_{ij}\ket{ij}$, and show $\rho^B=(C^\dagger C)^t$. Deduce that $\rho^A$ is pure if and only if $\rank C=1$, that is, iff $\ket\psi$ is a product state.
 
   \exercise{3} Show that if $\ket{\psi}$ is a pure state of $AB$ then $\rho^A$ and $\rho^B$ have the same non-zero eigenvalues. (We will see why in Section~\ref{sec:schmidt}.)
 
-  \exercise{2} Let $\rho^{AB}=\rho_1\otimes\rho_2$. Show that $\rho^A=\rho_1$ (Example~\ref{ex:reduced-product}) and compute $\rho^A,\rho^B$ for $\rho^{AB}=\tfrac12\ket{00}\!\bra{00}+\tfrac12\ket{11}\!\bra{11}$. Is this state a product?
+  \exercise{2} Compute $\rho^A,\rho^B$ for the mixed state $\rho^{AB}=\tfrac12\ket{00}\!\bra{00}+\tfrac12\ket{11}\!\bra{11}$, and compare with those of $\bell00$. Is $\rho^{AB}$ equal to $\rho^A\otimes\rho^B$? (Compare Example~\ref{ex:reduced-product}.)
 
   \exercise{3} Let Charlie prepare $\bell00$ and send one qubit to Alice and one to Bob. Alice applies any unitary $U$ to hers. Show that Bob's reduced density operator is unchanged, so that Alice cannot send Bob a message just by acting on her qubit.
 \end{exerciseset}

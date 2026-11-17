@@ -135,7 +135,7 @@ Property (e) says it all: compressing a function by $a>1$ stretches its transfor
   \end{steps}
 \end{solution}
 
-The momentum of a particle is $p=\hbar k$, so $\Delta x\,\Delta p=\hbar/2$: the Gaussian attains the lower bound of the Heisenberg--Robertson relation (Theorem~\ref{thm:uncertainty}), which for $[\hat x,\hat p]=\ii\hbar$ reads $\Delta x\,\Delta p\ge\hbar/2$. For other shapes the product is larger. The uncertainty principle is, in this light, a theorem about Fourier transforms.
+The momentum of a particle is $p=\hbar k$, so $\Delta x\,\Delta p=\hbar/2$: the Gaussian attains the lower bound of the Heisenberg--Robertson relation (Theorem~\ref{thm:uncertainty}), which for $[\hat x,\hat p]=\ii\hbar$ reads $\Delta x\,\Delta p\ge\hbar/2$. For other shapes the product is larger. The uncertainty principle is, in this light, a theorem about Fourier transforms, and Section~\ref{sec:levels} turns it into an estimate of the size of the hydrogen atom.
 
 \begin{lookahead}
   Since $\FT$ is unitary and $\widehat{f'}=\ii k\hat f$, the momentum operator $\hat p=-\ii\hbar\frac{d}{dx}$ becomes \emph{multiplication by $\hbar k$} in the wave-number representation. So the kinetic energy $\hat p^2/2m$ is the multiplication operator $\hbar^2k^2/2m$, and
@@ -243,7 +243,7 @@ The characteristic function of the measurement statistics is the expectation val
 
   \exercise{3} The \emph{convolution} is $(f*g)(x)=\int f(y)g(x-y)\dd y$. Show that $\widehat{f*g}=\sqrt{2\pi}\,\hat f\,\hat g$, and use it to show that the convolution of two Gaussians $N(0,\sigma_1^2)$ and $N(0,\sigma_2^2)$ is $N(0,\sigma_1^2+\sigma_2^2)$.
 
-  \exercise{2} For the Gaussian packet of Example~\ref{ex:gaussian-uncertainty}, verify all the integrals, and compute $\Delta x\,\Delta p$ with $p=\hbar k$. Repeat for $\psi(x)=(\pi\sigma^2)^{-1/4}e^{-x^2/(2\sigma^2)}e^{\ii k_0x}$ and explain the role of $k_0$.
+  \exercise{2} Repeat Example~\ref{ex:gaussian-uncertainty} for the moving packet $\psi(x)=(\pi\sigma^2)^{-1/4}e^{-x^2/(2\sigma^2)}e^{\ii k_0x}$: use the translation rule (b) of Proposition~\ref{prop:ftprops} (in the variable $k$) to find $\hat\psi$, and compute $\langle k\rangle$, $\Delta x$ and $\Delta k$. What is the role of $k_0$?
 
   \exercise{3} Free evolution: let $\hat\psi(k,0)$ be the initial transform. Show that $\hat\psi(k,t)=\hat\psi(k,0)e^{-\ii\hbar k^2t/2m}$ solves the free Schr\"odinger equation, and that $\abs{\hat\psi(k,t)}$ does not depend on $t$. Deduce that the momentum distribution is conserved.
 

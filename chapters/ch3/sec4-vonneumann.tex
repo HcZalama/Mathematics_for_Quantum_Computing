@@ -98,6 +98,7 @@ So the entropy is a function of the \emph{distance from the centre} of the Bloch
   \end{steps}
 \end{proof}
 
+By (a), the state of largest entropy is $\Id/d$: knowing nothing means that all directions are equally likely. If something is known, for instance the average energy, the state of largest entropy compatible with it is the \emph{thermal state} of Section~\ref{sec:blackbody}, and that is the origin of Planck's law.
 Two further properties, which we state without proof here and which follow from relative entropy (Section~\ref{sec:relent}), are \emph{concavity}, $\Ss\bigl(\sum_ip_i\rho_i\bigr)\ge\sum_ip_i\Ss(\rho_i)$ (mixing increases entropy), and the general bound $\Ss\bigl(\sum_ip_i\rho_i\bigr)\le\Hs(p)+\sum_ip_i\Ss(\rho_i)$, with equality exactly in the orthogonal case (d).
 
 \subsection{Entropy of entanglement}
@@ -155,9 +156,9 @@ The general inequality that remains true is \term{subadditivity}, $\Ss(AB)\le\Ss
 
   \exercise{1} A qubit has Bloch vector $\vec r=(0,0,\tfrac35)$. Compute its eigenvalues and its entropy. Repeat for $\abs{\vec r}=0.8$ and $\abs{\vec r}=0.9$ (use Figure~\ref{fig:entropy-ball} as a check).
 
-  \exercise{2} Prove parts (a)--(c) of Proposition~\ref{prop:vn-props} for a $2$-level system, and verify (d) for $\rho_1=\ket0\!\bra0$, $\rho_2=\ket1\!\bra1$, $p=(\tfrac13,\tfrac23)$.
+  \exercise{2} On $\C^3$ let $\rho_1=\ket0\!\bra0$ and $\rho_2=\tfrac12(\ket1\!\bra1+\ket2\!\bra2)$. Verify Proposition~\ref{prop:vn-props}(d) for $p=(\tfrac13,\tfrac23)$ by computing both sides.
 
-  \exercise{2} Compute the entropy of $\tfrac12\ket0\!\bra0+\tfrac12\ket{+}\!\bra{+}$ and of $\tfrac12\ket0\!\bra0+\tfrac12\ket{1}\!\bra{1}$, and explain why they differ although both mix two states with probabilities $(\tfrac12,\tfrac12)$.
+  \exercise{2} Compute the entropy of $\tfrac12\ket0\!\bra0+\tfrac12\ket{+\ii}\!\bra{+\ii}$ and of $\tfrac12\ket0\!\bra0+\tfrac12\ket{1}\!\bra{1}$, and explain why they differ although both mix two states with probabilities $(\tfrac12,\tfrac12)$. Why is the first equal to the entropy of Example~\ref{ex:vn-mixture}?
 
   \exercise{2} Show that rotating a qubit state on the Bloch sphere does not change its entropy. (Hint: Proposition~\ref{prop:vn-props}(b).)
 

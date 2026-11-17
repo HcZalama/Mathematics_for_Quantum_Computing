@@ -12,7 +12,7 @@
 \end{recall}
 
 Quantum mechanics is a \emph{framework}, not a theory. It does not tell us which Hilbert space describes a given physical system, or which Hamiltonian governs it; specific theories, such as quantum electrodynamics, answer those questions inside the framework. What the postulates fix is the \emph{form} of every such theory.
-Do not expect them to be motivated: they emerged from decades of trial and error. Expect to learn how and when to apply them.
+The postulates are not derived from anything more basic: they emerged from decades of trial and error, guided by experiments like the three puzzles of the Introduction. Expect to learn how and when to apply them; Chapter~\ref{ch:phenomena} shows them at work on those puzzles.
 
 \subsection{State space}
 
@@ -209,10 +209,10 @@ $X$ and $Z$ are Hermitian and unitary (they are Pauli matrices, Proposition~\ref
 \begin{solution}
   \begin{steps}
     \item \emph{Unitarity.} By Example~\ref{ex:hadamard}, $H=(\sx+\sz)/\sqrt2$ is Hermitian with $H^2=\Id$, so $H^\dagger H=H^2=\Id$.
-    \item \emph{Eigenvalues.} Write $H=\vec n\cdot\vec\sigma$ with the unit vector $\vec n=\frac1{\sqrt2}(1,0,1)$. Then $H^2=\Id$ (product formula of Proposition~\ref{prop:pauli}), so the eigenvalues are $\pm1$ (Exercise~\ref{ex:vn-sigma-eig}).
+    \item \emph{Eigenvalues.} If $H\ket v=\lambda\ket v$ then $\ket v=H^2\ket v=\lambda^2\ket v$, so $\lambda=\pm1$; and $\Tr H=0$ is the sum of the two eigenvalues, so one is $+1$ and the other $-1$.
     \item \emph{Eigenvector for $+1$.} Solve $(H-\Id)v=0$: the first row gives $v_1(1-\sqrt2)+v_2=0$, so $v\propto(1,\sqrt2-1)=(1,\tan\frac\pi8)\propto\bigl(\cos\tfrac\pi8,\sin\tfrac\pi8\bigr)$.
     \item \emph{Eigenvector for $-1$.} It must be orthogonal to the first: $\bigl(-\sin\tfrac\pi8,\cos\tfrac\pi8\bigr)$.
-    \item \emph{Geometry.} These are the Bloch vectors $\pm\vec n$, at angle $\pi/4$ from $\ket0$: the Hadamard gate is a half-turn of the sphere about the axis $\vec n$.
+    \item \emph{Geometry.} Write $H=\vec n\cdot\vec\sigma$ with the unit vector $\vec n=\frac1{\sqrt2}(1,0,1)$. The two eigenvectors have the Bloch vectors $\pm\vec n$, at angle $\pi/4$ from the $z$-axis (Exercise~\ref{ex:vn-sigma-eig}): the Hadamard gate is a half-turn of the sphere about the axis $\vec n$, which swaps the $z$- and $x$-axes.
   \end{steps}
 \end{solution}
 
@@ -330,7 +330,10 @@ Two consequences are immediate:
   In each case we check the three requirements: unitarity, $U(e)=\Id$, and the product rule.
   \begin{steps}
     \item (a) $X$ is unitary and $X^2=\Id=U(g^2)=U(e)$: the product rule holds for every pair ($g\cdot g=e$).
-    \item (b) $e^{\ii\varphi Z}$ is unitary (Proposition~\ref{prop:expunitary}); $\diag(e^{\ii\varphi},e^{-\ii\varphi})\diag(e^{\ii\varphi'},e^{-\ii\varphi'})=\diag(e^{\ii(\varphi+\varphi')},e^{-\ii(\varphi+\varphi')})$, which is $U(\varphi+\varphi')$.
+    \item (b) $e^{\ii\varphi Z}$ is unitary (Proposition~\ref{prop:expunitary}), and
+      \[
+        \diag(e^{\ii\varphi},e^{-\ii\varphi})\,\diag(e^{\ii\varphi'},e^{-\ii\varphi'})=\diag(e^{\ii(\varphi+\varphi')},e^{-\ii(\varphi+\varphi')})=U(\varphi+\varphi').
+      \]
     \item (c) $U(t)$ is unitary since $H$ is Hermitian, and $U(t+s)=U(t)U(s)$ because $-\ii Ht/\hbar$ and $-\ii Hs/\hbar$ commute (Proposition~\ref{prop:commuting-exp}).
     \item (d) $S$ merely permutes the orthonormal basis, so it is unitary, and $S^N=\Id$ ensures that $U(k)=S^k$ depends only on $k\bmod N$. The product rule is $S^{k+l}=S^kS^l$.
     \item (e) $\mathrm{SWAP}$ permutes the orthonormal basis $\ket{ab}$, so it is unitary, and $\mathrm{SWAP}^2=\Id$.
@@ -414,15 +417,15 @@ A Hamiltonian $H=H_1+H_2$ can therefore be simulated by alternating the evolutio
 
   \exercise{1} Which of $\frac1{\sqrt2}(\ket0+\ket1)$, $\frac12(\ket0+\ket1)$, $\frac{1}{\sqrt{13}}(2\ket0+3\ii\ket1)$ and $\frac13(2\ket0+\ii\ket1)$ are qubit states? For those that are, find the squared moduli of the amplitudes.
 
-  \exercise{1} Compute the Bloch vectors of $\ket0,\ket1,\ket\pm,\ket{\pm\ii}$, and find $\theta,\phi$ and $\vec n$ for $\ket\psi=\frac1{\sqrt3}\ket0+\sqrt{\tfrac23}\,e^{\ii\pi/3}\ket1$.
+  \exercise{1} Find $\theta,\phi$ and the Bloch vector of $\tfrac12\ket0+\tfrac{\sqrt3}{2}e^{-\ii\pi/4}\ket1$, of $H\ket1$ and of $S\ket-$.
 
-  \exercise{2} Show that $\ket\psi\!\bra\psi=\frac12(\Id+\vec n\cdot\vec\sigma)$ and $\abs{\braket\varphi\psi}^2=\frac12(1+\vec m\cdot\vec n)$ (Proposition~\ref{prop:bloch}), and deduce that orthogonal states have antipodal Bloch vectors.
+  \exercise{2} Using Proposition~\ref{prop:bloch}, find all qubit states $\ket\varphi$ with $\abs{\braket\varphi0}^2=\abs{\braket\varphi+}^2=\tfrac12$. Where are they on the Bloch sphere?
 
   \exercise{2} For $\ket\psi=a\ket0+b\ket1$ with $a\neq0$, find $\gamma$ such that $e^{-\ii\gamma}\ket\psi$ has a real, positive $\ket0$-amplitude, and read off $\theta/2$ and $\phi$. Show that two qubit states $\ket\psi,\ket\varphi$ describe the same Bloch vector if and only if $\abs{\braket\psi\varphi}=1$.
 
-  \exercise{1} Verify that the Hadamard gate is unitary, that $H^2=\Id$, and find its eigenvalues and eigenvectors. (Hint: $H=\vec n\cdot\vec\sigma$ with $\vec n=\frac1{\sqrt2}(1,0,1)$.)\label{ex:vn-sigma-eig}
+  \exercise{2} Let $\vec n$ be a unit vector. Show that $\vec n\cdot\vec\sigma$ has eigenvalues $\pm1$ and that its eigenvectors are the states with Bloch vectors $\pm\vec n$. (Hint: by Proposition~\ref{prop:bloch}, a state with Bloch vector $\vec n$ satisfies $\ket\psi\!\bra\psi=\tfrac12(\Id+\vec n\cdot\vec\sigma)$; apply both sides to $\ket\psi$.) Use this to write down the eigenvectors of $H$ without solving a linear system.\label{ex:vn-sigma-eig}
 
-  \exercise{1} Show that $HXH=Z$, $HZH=X$ and $HYH=-Y$, and interpret: $H$ exchanges the computational basis with the $\ket\pm$ basis. Is $S$ Hermitian? Is it involutory? Compute $S^2$ and $S^4$.
+  \exercise{1} Show that $SXS^\dagger=Y$ and $SYS^\dagger=-X$, and interpret on the Bloch sphere: $S$ is a quarter turn about the $z$-axis. Is $S$ Hermitian? Is it involutory? Compute $S^2$ and $S^4$.
 
   \exercise{2} Compute the action of $Z$ and $S$ on $\ket+$. Which gate maps $\ket+$ to $\ket-$? Which maps $\ket+$ to $\ket{+\ii}$? What are the Bloch vectors involved?
 
@@ -436,17 +439,15 @@ A Hamiltonian $H=H_1+H_2$ can therefore be simulated by alternating the evolutio
 
   \exercise{2} A qubit has $H=\hbar\omega Y$ and starts in $\ket0$. Show that $\ket{\psi(t)}=\cos(\omega t)\ket0+\sin(\omega t)\ket1$, find its Bloch vector, and describe the motion. Which state is the ground state?
 
-  \exercise{3} Ehrenfest: for time-independent $A$, prove $\frac{d}{dt}\langle A\rangle_t=\frac{\ii}{\hbar}\langle[H,A]\rangle_t$. Deduce that $\langle H\rangle_t$ is constant and that every $A$ commuting with $H$ is a conserved quantity.
+  \exercise{2} For time-independent $A$, prove $\frac{d}{dt}\langle A\rangle_t=\frac{\ii}{\hbar}\langle[H,A]\rangle_t$. Deduce that $\langle H\rangle_t$ is constant and that every $A$ commuting with $H$ is a conserved quantity. (Section~\ref{sec:spin} uses this to follow a spin in a magnetic field.)
 
-  \exercise{2} Let $H=\sum_EE\ket E\!\bra E$ and $\ket{\psi(0)}=\sum_Ec_E\ket E$. Show $\ket{\psi(t)}=\sum_Ec_Ee^{-\ii Et/\hbar}\ket E$ and that the probabilities $\abs{c_E}^2$ of the energy do not depend on time. For another observable $A$, show $\langle A\rangle_t=\sum_{E,E'}\bar c_Ec_{E'}A_{EE'}e^{\ii(E-E')t/\hbar}$, which oscillates at the Bohr frequencies $(E-E')/\hbar$.
+  \exercise{2} Let $H=\sum_EE\ket E\!\bra E$ and $\ket{\psi(0)}=\sum_Ec_E\ket E$. Show $\ket{\psi(t)}=\sum_Ec_Ee^{-\ii Et/\hbar}\ket E$ and that the probabilities $\abs{c_E}^2$ of the energies do not depend on time. (Section~\ref{sec:levels} shows that the averages of other observables oscillate at the differences of the energies, and why this explains spectral lines.)
 
   \exercise{2} Prove that commuting Hermitian operators have a common orthonormal eigenbasis (Proposition~\ref{prop:commuting-exp}). (Hint: the eigenspaces of $A$ are invariant under $B$.)\label{ex:commuting-basis}
 
   \exercise{2} Let $H(t)=\Omega(t)X$. Show $[H(t),H(t')]=0$ and $U=\exp\bigl(-\ii X\int_0^t\Omega(s)\dd s\bigr)$. Starting from $\ket0$, compute the probability of $\ket1$. If $\int_0^T\Omega=\pi/2$, which gate have you implemented?
 
   \exercise{2} Show that $e^{\ii s\sx}e^{\ii s\sz}\neq e^{\ii s(\sx+\sz)}$ for small $s\neq0$ by comparing the terms of order $s^2$. Then repeat Example~\ref{ex:trotter} numerically for $n=1,2,10$ and describe the error as $n$ grows.\label{ex:trotter-exercise}
-
-  \exercise{3} How many real parameters describe a normalised state of $n$ qubits up to a global phase? Compare with the $2n$ parameters of a product of $n$ single-qubit states, and discuss what the gap suggests (see Section~\ref{sec:composite}).
 
   \exercise{1} Show that $U(g)=X$ and $U(g)=Z$ and $U(g)=H$ each define a unitary representation of $\Z_2=\{e,g\}$ on $\C^2$. Is $U(g)=S$ one? What group would $S$ represent?
 

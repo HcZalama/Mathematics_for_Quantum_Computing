@@ -103,7 +103,7 @@ To \emph{create} entanglement we need a gate that acts on two qubits at once. Th
 \end{solution}
 
 \begin{lookahead}
-  Applied after a Hadamard on the first qubit, the controlled-NOT turns $\ket{00}$ into $\ket{\Phi^+}$ (Example~\ref{ex:bell-circuit}). Together with single-qubit gates, $\CNOT$ is enough to build every unitary on $n$ qubits. The same two ingredients, a Hadamard and a CNOT, appear in superdense coding (Section~\ref{sec:superdense}) and in teleportation.
+  Applied after a Hadamard on the first qubit, the controlled-NOT turns $\ket{00}$ into $\ket{\Phi^+}$ (Example~\ref{ex:bell-circuit}). Together with single-qubit gates, $\CNOT$ is enough to build every unitary on $n$ qubits. The same two ingredients, a Hadamard and a CNOT, appear in superdense coding (Section~\ref{sec:superdense}) and in teleportation (Section~\ref{sec:teleportation}).
 \end{lookahead}
 
 \subsection{General measurements from projective ones}
@@ -146,7 +146,7 @@ The strangeness of the framework in one paragraph: we can never observe the stat
 Can quantum mechanics be reformulated in a more classical way, with hidden but definite properties? Section~\ref{sec:bell} shows that every such attempt is doomed. The good news is that this counter-intuitive behaviour is exactly what quantum computation exploits.
 
 \begin{exerciseset}
-  \exercise{1} Use the determinant criterion to classify: $\ket+\ket-$; $\frac12(\ket{00}+\ket{01}+\ket{10}+\ket{11})$; $\frac12(\ket{00}+\ket{01}+\ket{10}-\ket{11})$; the four Bell states. Prove directly that $\ket{\Phi^+}\neq\ket a\ket b$ for all single-qubit states $\ket a,\ket b$.
+  \exercise{1} Use the determinant criterion to classify $\frac12(\ket{00}+\ket{01}+\ket{10}-\ket{11})$, the four Bell states, and $\cos\theta\ket{00}+\sin\theta\ket{11}$ (for which $\theta$ is it entangled?). Prove directly, without the criterion, that $\ket{\Phi^+}\neq\ket a\ket b$ for all single-qubit states $\ket a,\ket b$.
 
   \exercise{1} Show that the four Bell states form an orthonormal basis of the two-qubit state space.\label{ex:bell-basis}
 
@@ -156,9 +156,7 @@ Can quantum mechanics be reformulated in a more classical way, with hidden but d
 
   \exercise{2}\label{ex:cnot} For the controlled-NOT of Definition~\ref{def:cnot}, check the matrix given there, and prove that $\CNOT$ is unitary and involutory. Compute $\CNOT(H\tp\Id)\ket{xy}$ for the four basis states. What do you find? (This is the standard circuit that prepares the Bell states.)
 
-  \exercise{2} Let $\ket\psi=\frac1{\sqrt3}(\ket{00}+\ket{01}+\ket{10})$. Measure the first qubit in the computational basis with operators $\ket m\!\bra m\tp\Id$ and compute the probabilities and post-measurement states. Repeat with $\ket+\ket-$ and with $\bell01$.
-
-  \exercise{2} Show that the amplitudes of an $n$-qubit product state are determined by $2n$ real numbers up to phases, whereas a general state of $n$ qubits needs $2^{n+1}-2$. What does the gap say about entanglement?
+  \exercise{2} Let $\ket\psi=\frac1{\sqrt3}(\ket{00}+\ket{01}+\ket{10})$. Measure the \emph{second} qubit in the computational basis, with operators $\Id\tp\ket m\!\bra m$, and compute the probabilities and post-measurement states; compare with Example~\ref{ex:partial2}. Repeat with $\ket+\ket-$ and with $\bell01$.
 
   \exercise{3}\label{ex:extend-unitary} Prove the claim in the proof of Proposition~\ref{prop:ancilla}: a linear map $U:W\to V$ ($W$ a subspace) with $\braket{Uw_1}{Uw_2}=\braket{w_1}{w_2}$ extends to a unitary $V\to V$. (Hint: complete orthonormal bases of $W$ and $U(W)$ with Gram--Schmidt.)
 

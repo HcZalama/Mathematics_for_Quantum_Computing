@@ -6,7 +6,7 @@
   You will add, multiply, conjugate and invert complex numbers, in Cartesian and in polar form; use the modulus and the triangle inequality; find the argument of a complex number without picking the wrong angle; solve $z^n=w$; and recognise a \emph{phase}, the idea that will separate observable from unobservable in quantum mechanics.
 \end{objectives}
 
-The state of a quantum system is a list of complex numbers called \emph{amplitudes}. Probabilities will be their squared moduli, and the difference between a ``global'' and a ``relative'' phase (Section~\ref{sec:measurement}) will be the difference between what we can and cannot observe. We review here the few facts about $\C$ that we will use all the time.
+The state of a quantum system is a list of complex numbers called \emph{amplitudes}. In the double slit of the Introduction, the amplitudes of the two paths were added and the result was squared; that is the pattern of every quantum computation. Probabilities will be squared moduli, and the difference between a ``global'' and a ``relative'' phase (Section~\ref{sec:measurement}) will be the difference between what we can and cannot observe. We review here the few facts about $\C$ that we will use all the time.
 
 \subsection{Definition and arithmetic}
 
@@ -245,7 +245,7 @@ This lets us compute things that would be painful in Cartesian form.
 \end{solution}
 
 \begin{lookahead}
-  The $n$ solutions of $z^n=1$ are the \emph{roots of unity} $\omega^k$ with $\omega=e^{2\pi\ii/N}$ ($N=n$). They will reappear as the entries of the discrete Fourier transform (Section~\ref{sec:fourier}), whose matrix is the heart of Shor's algorithm, and as the eigenvalues of the cyclic shift on $N$ levels (Section~\ref{sec:grouprep}).
+  The $n$ solutions of $z^n=1$ are the \emph{$n$-th roots of unity} $1,\omega,\omega^2,\dots,\omega^{n-1}$, with $\omega=e^{2\pi\ii/n}$. They will reappear as the entries of the discrete Fourier transform (Section~\ref{sec:fourier}), whose matrix is the heart of Shor's algorithm, and as the eigenvalues of the cyclic shift on $N$ levels (Section~\ref{sec:grouprep}).
 \end{lookahead}
 
 \subsubsection*{Finding the argument}
@@ -317,7 +317,7 @@ The numbers of modulus one deserve a name.
   A \term{phase} is a complex number of modulus $1$, that is, $e^{\ii\theta}$ for some $\theta\in\R$.
 \end{definition}
 
-By Proposition~\ref{prop:polar}, a product of phases is a phase, and so is the inverse of a phase. Multiplying by a phase \emph{rotates} a number without changing its modulus: $\abs{e^{\ii\theta}z}=\abs{z}$. The question that will matter in quantum mechanics is what happens when we rotate \emph{different} numbers by \emph{different} angles. This is exactly what the double slit does.
+By Proposition~\ref{prop:polar}, a product of phases is a phase, and so is the inverse of a phase. Multiplying by a phase \emph{rotates} a number without changing its modulus: $\abs{e^{\ii\theta}z}=\abs{z}$. The question that will matter in quantum mechanics is what happens when we rotate \emph{different} numbers by \emph{different} angles and then add them. This is exactly what the double slit does: the two amplitudes reaching a point of the screen have travelled different distances, so their phases differ.
 
 \begin{example}\label{ex:relative-phase}
   Let $z_1=z_2=1/\sqrt2$. Compute $\abs{e^{\ii\theta_1}z_1+e^{\ii\theta_2}z_2}^2$, and show that it depends on $\theta_1,\theta_2$ only through $\theta_1-\theta_2$.
@@ -327,19 +327,19 @@ By Proposition~\ref{prop:polar}, a product of phases is a phase, and so is the i
     \item \emph{Set up.} Put $u=e^{\ii\theta_1}z_1+e^{\ii\theta_2}z_2$. Then $\abs u^2=u\bar u=\tfrac12\bigl(e^{\ii\theta_1}+e^{\ii\theta_2}\bigr)\bigl(e^{-\ii\theta_1}+e^{-\ii\theta_2}\bigr)$.
     \item \emph{Expand.} $\abs{u}^2=\tfrac12\bigl(1+1+e^{\ii(\theta_1-\theta_2)}+e^{-\ii(\theta_1-\theta_2)}\bigr)$.
     \item \emph{Simplify} with $e^{\ii x}+e^{-\ii x}=2\cos x$: $\abs{u}^2=1+\cos(\theta_1-\theta_2)$. This depends only on the difference.
-    \item \emph{Reading.} If both numbers are rotated by the same angle ($\theta_1=\theta_2$) it equals $2$ for every angle: that common rotation is invisible. If $\theta_1-\theta_2=\pi$ it equals $0$: the two terms cancel.
+    \item \emph{Reading.} If both numbers are rotated by the same angle ($\theta_1=\theta_2$) it equals $2$ for every angle: that common rotation is invisible. If $\theta_1-\theta_2=\pi$ it equals $0$: the two terms cancel. As $\theta_1-\theta_2$ varies, the value swings between $0$ and $2$: these are the bright and dark fringes.
   \end{steps}
 \end{solution}
 
 \begin{xref}
-  In Section~\ref{sec:measurement} the quantities $z_i$ will be amplitudes of a qubit. A common phase on \emph{all} of them is the \emph{global phase}, which cannot be observed. A phase on \emph{some} of them is a \emph{relative phase}, and it changes measurement outcomes, as Example~\ref{ex:relative-phase} shows.
+  In Section~\ref{sec:measurement} the quantities $z_i$ will be amplitudes of a qubit. A common phase on \emph{all} of them is the \emph{global phase}, which cannot be observed. A phase on \emph{some} of them is a \emph{relative phase}, and it changes measurement outcomes, as Example~\ref{ex:relative-phase} shows. Section~\ref{sec:interference} turns this computation into the fringes of an interferometer.
 \end{xref}
 
 %----------------------------------------------------------------------
 \begin{exerciseset}
   \exercise{1} Write in the form $a+b\ii$: $(1+\ii)^2$, $\ \ii(2-3\ii)^2$, $\ (1-\ii)^3$, $\ (3-2\ii)+(1+5\ii)$.
 
-  \exercise{1} Compute $\ii^{7}$, $\ii^{42}$, $\ii^{-3}$ and $\ii^{2026}$. Prove that $\ii^n=\ii^{\,n \bmod 4}$ for every $n\in\Z$, including negative $n$.
+  \exercise{1} Compute $\ii^{7}$, $\ii^{42}$, $\ii^{-3}$ and $\ii^{1001}$. Prove that $\ii^n=\ii^{\,n \bmod 4}$ for every $n\in\Z$, including negative $n$.
 
   \exercise{1} Solve in $\C$: $z^2=-9$, $\ z^2+2z+5=0$, $\ z^2-(1+\ii)z+\ii=0$. Which of these have no real roots?
 
@@ -351,7 +351,7 @@ By Proposition~\ref{prop:polar}, a product of phases is a phase, and so is the i
 
   \exercise{2} Prove the reverse triangle inequality $\bigl|\abs{z}-\abs{w}\bigr|\le\abs{z-w}$. When does equality $\abs{z+w}=\abs{z}+\abs{w}$ hold in the triangle inequality?
 
-  \exercise{2} Describe and sketch $\{\abs{z-\ii}<2\}$, $\ \{\abs{z-1}=\abs{z+1}\}$ and $\{\Re(z^2)=0\}$.
+  \exercise{2} Describe and sketch $\{\abs{z-2}=1\}$, $\ \{\abs{z-1}<\abs{z-\ii}\}$ and $\{\Re(z^2)=0\}$.
 
   \exercise{2} Interpret geometrically $z\mapsto\bar z$, $\ z\mapsto\ii z$, $\ z\mapsto z+w_0$ and $z\mapsto 2z$ as maps of the plane. Which are linear over $\R$ (that is, linear maps $\R^2\to\R^2$)? Which satisfy $f(\lambda z)=\lambda f(z)$ for all complex $\lambda$?
 
@@ -361,7 +361,7 @@ By Proposition~\ref{prop:polar}, a product of phases is a phase, and so is the i
 
   \exercise{2} Compute $(\sqrt3+\ii)^9$ and $\left(\dfrac{1+\ii}{1-\ii}\right)^{2027}$.
 
-  \exercise{2} Solve $z^3=-8$, $\ z^2=\ii$ and $\ z^6=-1$. Sketch the solutions: what shape do they form?
+  \exercise{2} Solve $z^3=8\ii$, $\ z^2=\ii$ and $\ z^6=-1$. Sketch the solutions: what shape do they form?
 
   \exercise{2} Solve $z^4=-16$ and $z^2=3-4\ii$ (for the second, use both the polar method and the ansatz $z=x+y\ii$).
 

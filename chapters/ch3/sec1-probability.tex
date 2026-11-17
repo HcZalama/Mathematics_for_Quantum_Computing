@@ -118,7 +118,7 @@ Note that for a density every single point has probability $\int_{\{x\}}f=0$: on
     \item \emph{The density.} $\abs{\psi(x)}^2=2\sin^2(\pi x)=1-\cos(2\pi x)$.
     \item \emph{Normalisation.} $\int_0^1\bigl(1-\cos2\pi x\bigr)\dd x=1-\bigl[\tfrac{\sin2\pi x}{2\pi}\bigr]_0^1=1$.
     \item \emph{The probability.} $\int_{1/4}^{3/4}\bigl(1-\cos2\pi x\bigr)\dd x=\tfrac12-\tfrac1{2\pi}\bigl(\sin\tfrac{3\pi}2-\sin\tfrac\pi2\bigr)=\tfrac12+\tfrac1\pi\approx0.818$.
-    \item \emph{Reading.} The middle half of the box carries about $82\%$ of the probability: the particle is most likely found near the centre, where $\abs\psi^2$ is largest.
+    \item \emph{Reading.} The middle half of the box carries about $82\%$ of the probability: the particle is most likely found near the centre, where $\abs\psi^2$ is largest. (This $\psi$ is the state of lowest energy of a particle confined to the box; Section~\ref{sec:levels} finds all the others.)
   \end{steps}
 \end{solution}
 
@@ -243,7 +243,7 @@ How do we measure a probability in the laboratory? We repeat the experiment $n$ 
 
   \exercise{2} Prove the inclusion--exclusion formula for three events, $\PP(A\cup B\cup C)=\PP(A)+\PP(B)+\PP(C)-\PP(A\cap B)-\PP(A\cap C)-\PP(B\cap C)+\PP(A\cap B\cap C)$.
 
-  \exercise{2} Show that $B\mapsto\bra\psi P_B\ket\psi$ is a probability measure when $\{P_m\}$ is a complete family of orthogonal projectors (Example~\ref{ex:qmeasure}), and compute it for the measurement of $X$ on $\ket\psi=\frac1{\sqrt3}\ket0+\frac{1+\ii}{\sqrt3}\ket1$.
+  \exercise{2} Write down the probability measure of Example~\ref{ex:qmeasure} (all four events) for the measurement of $X$ on $\ket\psi=\frac1{\sqrt3}\ket0+\frac{1+\ii}{\sqrt3}\ket1$, and for the measurement of $Z\otimes Z$, with outcomes $\pm1$, on $\frac1{\sqrt3}(\ket{00}+\ket{01}+\ket{10})$.
 
   \exercise{1} Find $c$ so that $f(x)=cx^2$ is a probability density on $[0,1]$, and compute $\EE[X]$ and $\Var(X)$.
 
@@ -257,7 +257,7 @@ How do we measure a probability in the laboratory? We repeat the experiment $n$ 
 
   \exercise{2} Let $\ket\psi=\frac1{\sqrt3}\ket0+\sqrt{\tfrac23}\ket1$ be sent with probability $\tfrac13$ and $\ket{-}$ with probability $\tfrac23$. Bob measures $X$. Find the posterior probability of each state given each outcome.
 
-  \exercise{2} Show that $A,B$ independent implies $A,B^c$ independent. Compute the joint distribution of $Z\otimes Z$ outcomes for $\ket{\Phi^+}$, $\bell01$, and for $\ket0\ket+$, and decide independence in each case.
+  \exercise{2} Show that $A,B$ independent implies $A,B^c$ independent. Compute the joint distribution of the outcomes of $Z$ on both qubits for $\bell10$, $\bell01$ and $\ket0\ket+$, and decide independence in each case.
 
   \exercise{3} A classical mixture $\rho=\tfrac12\ket{00}\!\bra{00}+\tfrac12\ket{11}\!\bra{11}$ and the state $\ket{\Phi^+}$ give the same joint distribution for $Z\otimes Z$. Compute the joint distributions of outcomes of $X\otimes X$ for both, and conclude that $X\otimes X$ distinguishes them.
 

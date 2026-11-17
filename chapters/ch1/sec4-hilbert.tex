@@ -392,7 +392,7 @@ In particular, every finite-dimensional Hilbert space has an orthonormal basis.
 
   \exercise{2} Let $A\in M_n(\C)$ and $f(v,w)=v^\dagger Aw$. Show that axiom (i) holds iff $A$ is Hermitian, and that $f$ is an inner product iff $A$ is Hermitian and $v^\dagger Av>0$ for all $v\neq0$. For which $c\in\C$ is $A=\begin{pmatrix}1&c\\\bar c&1\end{pmatrix}$ an inner product matrix?
 
-  \exercise{2} On $C([0,1],\C)$ let $\langle f,g\rangle=\int_0^1\overline f\,g\dd x$. Check that this is an inner product (where do you use continuity?), compute $\langle1,x\rangle$ and $\norm x$, and show that $\{e^{2\pi\ii nx}\}_{n\in\Z}$ is an orthonormal system.
+  \exercise{2} On $C([0,1],\C)$ let $\langle f,g\rangle=\int_0^1\overline f\,g\dd x$. Check that this is an inner product (where do you use continuity?), compute $\langle x,x^2\rangle$ and $\norm{x^2}$, and show that $\{e^{2\pi\ii nx}\}_{n\in\Z}$ is an orthonormal system.
 
   \exercise{2} On $M_n(\C)$ define $\langle A,B\rangle=\Tr(A^\dagger B)$. Show that it is an inner product with $\norm A^2=\sum_{ij}\abs{A_{ij}}^2$, and that $\{\tfrac1{\sqrt2}\sigma_\mu\}_{\mu=0}^3$ is an orthonormal basis of $M_2(\C)$.
 
@@ -402,11 +402,11 @@ In particular, every finite-dimensional Hilbert space has an orthonormal basis.
 
   \exercise{1} Let $\ket\psi=\frac1{\sqrt3}\ket0+\frac{1+\ii}{\sqrt3}\ket1$ and $\ket\varphi=\frac1{\sqrt2}(\ket0-\ii\ket1)$. Write them as columns and the bras as rows, compute $\braket\psi\psi$, $\braket\varphi\varphi$, $\braket\varphi\psi$, and check $\braket\varphi\psi=\overline{\braket\psi\varphi}$. Compute $\ket\psi\!\bra\varphi$, $\ket\psi\!\bra\psi$ and $\ket\varphi\!\bra\varphi$: which are Hermitian, and what are their ranks and traces?
 
-  \exercise{1} Simplify: $\bra0\sx\ket1$, $\bra1\sy\ket0$, $\bra+\sz\ket-$, $(\ket0\!\bra1)(\ket1\!\bra0)$, $(\ket+\!\bra+)\ket0$, $\bra{+\ii}\sy\ket{+\ii}$.
+  \exercise{1} Simplify: $\bra0\sx\ket1$, $\bra1\sy\ket0$, $\bra+\sz\ket-$, $(\ket1\!\bra0)(\ket0\!\bra1)$, $(\ket-\!\bra-)\ket1$, $\bra{+\ii}\sy\ket{+\ii}$.
 
   \exercise{2} Prove: $(\ket\psi\!\bra\varphi)^\dagger=\ket\varphi\!\bra\psi$; $(\ket\psi\!\bra\varphi)(\ket\chi\!\bra\xi)=\braket\varphi\chi\,\ket\psi\!\bra\xi$; and $(\lambda\ket\psi)^\dagger=\bar\lambda\bra\psi$.
 
-  \exercise{1} Write $\sx,\sy,\sz,H$ as $\sum_{ij}A_{ij}\ket i\!\bra j$, and compute the entries $A_{ij}=\bra{i}A\ket{j}$ of $\sy$ in the basis $\{\ket+,\ket-\}$.
+  \exercise{1} Write $\sx,\sy,\sz,H$ as $\sum_{ij}A_{ij}\ket i\!\bra j$, and compute the matrix of $\sz$ in the basis $\{\ket{+\ii},\ket{-\ii}\}$.
 
   \exercise{1} Check that $\sum_i\ket{e_i}\!\bra{e_i}=\Id$ for the three bases $\{\ket0,\ket1\}$, $\{\ket\pm\}$, $\{\ket{\pm\ii}\}$.
 
@@ -418,9 +418,9 @@ In particular, every finite-dimensional Hilbert space has an orthonormal basis.
 
   \exercise{2} Find all unit vectors of $\C^2$ orthogonal to $\frac1{\sqrt3}\bigl(\ket0+\sqrt2\,e^{\ii\pi/3}\ket1\bigr)$.
 
-  \exercise{2} Let $\{\ket{e_i}\}$ be an ONB. Prove $\ket\psi=\sum_i\braket{e_i}\psi\ket{e_i}$ and $\norm\psi^2=\sum_i\abs{\braket{e_i}\psi}^2$ (Parseval), and show with an example in $\R^2$ that both fail for a non-orthogonal basis.
+  \exercise{2} Let $U$ be the $n\times n$ matrix whose columns are the vectors of an ONB $\{\ket{e_i}\}$ of $\C^n$. Show that the coordinates of $\ket\psi$ in that basis are the entries of $U^\dagger\ket\psi$, that $U^\dagger U=\Id$, and that Parseval's identity says $\norm{U^\dagger\psi}=\norm\psi$.
 
-  \exercise{2} Expand $\ket\psi=\frac1{\sqrt3}\ket0+\frac{1+\ii}{\sqrt3}\ket1$ in the three bases of Example~\ref{ex:parseval} (checking the computations there), and interpret the squared coefficients.
+  \exercise{2} Expand $\ket\chi=\tfrac12\ket0+\tfrac{\sqrt3}{2}\ii\ket1$ in the three bases of Example~\ref{ex:parseval}, check Parseval in each, and say in which basis the outcome of a measurement would be most predictable.
 
   \exercise{2} Prove Pythagoras: $\braket uv=0\Rightarrow\norm{u+v}^2=\norm u^2+\norm v^2$. Show that the converse holds over $\R$ but fails over $\C$ (try $v=\ii u$).
 
@@ -438,7 +438,7 @@ In particular, every finite-dimensional Hilbert space has an orthonormal basis.
 
   \exercise{3} Show that the dual basis of $\{\ket0,\ket+\}$ in $\C^2$ does not consist of the bras $\bra0,\bra+$, and explain why for an orthonormal basis it does.
 
-  \exercise{1} Redo Example~\ref{ex:gs-c2} in both orders. Then apply Gram--Schmidt to $(1,1,0),(1,0,1),(0,1,1)$ in $\R^3$, and to $(1,\ii,0),(0,1,1),(1,0,1)$ in $\C^3$ in both orders.
+  \exercise{1} Apply Gram--Schmidt to $(1,2,2),(1,0,1),(0,0,1)$ in $\R^3$, and to $(1,\ii,0),(0,1,1),(1,0,1)$ in $\C^3$. Repeat the second one in the reverse order and compare.
 
   \exercise{2} Apply Gram--Schmidt to $(1,\ii),(\ii,1)$ in $\C^2$. What goes wrong with $(1,\ii),(\ii,-1)$, and why?
 

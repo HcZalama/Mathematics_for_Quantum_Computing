@@ -21,7 +21,7 @@ Throughout, the scalars $F$ will be either $\R$ or $\C$; in quantum mechanics it
 
 Elements of $V$ are called \term{vectors}. In words: you may add vectors, scale them, and the usual rules of arithmetic hold. From these axioms one deduces that $0\,v=0_V$ for every $v$.
 
-The most important example is $F^n$, the columns of $n$ scalars. But the definition covers much more. The $m\times n$ matrices form a vector space, and so do the polynomials of degree at most $n$, written $P_n$. In infinite dimension we have the continuous functions on $[0,1]$, and, as we saw, the solutions of the Schr\"odinger equation. Sequences $(z_1,z_2,\dots)$ of complex numbers with termwise operations form a vector space as well.
+The most important example is $F^n$, the columns of $n$ scalars. But the definition covers much more. The $m\times n$ matrices form a vector space, and so do the polynomials of degree at most $n$, written $P_n$. In infinite dimension we have the continuous functions on $[0,1]$, and, because the equation is linear, the solutions of the Schr\"odinger equation. Sequences $(z_1,z_2,\dots)$ of complex numbers with termwise operations form a vector space as well.
 
 To see how the definition is used, and how it fails, consider two subsets of $\R^2$.
 
@@ -409,7 +409,7 @@ Finally, the Pauli matrices together with the identity form a particularly usefu
     \item \emph{It is a real vector space} (not a complex one): sums and \emph{real} multiples of Hermitian matrices are Hermitian, but $\ii M$ is not Hermitian when $M\neq0$.
     \item \emph{General form.} Hermitian means $a,d\in\R$ and $c=\bar b$, so $M=\begin{pmatrix}a&b\\\bar b&d\end{pmatrix}$, with $b=\beta_1-\ii\beta_2$.
     \item \emph{Pauli expansion.} By Theorem~\ref{thm:paulibasis}, $M=\tfrac{a+d}2\Id+\beta_1\sx+\beta_2\sy+\tfrac{a-d}2\sz$, with all four coefficients real.
-    \item \emph{Dimension.} The four matrices are independent over $\R$, so the real dimension is $4$: a Hermitian qubit observable has four real parameters, a ``time-like'' and a ``space-like'' part. (This is the reason that $\rho=\tfrac12(\Id+\vec r\cdot\vec\sigma)$ will describe all qubit states, Section~\ref{sec:density}.)
+    \item \emph{Dimension.} The four matrices are independent over $\R$, so the real dimension is $4$: a Hermitian qubit observable is described by four real numbers, the coefficient of $\Id$ and a vector $\vec\beta\in\R^3$ of coefficients of $\sx,\sy,\sz$. (This is the reason that $\rho=\tfrac12(\Id+\vec r\cdot\vec\sigma)$ will describe all qubit states, Section~\ref{sec:density}.)
   \end{steps}
 \end{solution}
 
@@ -440,11 +440,11 @@ Finally, the Pauli matrices together with the identity form a particularly usefu
 
   \exercise{2} Prove that $L(V,W)$ is a vector space, build an explicit basis when $\dim V=n$, $\dim W=m$, and conclude that $\dim L(V,W)=mn$.
 
-  \exercise{2} Show that the composition of linear maps is linear and associative, but not commutative (take $T(x,y)=(y,x)$ and $S(x,y)=(x,0)$ on $\R^2$ and compute $ST-TS$).
+  \exercise{2} Show that the composition of linear maps is linear and associative. On $\R^2$ let $R$ be the rotation by $90^\circ$ and $F(x,y)=(x,-y)$ the reflection in the $x$-axis; compute $RF$ and $FR$, and describe each geometrically.
 
   \exercise{2} Let $D:P_4\to P_3$, $D(p)=p'$ and $M:P_3\to P_4$, $M(p)=xp$. Compute $DM-MD$ on $P_3$. Which famous commutation relation does this resemble?
 
-  \exercise{1} For each map find kernel, range and dimensions, and verify rank--nullity: $T(x,y,z)=(x+y,y+z)$; $D:P_n\to P_n$, $D(p)=p'$; $\Tr:M_n(\C)\to\C$; $T(A)=A-A^t$ on $M_n(\R)$.
+  \exercise{1} For each map find kernel, range and dimensions, and verify rank--nullity: $T(x,y,z)=(x-y,\,y-z)$; $D:P_n\to P_n$, $D(p)=p'$; $\Tr:M_n(\C)\to\C$; $T(A)=A-A^t$ on $M_n(\R)$.
 
   \exercise{2} Let $T\in L(V)$ with $T^2=0$. Prove $\Ran T\subseteq\Ker T$ and deduce $\dim\Ran T\le\frac12\dim V$. Give an example with equality in $\C^2$.
 
@@ -452,11 +452,11 @@ Finally, the Pauli matrices together with the identity form a particularly usefu
 
   \exercise{1} Find the matrices of: $T(x,y)=(x+2y,\,3x-y,\,y)$ in the canonical bases; the reflection across $y=x$; the orthogonal projection onto the $x$-axis; $T(A)=A^t$ on $M_2(\C)$ in the basis $E_{11},E_{12},E_{21},E_{22}$.
 
-  \exercise{2} Let $T(x,y)=(x+y,x+y)$. Verify that the matrices in Example~\ref{ex:changebasis} satisfy $M'=P^{-1}MP$, and prove in general that $\Tr$, $\det$ and rank are invariant under $M\mapsto P^{-1}MP$.
+  \exercise{2} Let $T(x,y)=(2x+y,\,x+2y)$. Find its matrix $M$ in the canonical basis and $M'$ in the basis $b_1=(1,1)$, $b_2=(1,-1)$, and check that $M'=P^{-1}MP$. Then prove in general that $\Tr$, $\det$ and rank are invariant under $M\mapsto P^{-1}MP$.
 
-  \exercise{2} The Hadamard gate is the linear map with $H\ket0=\ket+$ and $H\ket1=\ket-$. Find its matrix, and show $H^2=\Id$, $H\sx H=\sz$, $H\sz H=\sx$ and $H\sy H=-\sy$.
+  \exercise{2} The Hadamard gate is the linear map with $H\ket0=\ket+$ and $H\ket1=\ket-$. Using its matrix, show $H\sz H=\sx$ and $H\sy H=-\sy$, and deduce $H\sx H=\sz$ again from $H^2=\Id$ without computing.
 
-  \exercise{1} Classify each of these matrices as Hermitian, unitary, idempotent, projector, nilpotent, involutory (several or none may apply): $\begin{pmatrix}1&0\\0&0\end{pmatrix}$, $\begin{pmatrix}0&1\\0&0\end{pmatrix}$, $\tfrac12\begin{pmatrix}1&1\\1&1\end{pmatrix}$, $\begin{pmatrix}1&1\\0&0\end{pmatrix}$, $\tfrac1{\sqrt2}\begin{pmatrix}1&1\\-1&1\end{pmatrix}$, $\begin{pmatrix}1&0\\0&\ii\end{pmatrix}$, $\begin{pmatrix}2&\ii\\-\ii&3\end{pmatrix}$.
+  \exercise{1} Classify each of these matrices as Hermitian, unitary, idempotent, projector, nilpotent, involutory (several or none may apply): $\begin{pmatrix}1&0\\0&0\end{pmatrix}$, $\begin{pmatrix}0&0\\1&0\end{pmatrix}$, $\tfrac12\begin{pmatrix}1&-1\\-1&1\end{pmatrix}$, $\tfrac1{\sqrt2}\begin{pmatrix}1&1\\-1&1\end{pmatrix}$, $\begin{pmatrix}1&0\\0&\ii\end{pmatrix}$, $\begin{pmatrix}2&\ii\\-\ii&3\end{pmatrix}$.
 
   \exercise{2} Prove: the diagonal entries of a Hermitian matrix are real; the general $2\times2$ Hermitian matrix is $\begin{pmatrix}a&c-d\ii\\c+d\ii&b\end{pmatrix}$ with $a,b,c,d\in\R$; if $A,B$ are Hermitian then $AB$ is Hermitian iff $AB=BA$, and $\ii[A,B]$ is Hermitian.
 
@@ -468,7 +468,7 @@ Finally, the Pauli matrices together with the identity form a particularly usefu
 
   \exercise{2} Show that $U$ is unitary if and only if its columns form an orthonormal basis of $\C^n$; that products and inverses of unitaries are unitary and $\abs{\det U}=1$; and that the phase gate $S=\diag(1,\ii)$ and $T=\diag(1,e^{\ii\pi/4})$ are unitary with $T^2=S$ and $S^2=\sz$.
 
-  \exercise{1} Verify directly that $\sx,\sy,\sz$ are Hermitian, unitary, involutory and traceless, and compute all products $\sigma_j\sigma_k$ to verify Proposition~\ref{prop:pauli}. Deduce $\sx\sy\sz=\ii\Id$.
+  \exercise{1} Compute all nine products $\sigma_j\sigma_k$ and check them against Proposition~\ref{prop:pauli}. Then compute $\sz\sy\sx$ and $(\sx\sy)^2$ using only the rules of the proposition.
 
   \exercise{2} Define $[A,B]=AB-BA$ and $\{A,B\}=AB+BA$. Show that $[\sigma_j,\sigma_k]=2\ii\sum_l\varepsilon_{jkl}\sigma_l$ and $\{\sigma_j,\sigma_k\}=2\delta_{jk}\Id$, and prove the Jacobi identity $[A,[B,C]]+[B,[C,A]]+[C,[A,B]]=0$ for any matrices.
 

@@ -159,7 +159,7 @@ Klein's inequality quickly produces the properties promised in Section~\ref{sec:
 \end{solution}
 
 \begin{lookahead}
-  Relative entropy is the unifying quantity. The mutual information is a relative entropy to a product; the entanglement of a state can be quantified by its relative entropy to the closest unentangled state; and in thermodynamics, with $\sigma=e^{-\beta H}/Z$ the Gibbs state, $\Srel\rho\sigma=\beta\bigl(F(\rho)-F(\sigma)\bigr)$ is the excess free energy of $\rho$. It is also the exponent that governs the optimal discrimination of two quantum states from many copies (the quantum Stein lemma), and the natural next step after the one-shot discrimination of Section~\ref{sec:measurement}. See Vedral's review~\cite{vedral2002}.
+  Relative entropy is the unifying quantity. The mutual information is a relative entropy to a product; the entanglement of a state can be quantified by its relative entropy to the closest unentangled state; and in thermodynamics, with $\sigma=e^{-\beta H}/Z$ the Gibbs state, $\Srel\rho\sigma=\beta\bigl(F(\rho)-F(\sigma)\bigr)$ is the excess free energy of $\rho$ (Section~\ref{sec:blackbody} uses this identity to show that the Gibbs state has the largest entropy at fixed energy). It is also the exponent that governs the optimal discrimination of two quantum states from many copies (the quantum Stein lemma), and the natural next step after the one-shot discrimination of Section~\ref{sec:measurement}. See Vedral's review~\cite{vedral2002}.
 \end{lookahead}
 
 \begin{exerciseset}
@@ -167,7 +167,7 @@ Klein's inequality quickly produces the properties promised in Section~\ref{sec:
 
   \exercise{2} Prove $\ln t\le t-1$ for $t>0$ (study $g(t)=t-1-\ln t$), with equality only at $t=1$, and use it to give a one-line proof that $\KL pq\ge0$ for sub-normalised $q$.
 
-  \exercise{2} Show that the mutual information can be written $I(X\!:\!Y)=\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p_X(x)p_Y(y)}$, and compute it for the joint distribution of Exercise~3.3.7.
+  \exercise{2} Show that the mutual information can be written $I(X\!:\!Y)=\sum_{x,y}p(x,y)\log\frac{p(x,y)}{p_X(x)p_Y(y)}$, and compute it for the joint distribution of Exercise~\ref{ex:joint-dist}.
 
   \exercise{2} For the binary distributions $p=(a,1-a)$ and $q=(b,1-b)$ write $\KL pq$ explicitly, and show it vanishes only for $a=b$.
 
@@ -177,7 +177,7 @@ Klein's inequality quickly produces the properties promised in Section~\ref{sec:
 
   \exercise{2} Show that $\Srel\rho\sigma$ is not symmetric by computing it both ways for $\rho=\diag(\tfrac34,\tfrac14)$ and $\sigma=\diag(\tfrac12,\tfrac12)$.
 
-  \exercise{2} Prove Corollary~\ref{cor:vn-consequences}(c) (concavity) for $\rho_1=\ket0\!\bra0$, $\rho_2=\ket+\!\bra+$ and $p=(\tfrac12,\tfrac12)$ by computing both sides explicitly.
+  \exercise{2} Verify Corollary~\ref{cor:vn-consequences}(c) (concavity) for $\rho_1=\ket0\!\bra0$, $\rho_2=\ket+\!\bra+$ and $p=(\tfrac12,\tfrac12)$ by computing both sides explicitly.
 
   \exercise{2} Use the formula $\log(\rho\otimes\sigma)=\log\rho\otimes\Id+\Id\otimes\log\sigma$ to prove that $\Srel{\rho_1\otimes\rho_2}{\sigma_1\otimes\sigma_2}=\Srel{\rho_1}{\sigma_1}+\Srel{\rho_2}{\sigma_2}$.
 

@@ -414,7 +414,7 @@ In one sentence: \emph{a quantum computer prepares a unit vector, rotates it wit
 \end{figure}
 
 \begin{exerciseset}
-  \exercise{1} Find the adjoint of $\begin{pmatrix}1&\ii\\2&3-\ii\end{pmatrix}$ and of each Pauli matrix. Compute $M^t$, $\bar M$ and $M^\dagger$ for $M=\begin{pmatrix}1&2\ii\\3-\ii&4\end{pmatrix}$.
+  \exercise{1} Find the adjoint of $\begin{pmatrix}2&1+\ii\\-\ii&0\end{pmatrix}$ and of each Pauli matrix. Compute $M^t$, $\bar M$ and $M^\dagger$ for $M=\begin{pmatrix}1&2\ii\\3-\ii&4\end{pmatrix}$.
 
   \exercise{2} Prove the rules of the adjoint: $(A^\dagger)^\dagger=A$, $(\lambda A)^\dagger=\bar\lambda A^\dagger$, $(AB)^\dagger=B^\dagger A^\dagger$, $(A^{-1})^\dagger=(A^\dagger)^{-1}$; and in Dirac notation $(A\ket\psi)^\dagger=\bra\psi A^\dagger$.
 
@@ -424,27 +424,26 @@ In one sentence: \emph{a quantum computer prepares a unit vector, rotates it wit
 
   \exercise{2} Show that if $U$ is unitary then $U$ preserves inner products, $\abs{\det U}=1$, and that the columns of $U$ form an orthonormal basis. Show that the general $2\times2$ unitary is $e^{\ii\alpha}\begin{pmatrix}a&-\bar b\\b&\bar a\end{pmatrix}$ with $\abs a^2+\abs b^2=1$.
 
-  \exercise{1} Find eigenvalues and eigenvectors over $\C$ of $\begin{pmatrix}2&1\\1&2\end{pmatrix}$, $\begin{pmatrix}1&\ii\\-\ii&1\end{pmatrix}$, $\begin{pmatrix}0&1\\0&0\end{pmatrix}$, $\begin{pmatrix}1&1\\0&1\end{pmatrix}$ and $\diag(2,2,3)$. Which have real eigenvalues? Which have an eigenbasis? An orthonormal one?
+  \exercise{1} Find eigenvalues and eigenvectors over $\C$ of $\begin{pmatrix}1&\ii\\-\ii&1\end{pmatrix}$, $\begin{pmatrix}0&1\\0&0\end{pmatrix}$, $\begin{pmatrix}1&1\\0&1\end{pmatrix}$ and $\diag(2,2,3)$. Which have real eigenvalues? Which have an eigenbasis? An orthonormal one?
 
-  \exercise{1} Find eigenvalues and normalised eigenvectors of $\sx,\sy,\sz$ and check that their eigenbases are $\{\ket\pm\}$, $\{\ket{\pm\ii}\}$ and $\{\ket0,\ket1\}$ up to phases.
+  \exercise{1} Find eigenvalues and normalised eigenvectors of $\sz$, of the Hadamard gate $H$ and of $\tfrac1{\sqrt2}(\sx+\sy)$. Which of the three have the same eigenvalues, and why?
 
   \exercise{2} For $A\in M_2(\C)$ show that $p(\lambda)=\lambda^2-\Tr(A)\lambda+\det A$, hence $\lambda_1+\lambda_2=\Tr A$ and $\lambda_1\lambda_2=\det A$. Generalise to $n\times n$ (with multiplicities).
 
-  \exercise{2} Prove the following. (a) A Hermitian operator has real eigenvalues. (b) Eigenvectors of a Hermitian operator for different eigenvalues are orthogonal. (c) A unitary operator has eigenvalues of modulus $1$. (d) Eigenvectors of a unitary operator for distinct eigenvalues are orthogonal (hint: compute $\braket{Uv}{Uw}$ in two ways).
+  \exercise{2} Prove that eigenvectors of a unitary operator for distinct eigenvalues are orthogonal (hint: compute $\braket{Uv}{Uw}$ in two ways), and check it on the eigenvectors of $R_{\pi/2}$ found in Example~\ref{ex:unitary-eig}.
 
   \exercise{2} If $A\ket v=\lambda\ket v$, show that $A^k\ket v=\lambda^k\ket v$, $p(A)\ket v=p(\lambda)\ket v$ for every polynomial $p$, and $A^{-1}\ket v=\lambda^{-1}\ket v$ when $A$ is invertible. Find the eigenvalues of $A^{10}$ for $A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$.
 
   \exercise{2} Show that eigenvectors of any operator for distinct eigenvalues are linearly independent. Deduce that an $n\times n$ matrix with $n$ distinct eigenvalues is diagonalisable.
 
-  \exercise{2} Diagonalise $\begin{pmatrix}0&-\ii\\\ii&0\end{pmatrix}$ and $\begin{pmatrix}1&1+\ii\\1-\ii&2\end{pmatrix}$, finding a unitary $U$ with $U^\dagger AU$ diagonal.
+  \exercise{2} Diagonalise $\begin{pmatrix}0&1-\ii\\1+\ii&0\end{pmatrix}$ and $\begin{pmatrix}1&1+\ii\\1-\ii&2\end{pmatrix}$, finding a unitary $U$ with $U^\dagger AU$ diagonal.
 
-  \exercise{2} Show that the rotation matrix $R_\theta$ ($\theta\notin\pi\Z$) has no real eigenvector but has complex eigenvalues $e^{\pm\ii\theta}$. Why does this make $\C$ the natural field for spectral theory?
 
   \exercise{3} An operator $A$ is \emph{positive} ($A\ge0$) if $\bra\psi A\ket\psi\ge0$ for all $\ket\psi$. Show that over $\C$ a positive operator is Hermitian; that a Hermitian $A$ is positive iff its eigenvalues are $\ge0$; and that $B^\dagger B\ge0$ for every $B$ and every projector is positive. (We return to positive operators in Section~\ref{sec:measurement}.)
 
   \exercise{3} Let $A,B$ be Hermitian with $[A,B]=0$ and suppose $A$ has distinct eigenvalues. Show that every eigenvector of $A$ is an eigenvector of $B$. Check on $A=\sz$ and $B=\Id+2\sz$, and explain why this fails for $A=\sz$, $B=\sx$.
 
-  \exercise{1} For $\ket\psi=\ket{+\ii}$ and $\ket\varphi=\cos\frac\theta2\ket0+e^{\ii\phi}\sin\frac\theta2\ket1$, write $P=\ket\varphi\!\bra\varphi$ as a matrix and show $P=\tfrac12(\Id+n\cdot\sigma)$ with $n=(\sin\theta\cos\phi,\sin\theta\sin\phi,\cos\theta)$.
+  \exercise{1} For $\ket\varphi=\cos\frac\theta2\ket0+e^{\ii\phi}\sin\frac\theta2\ket1$, write $P=\ket\varphi\!\bra\varphi$ as a matrix and show $P=\tfrac12(\Id+n\cdot\sigma)$ with $n=(\sin\theta\cos\phi,\sin\theta\sin\phi,\cos\theta)$.
 
   \exercise{2} For a unit vector $\ket\psi$ and $P=\ket\psi\!\bra\psi$ prove $P=P^\dagger$, $P^2=P$, $\Tr P=1$, find its eigenvalues and eigenspaces, and show $\Tr(P\ket\varphi\!\bra\varphi)=\abs{\braket\varphi\psi}^2$.
 
@@ -454,13 +453,13 @@ In one sentence: \emph{a quantum computer prepares a unit vector, rotates it wit
 
   \exercise{2} Let $\{\ket{e_1},\dots,\ket{e_k}\}$ be an ONB of $W$ and $P=\sum_i\ket{e_i}\!\bra{e_i}$. Show $P^2=P=P^\dagger$, $\Ran P=W$, $\Ker P=W^\perp$ and $\Tr P=\dim W$; show that $P$ does not depend on the chosen ONB of $W$; and show that every orthogonal projector is of this form.
 
-  \exercise{2} Project $f(x)=x^2$ onto $\Span\{1,x\}$ in $L^2[-1,1]$, and $(1,2,3)$ onto $x+y+z=0$ in $\R^3$. In each case verify Proposition~\ref{prop:proj}(d).
+  \exercise{2} Project $f(x)=x^2$ onto $\Span\{1,x\}$ in $L^2[-1,1]$, and $(1,2,3)$ onto the plane $x+2y-z=0$ in $\R^3$. In each case verify Proposition~\ref{prop:proj}(d).
 
   \exercise{2} For orthogonal projectors $P_1,P_2$ show: $P_1+P_2$ is a projector iff $P_1P_2=0$; $P_1P_2$ is a projector iff $P_1P_2=P_2P_1$; $\Id-P_1$ is the projector onto $(\Ran P_1)^\perp$.
 
-  \exercise{2} Measuring $A=\sum_\lambda\lambda P_\lambda$ on $\ket\psi$ gives $\lambda$ with probability $p(\lambda)=\bra\psi P_\lambda\ket\psi$ and leaves the state $P_\lambda\ket\psi/\sqrt{p(\lambda)}$. Show $\sum_\lambda p(\lambda)=1$, and compute the probabilities and post-measurement states for $A=\sx$ and $\ket\psi=\frac1{\sqrt3}\ket0+\sqrt{\tfrac23}\ket1$.
+  \exercise{2} Measuring $A=\sum_\lambda\lambda P_\lambda$ on $\ket\psi$ gives $\lambda$ with probability $p(\lambda)=\bra\psi P_\lambda\ket\psi$ and leaves the state $P_\lambda\ket\psi/\sqrt{p(\lambda)}$. Show $\sum_\lambda p(\lambda)=1$, and compute the probabilities and post-measurement states for $A=\sx$ and $\ket\psi=\tfrac12\ket0-\tfrac{\sqrt3}2\ket1$.
 
-  \exercise{2} Find $\sqrt{\begin{pmatrix}2&1\\1&2\end{pmatrix}}$ and $e^{\ii\pi\sx/2}$. Show that for $P$ a projector, $f(P)=f(0)(\Id-P)+f(1)P$, and compute $e^{\ii\theta P}$.
+  \exercise{2} Find $\sqrt{\begin{pmatrix}5&4\\4&5\end{pmatrix}}$ and $e^{\ii\pi\sx/2}$. Show that for $P$ a projector, $f(P)=f(0)(\Id-P)+f(1)P$, and compute $e^{\ii\theta P}$.
 
   \exercise{2} Show that $e^{-\ii\theta\,n\cdot\sigma/2}=\cos\frac\theta2\Id-\ii\sin\frac\theta2\,n\cdot\sigma$ for a unit vector $n$. Compute the rotations $R_x(\pi)$, $R_y(\pi/2)$ and $R_z(2\pi)$ and show that $R_z(2\pi)=-\Id$.
 

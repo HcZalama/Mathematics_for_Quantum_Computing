@@ -141,7 +141,7 @@ Here is a game. Alice chooses a state $\ket{\psi_i}$, $1\le i\le n$, from a set 
   \end{steps}
 \end{proof}
 
-So orthogonality is the only thing that makes states perfectly distinguishable. In particular $\ket0$ and $\ket+$ cannot be told apart reliably. This is the basis of everything from quantum key distribution to the no-cloning theorem.
+So orthogonality is the only thing that makes states perfectly distinguishable. In particular $\ket0$ and $\ket+$ cannot be told apart reliably. This is the basis of everything from quantum key distribution to the no-cloning theorem (Section~\ref{sec:teleportation}).
 
 \subsection{Projective measurements}
 
@@ -177,7 +177,7 @@ If we prepare $\ket\psi$ many times and measure $M$ each time, $\langle M\rangle
   \end{steps}
 \end{solution}
 
-For a real unit vector $\vec v$, the observable $\vec v\cdot\vec\sigma$ is called, for historical reasons, \emph{spin along the axis $\vec v$}. By Exercise~\ref{ex:vn-sigma-eig2} it has eigenvalues $\pm1$ with projectors $P_\pm=\tfrac12(\Id\pm\vec v\cdot\vec\sigma)$.
+For a real unit vector $\vec v$, the observable $\vec v\cdot\vec\sigma$ is called the \emph{spin along the axis $\vec v$}, in units of $\hbar/2$; Section~\ref{sec:spin} explains the name and the experiment that measures it. By Exercise~\ref{ex:vn-sigma-eig} it has eigenvalues $\pm1$, and its eigenvectors are the states with Bloch vectors $\pm\vec v$, so by Proposition~\ref{prop:bloch} its projectors are $P_\pm=\tfrac12(\Id\pm\vec v\cdot\vec\sigma)$.
 Measuring it on a state with Bloch vector $\vec n$ gives $+1$ with probability $\tfrac12(1+\vec n\cdot\vec v)$.
 
 \begin{example}[Tilted measurement axis]\label{ex:tilted}
@@ -226,7 +226,7 @@ If $C$ and $D$ do not commute, that is, if their commutator $[C,D]=CD-DC$ (Secti
   It is a property of the state and the operators, not of the quality of an apparatus. Commuting observables can have a common eigenbasis, hence states with $\Delta C=\Delta D=0$.
 \end{pitfall}
 
-For position and momentum, $[\hat x,\hat p]=\ii\hbar$ gives $\Delta x\,\Delta p\ge\hbar/2$; we saw in Example~\ref{ex:gaussian-uncertainty} that Gaussians attain this bound. Taking the trace of $[A,B]=\ii\hbar\Id$ in finite dimension would give $0=\ii\hbar n$, absurd (Exercise~\ref{ex:no-xp}): position and momentum need infinite-dimensional Hilbert spaces.
+For position and momentum, $[\hat x,\hat p]=\ii\hbar$ gives $\Delta x\,\Delta p\ge\hbar/2$; Example~\ref{ex:gaussian-uncertainty} in Chapter~\ref{ch:info} shows that Gaussian wave functions attain this bound, and Section~\ref{sec:levels} uses it to explain why atoms do not collapse. Taking the trace of $[A,B]=\ii\hbar\Id$ in finite dimension would give $0=\ii\hbar n$, absurd (Exercise~\ref{ex:no-xp}): position and momentum need infinite-dimensional Hilbert spaces.
 
 \subsection{Phase: global and relative}\label{sec:phase-global}
 
@@ -373,13 +373,13 @@ The good news, shown in Section~\ref{sec:composite}, is that once we have unitar
 
   \exercise{1} A qubit is in $\ket0$ and we measure $X$. What are $\langle X\rangle$ and $\Delta X$? Which outcomes can occur, with which probabilities, and what are the post-measurement states?
 
-  \exercise{2} Show $(\vec v\cdot\vec\sigma)^2=\Id$ for a real unit vector $\vec v$ (use $\sigma_j\sigma_k=\delta_{jk}\Id+\ii\sum_l\varepsilon_{jkl}\sigma_l$), deduce that its eigenvalues are $\pm1$ and that the projectors are $P_\pm=\frac12(\Id\pm\vec v\cdot\vec\sigma)$. Compute the probability of the result $+1$ when the state is $\ket0$, and the state afterwards.\label{ex:vn-sigma-eig2}
+  \exercise{2} Let $\vec v=(\sin\theta\cos\phi,\sin\theta\sin\phi,\cos\theta)$ and $P_\pm=\frac12(\Id\pm\vec v\cdot\vec\sigma)$. Check that $P_\pm$ are orthogonal projectors with $P_+P_-=0$ and $P_++P_-=\Id$. For the state $\ket+$, compute the probability of $+1$ and the state afterwards, both directly from $P_+$ and from the rule $\tfrac12(1+\vec n\cdot\vec v)$.\label{ex:vn-sigma-eig2}
 
-  \exercise{2} Let $\ket\psi=\frac1{\sqrt3}\ket0+\frac{1+\ii}{\sqrt3}\ket1$. Verify Example~\ref{ex:meas-pauli}, and check the three uncertainty relations $\Delta X\Delta Y\ge\abs{\langle Z\rangle}$ and its two cyclic versions.
+  \exercise{2} For the state of Example~\ref{ex:meas-pauli}, check the two uncertainty relations $\Delta Y\Delta Z\ge\abs{\langle X\rangle}$ and $\Delta Z\Delta X\ge\abs{\langle Y\rangle}$ (Example~\ref{ex:uncertainty-check} checked the third). Is any of them an equality?
 
   \exercise{2} For the state $\ket\psi=\tfrac15(3\ket0+4\ii\ket1)$ compute $\langle X\rangle,\langle Y\rangle,\langle Z\rangle$, the three standard deviations, and the Bloch vector; check the uncertainty relation for each pair.
 
-  \exercise{2} Cascades: check the four operators $N_{l\pm}=M_\pm L_l$ of Example~\ref{ex:cascade} satisfy $\sum N^\dagger N=\Id$, and compute probabilities and final states for $\ket\psi=a\ket0+b\ket1$. Show the order matters by repeating with $\{M_\pm\}$ first and $\{L_l\}$ second.
+  \exercise{2} Repeat Example~\ref{ex:cascade} with the two measurements in the opposite order: first $\{M_\pm\}$, then $\{L_l\}$. Compute the joint probabilities and final states for $\ket\psi=a\ket0+b\ket1$, compare, and explain why the order matters.
 
   \exercise{2}\label{ex:epsilon-meas} For $0\le\epsilon\le1$ let $M_0=\ket0\!\bra0+\sqrt{1-\epsilon}\ket1\!\bra1$ and $M_1=\sqrt\epsilon\ket1\!\bra1$. Check completeness, compute $p(0),p(1)$ and the post-measurement states for $\ket\psi=a\ket0+b\ket1$. What happens for $\epsilon=0$ and $\epsilon=1$? Show that for $0<\epsilon<1$ the measurement is neither projective nor repeatable, and find its POVM.
 
@@ -393,9 +393,9 @@ The good news, shown in Section~\ref{sec:composite}, is that once we have unitar
 
   \exercise{2}\label{ex:no-xp} On smooth functions vanishing at infinity let $\hat xf=xf$ and $\hat pf=-\ii\hbar f'$. Show that $[\hat x,\hat p]=\ii\hbar\Id$. Using the trace, show that no finite matrices $A,B$ satisfy $[A,B]=\ii\Id$.
 
-  \exercise{2} Express $\ket\pm$ in a basis in which they are \emph{not} the same up to a relative phase. Decide which of the following pairs are the same physical state, and for those that are not find a projective measurement whose statistics differ: $\ket\psi$ and $-\ket\psi$; $\frac1{\sqrt2}(\ket0+\ket1)$ and $\frac1{\sqrt2}(\ket0+\ii\ket1)$; $\frac1{\sqrt2}(\ket0+\ii\ket1)$ and $\frac1{\sqrt2}(\ii\ket0-\ket1)$.
+  \exercise{2} Decide which of the following pairs are the same physical state, and for those that are not find a projective measurement whose statistics differ: $\ket+$ and $\ket-$; $\frac1{\sqrt2}(\ket0-\ii\ket1)$ and $\frac1{\sqrt2}(\ii\ket0+\ket1)$; $\tfrac12(\ket0+\sqrt3\ket1)$ and $\tfrac12(\sqrt3\ket0+\ket1)$.
 
-  \exercise{2} For $\ket{\psi_\varphi}=\frac1{\sqrt2}(\ket0+e^{\ii\varphi}\ket1)$ compute the probabilities of the outcome $+1$ for $X$ and $Y$ as functions of $\varphi$. Prove that two states whose amplitudes have the same moduli in the computational basis cannot be distinguished by a measurement in that basis, and give an explicit measurement that distinguishes them when they differ by a non-trivial relative phase.
+  \exercise{2} Prove that two states whose amplitudes have the same moduli in the computational basis cannot be distinguished by a measurement in that basis, and give an explicit measurement that distinguishes them when they differ by a non-trivial relative phase.
 
   \exercise{1} Decide which are positive: $\begin{pmatrix}1&0\\0&0\end{pmatrix}$, $\begin{pmatrix}0&1\\1&0\end{pmatrix}$, $\begin{pmatrix}3&\ii\\-\ii&1\end{pmatrix}$, $\begin{pmatrix}1&2\\2&3\end{pmatrix}$, $X+2\Id$, $\ket+\!\bra+-\ket-\!\bra-$.
 
@@ -409,7 +409,7 @@ The good news, shown in Section~\ref{sec:composite}, is that once we have unitar
 
   \exercise{2} Prove that $\sqrt{A}$ is unique for $A\ge0$ when $A$ has distinct eigenvalues. Show that $-\sqrt A$ is a square root of $A$ that is not positive.
 
-  \exercise{2} Verify that $E_1,E_2$ of Example~\ref{ex:unambiguous} are positive and that $E_3=\Id-E_1-E_2$ is positive (compute the eigenvalues of $\ket1\!\bra1+\ket-\!\bra-$). For two states with overlap $s=\abs{\braket{\psi_1}{\psi_2}}$, conjecture and test the optimal success probability of unambiguous discrimination (it equals $1-s$; check $s=0$ and $s=1$).
+  \exercise{2} Adapt Example~\ref{ex:unambiguous} to the pair $\ket0$ and $\cos\alpha\ket0+\sin\alpha\ket1$ with $0<\alpha<\pi/2$: find the largest $c$ for which $E_3\ge0$, and show that the success probability is $1-\cos\alpha=1-\abs{\braket{\psi_1}{\psi_2}}$. Check the cases $\alpha\to0$ and $\alpha=\pi/2$.
 
   \exercise{2}\label{ex:trine} (Trine.) Let $\vec n_k=(\sin\theta_k,0,\cos\theta_k)$ with $\theta_k=2\pi k/3$ and $P_k=\frac12(\Id+\vec n_k\cdot\vec\sigma)$ for $k=0,1,2$. Show $E_k=\frac23P_k$ is a POVM (hint: $\sum_k\vec n_k=0$), and compute $p(k)$ for the state $\ket0$. Explain why it is not projective.
 

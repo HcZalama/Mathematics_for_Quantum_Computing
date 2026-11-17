@@ -172,8 +172,7 @@ analyses the exact assumptions needed. The consensus is that Nature is not local
   Bell's theorem has become a practical tool. In device-independent cryptography, two parties who observe a CHSH value above $2$ can certify, without trusting their devices, that their outcomes are genuinely random and unknown to any eavesdropper. Entropy bounds of the kind studied in Chapter~\ref{ch:info} (Section~\ref{sec:vonneumann}) are then used to quantify how much an eavesdropper can possibly learn.
 \end{lookahead}
 
-For quantum computing the lesson has been, historically, vague but fruitful: there is something profoundly different about entangled states, and a lot of progress has come from asking ``what would a little entanglement buy me in this problem?''. We have already seen one answer, superdense coding (Section~\ref{sec:superdense}). Teleportation, quantum cryptography and the
-speed-up of quantum algorithms are others, and they are the subject of the courses that follow.
+For quantum computing the lesson has been, historically, vague but fruitful: there is something profoundly different about entangled states, and a lot of progress has come from asking ``what would a little entanglement buy me in this problem?''. We have already seen one answer, superdense coding (Section~\ref{sec:superdense}), and teleportation (Section~\ref{sec:teleportation}) is another. Quantum cryptography and the speed-up of quantum algorithms are the subject of the courses that follow.
 
 \begin{exerciseset}
   \exercise{1} Verify that the singlet $\ket{\Psi^-}$ is entangled, and that measuring $Z$ on both qubits always gives opposite results. Repeat with $X$ on both qubits.
@@ -182,7 +181,7 @@ speed-up of quantum algorithms are others, and they are the subject of the cours
 
   \exercise{2} Verify Lemma~\ref{lem:singlet-corr} directly for $(\vec a,\vec b)=(\vec z,\vec z)$, $(\vec x,\vec x)$, $(\vec z,\vec x)$, by computing in the basis $\ket{ij}$.
 
-  \exercise{2} Check, using Lemma~\ref{lem:singlet-corr}, that $\langle RS\rangle=\langle RT\rangle=\tfrac1{\sqrt2}$ and $\langle QT\rangle=-\tfrac1{\sqrt2}$, and that the CHSH combination equals $2\sqrt2$.
+  \exercise{2} Rotate all four measurement axes of Figure~\ref{fig:bell-axes} by the same angle $\alpha$ in the $x$--$z$ plane. Show with Lemma~\ref{lem:singlet-corr} that the CHSH value is still $2\sqrt2$, and explain why in terms of \eqref{eq:singlet-inv}. What happens if only Bob's axes are rotated?
 
   \exercise{2} Assuming local realism, show that $\mathbb E(QS)+\mathbb E(RS)+\mathbb E(RT)-\mathbb E(QT)\ge-2$, and that each of the four ``sign choices'' $(\pm QS\pm\dots)$ gives an inequality with the same bound.
 

@@ -19,7 +19,7 @@ The quantity that is measured is the \term{spin} of the atom (in silver it is th
 \paragraph{The model.}
 \begin{steps}
   \item The spin state is a qubit, $\ket\psi\in\C^2$; $\ket0$ is ``spin up along $z$'' and $\ket1$ is ``spin down along $z$''.
-  \item The spin along a unit vector $\vec n\in\R^3$ is the observable $S_{\vec n}=\tfrac\hbar2\,\vec n\cdot\vec\sigma$. Its eigenvalues are $\pm\tfrac\hbar2$ (Exercise~\ref{ex:spin-eig}), with unit eigenvectors $\ket{\pm\vec n}$, the states whose Bloch vectors are $\pm\vec n$.
+  \item The spin along a unit vector $\vec n\in\R^3$ is the observable $S_{\vec n}=\tfrac\hbar2\,\vec n\cdot\vec\sigma$. Its eigenvalues are $\pm\tfrac\hbar2$, with unit eigenvectors $\ket{\pm\vec n}$, the states whose Bloch vectors are $\pm\vec n$ (Exercise~\ref{ex:vn-sigma-eig}).
   \item A Stern--Gerlach apparatus oriented along $\vec n$ (we write SG$_{\vec n}$) measures $S_{\vec n}$: it sends the atom to the upper spot with probability $\abs{\braket{+\vec n}\psi}^2$, and the atom leaves in the state $\ket{+\vec n}$; similarly for the lower spot.
 \end{steps}
 By Proposition~\ref{prop:bloch}, if the atom has Bloch vector $\vec r$, the probability of the upper spot is
@@ -192,7 +192,7 @@ Measurements change states, and frequent measurements can stop a state from chan
 With $\omega T=\pi/2$, ten measurements already keep the state in $\ket0$ with probability $\cos^{20}(\pi/20)\approx0.78$, and a hundred with probability $0.98$, whereas without measurements the state would certainly have left $\ket0$. The reason is that for short times a state leaves its initial value only quadratically, $1-\cos^2(\omega t)\approx\omega^2t^2$, and each measurement resets the clock. The effect has been observed with trapped ions, and it is one reason why an unintended ``measurement'' by the environment, the decoherence of Section~\ref{sec:interference}, can freeze or spoil a quantum computation.
 
 \begin{exerciseset}
-  \exercise{1}\label{ex:spin-eig} Show that for a unit vector $\vec n$, $(\vec n\cdot\vec\sigma)^2=\Id$ (use Proposition~\ref{prop:pauli}), and deduce that the eigenvalues of $\vec n\cdot\vec\sigma$ are $\pm1$. Find the eigenvectors for $\vec n=(1,0,0)$ and $\vec n=(0,1,0)$.
+  \exercise{1} An atom leaves an SG$_z$ apparatus in $\ket0$ and enters an SG apparatus oriented along $\vec n=(\sin\theta,0,\cos\theta)$. Write $\ket{\pm\vec n}$ explicitly, and compute the probabilities of the two spots both from the amplitudes and from \eqref{eq:sg-prob}.
 
   \exercise{1} In Figure~\ref{fig:sg}, replace the middle SG$_x$ by an apparatus oriented at angle $\theta$ from the $z$-axis in the $xz$-plane. Show that the fraction of atoms that reaches the lower final spot is $\tfrac12\cos^2\tfrac\theta2\sin^2\tfrac\theta2$, and find the angle that maximises it.
 

@@ -161,7 +161,14 @@ It is well defined because product vectors span, and its matrix is the \term{Kro
 \begin{proof}
   \begin{steps}
     \item (a) Both sides are linear, so it is enough to compare them on product vectors: $(A\otimes B)(C\otimes D)(v\otimes w)=(A\otimes B)(Cv\otimes Dw)=ACv\otimes BDw=(AC\otimes BD)(v\otimes w)$.
-    \item (b) By Proposition~\ref{prop:tensor-inner}, $\braket{v\otimes w}{(A\otimes B)(v'\otimes w')}=\braket v{Av'}\braket w{Bw'}=\braket{A^\dagger v}{v'}\braket{B^\dagger w}{w'}=\braket{(A^\dagger\otimes B^\dagger)(v\otimes w)}{v'\otimes w'}$.
+    \item (b) By Proposition~\ref{prop:tensor-inner}, on product vectors,
+      \[
+        \begin{aligned}
+          \braket{v\otimes w}{(A\otimes B)(v'\otimes w')}&=\braket v{Av'}\braket w{Bw'}=\braket{A^\dagger v}{v'}\braket{B^\dagger w}{w'}\\
+          &=\braket{(A^\dagger\otimes B^\dagger)(v\otimes w)}{v'\otimes w'},
+        \end{aligned}
+      \]
+      and product vectors span, so $A^\dagger\otimes B^\dagger$ is the adjoint of $A\otimes B$.
     \item (c) In the product basis, $\Tr(A\otimes B)=\sum_{i,j}\bra{e_i\otimes f_j}A\otimes B\ket{e_i\otimes f_j}=\sum_iA_{ii}\sum_jB_{jj}$.
     \item (d) By (a) and (b): $(U\otimes V)^\dagger(U\otimes V)=U^\dagger U\otimes V^\dagger V=\Id\otimes\Id=\Id$; a Hermitian tensor product has $(H\otimes K)^\dagger=H^\dagger\otimes K^\dagger=H\otimes K$; and if $P^2=P=P^\dagger$, $Q^2=Q=Q^\dagger$, then $(P\otimes Q)^2=P^2\otimes Q^2=P\otimes Q$ and $P\otimes Q$ is Hermitian.
     \item (e) Immediate from the definition. \qedhere
