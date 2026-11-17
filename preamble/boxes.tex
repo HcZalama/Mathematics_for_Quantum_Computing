@@ -27,6 +27,36 @@
 \definecolor{starcol}{RGB}{190,140,0}    % exercise stars
 \definecolor{figacc}{RGB}{185,75,40}     % accent used inside figures
 
+% ---------- Keeping short blocks on one page ----------
+%  \keepspace{<length>} starts a new page unless <length> of space is left on the
+%  current one.  It measures the space left (\pagegoal - \pagetotal), like the
+%  \Needspace command of the needspace package.  (The glue trick of \needspace is
+%  not used: its stretchable glue makes the break before the block look cheaper
+%  to TeX than any later one, and pages end with large holes.)  Right after a
+%  heading it does nothing, so that a heading is never separated from what follows.
+%  The skip that preceded it is put back last, so that a following \addvspace
+%  (used by proofs and by the boxes) still sees it as \lastskip.
+\newcommand{\keepspace}[1]{%
+  \par
+  \if@nobreak\else
+    \@tempskipb\lastskip
+    \vskip-\@tempskipb
+    \penalty\z@          % lets the page builder catch up, so \pagetotal is current
+    \begingroup
+      \setlength\dimen@{#1}%
+      \advance\dimen@\@tempskipb
+      \dimen@ii\pagegoal
+      \advance\dimen@ii-\pagetotal
+      \ifdim\dimen@>\dimen@ii
+        \ifdim\dimen@ii>\z@ \vfil\fi
+        \break
+      \else
+        \vskip\@tempskipb
+      \fi
+    \endgroup
+  \fi
+}
+
 % ---------- Shared look for the framed environments ----------
 \tcbset{
   bookbox/.style={
@@ -43,7 +73,7 @@
 % ---------- Numbered statement boxes ----------
 \newcommand{\newstatementbox}[4]{% env, Label, bar colour, fill
   \newtcolorbox[use counter=result]{#1}[1][]{%
-    bookbox, colback=#4, borderline west={2.5pt}{0pt}{#3},
+    bookbox, unbreakable, colback=#4, borderline west={2.5pt}{0pt}{#3},
     before upper={\xdef\@currentlabel{\thechapter.\arabic{result}}%
                   \boxlabel{#3}{#2}{##1}},
   }%
@@ -57,36 +87,49 @@
 % ---------- Postulates: their own counter, a heavier navy block ----------
 \newcounter{postulate}
 \newtcolorbox{postulate}[1][]{%
-  bookbox, colback=navy!14, borderline west={4pt}{0pt}{navy},
+  bookbox, unbreakable, colback=navy!14, borderline west={4pt}{0pt}{navy},
   before upper={\refstepcounter{postulate}%
                 \textbf{\sffamily\color{navy}Postulate~\arabic{postulate}%
                 \ifstrempty{#1}{}{\ {\normalfont\sffamily(#1)}}.}\ },
 }
 
 % ---------- Example (statement) and Solution: one continuous grey bar ----------
-\newtcolorbox[use counter=result]{example}[1][]{%
-  bookbox, colback=ink!7, borderline west={2.5pt}{0pt}{ink},
+\newtcolorbox[use counter=result]{examplebox}[1][]{%
+  bookbox, unbreakable, colback=ink!7, borderline west={2.5pt}{0pt}{ink},
   after skip=0pt, bottom=2pt,
   before upper={\xdef\@currentlabel{\thechapter.\arabic{result}}%
                 \boxlabel{ink}{Example}{#1}},
 }
+% The statement must not be left alone at the foot of a page, away from its
+% solution.  So the statement is first set in a scratch box (never printed: its
+% labels are not written and its counter step is undone) to measure its height,
+% and \keepspace asks for that height plus five lines ("Solution." and the four
+% lines that a solution needs before it may break).
+\newsavebox{\ex@measure}
+\NewDocumentEnvironment{example}{O{} +b}{%
+  \edef\ex@result{\the\value{result}}%
+  \sbox{\ex@measure}{\parbox{\linewidth}{\begin{examplebox}[#1]#2\end{examplebox}}}%
+  \setcounter{result}{\ex@result}%
+  \keepspace{\dimexpr\ht\ex@measure+\dp\ex@measure+5\baselineskip\relax}%
+  \begin{examplebox}[#1]#2\end{examplebox}%
+}{}
 \newtcolorbox{solution}{%
   bookbox, colback=white, borderline west={2.5pt}{0pt}{ink},
-  before skip=0pt, top=2pt,
+  before skip=0pt, top=2pt, lines before break=4,
   before upper={\@endparpenalty=\@M\relax\textit{Solution.}\ },
   after upper={\qedmark{\square}},
 }
 
 % ---------- Pitfall: the only warm colour ----------
 \newtcolorbox{pitfall}{%
-  bookbox, frame hidden, colback=warncol!6, borderline west={2.5pt}{0pt}{warncol},
+  bookbox, unbreakable, frame hidden, colback=warncol!6, borderline west={2.5pt}{0pt}{warncol},
   before upper={\textbf{\sffamily\color{warncol}Pitfall.}\ },
 }
 
 % ---------- Quiet notes: cross-reference and place in the course ----------
 \newcommand{\newnote}[2]{%
   \newtcolorbox{#1}{%
-    bookbox, colback=white, borderline west={1pt}{0pt}{navy!60},
+    bookbox, unbreakable, colback=white, borderline west={1pt}{0pt}{navy!60},
     fontupper=\small, top=2pt, bottom=2pt,
     before upper={\textbf{\sffamily\color{navy}#2.}\ },
   }%
@@ -108,7 +151,7 @@
 
 % ---------- Learning objectives: just two rules ----------
 \newtcolorbox{objectives}[1][In this section]{%
-  enhanced, breakable, parbox=false, colback=white, colframe=navy, boxrule=0pt,
+  enhanced, unbreakable, parbox=false, colback=white, colframe=navy, boxrule=0pt,
   toprule=0.8pt, bottomrule=0.8pt, leftrule=0pt, rightrule=0pt, sharp corners,
   left=2pt, right=2pt, top=4pt, bottom=4pt, before skip=1em, after skip=1em,
   before upper={\textbf{\sffamily\color{navy}#1.}\ },
@@ -117,7 +160,7 @@
 % ---------- Remark and proof: plain text ----------
 \newcommand{\qedmark}[1]{\leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill\quad$#1$}
 
-\renewenvironment{proof}[1][Proof]{\par\addvspace{0.4em}\@endparpenalty=\@M\relax\noindent\textit{#1.}\ }%
+\renewenvironment{proof}[1][Proof]{\keepspace{3\baselineskip}\addvspace{0.4em}\@endparpenalty=\@M\relax\noindent\textit{#1.}\ }%
   {\qedmark{\blacksquare}\par\addvspace{0.6em}}
 \providecommand{\qedhere}{}\renewcommand{\qedhere}{}   % the end mark is added automatically
 \newenvironment{remark}{\par\addvspace{0.3em}\noindent\textit{Remark.}\ }%
@@ -129,7 +172,7 @@
 
 % \begin{exerciseset} ... \exercise{2} Statement ... \end{exerciseset}
 \newenvironment{exerciseset}{%
-  \par\vspace{1.2em}\noindent
+  \keepspace{6\baselineskip}\vspace{1.2em}\noindent
   {\sffamily\bfseries\large Exercises}\hfill
   {\footnotesize\sffamily\color{ink} $\star$ routine \quad $\star\star$ needs an idea \quad
    $\star\star\star$ challenging}\par\nobreak

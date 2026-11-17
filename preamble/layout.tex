@@ -75,6 +75,16 @@
 \renewcommand{\textfraction}{0.10}
 \renewcommand{\floatpagefraction}{0.75}
 
+% ---------- Page breaking ----------
+%  Pages end where the text ends: no stretching of the space between paragraphs
+%  to make every page exactly full (the book-class default, \flushbottom, left
+%  visible gaps between headings, lists and boxes).  No single first or last line
+%  of a paragraph is left alone at the foot or head of a page.
+\raggedbottom
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+
 % ---------- Paragraph spacing ----------
 \setlength{\parskip}{0.68em}
 % Hyphenation is switched off book-wide (see packages.tex); this extra stretch lets TeX
